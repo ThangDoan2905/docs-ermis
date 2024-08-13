@@ -31,6 +31,7 @@
       "url": "api-reference"
     }
   ],
+  "openapi": ["api-reference/openapi.json"],
   "navigation": [
     {
       "group": "Doc",
@@ -65,17 +66,17 @@
     {
       "group": "Ermis End User",
       "pages": [
-        "api-reference/ermis_end_user/auth_start",
-        "api-reference/ermis_end_user/auth",
-        "api-reference/ermis_end_user/get_token",
-        "api-reference/ermis_end_user/get_user_batch",
-        "api-reference/ermis_end_user/update_user_info",
-        "api-reference/ermis_end_user/upload_image",
-        "api-reference/ermis_end_user/search",
-        "api-reference/ermis_end_user/get_user_list",
-        "api-reference/ermis_end_user/get_clients_by_chain_id",
-        "api-reference/ermis_end_user/get_projects_by_client_and_chain_id",
-        "api-reference/ermis_end_user/connect_sse"
+        "api-reference/ermis-user-copy/auth_start",
+        "api-reference/ermis-user-copy/auth",
+        "api-reference/ermis-user-copy/get-token",
+        "api-reference/ermis-user-copy/get-user-batch",
+        "api-reference/ermis-user-copy/update-user-info",
+        "api-reference/ermis-user-copy/upload-image",
+        "api-reference/ermis-user-copy/search",
+        "api-reference/ermis-user-copy/get-user-list",
+        "api-reference/ermis-user-copy/get_clients_by_chain_id",
+        "api-reference/ermis-user-copy/get-projects-by-client-and-chain-id",
+        "api-reference/ermis-user-copy/connect-sse"
       ] 
     }
   ],
