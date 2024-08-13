@@ -1,195 +1,484 @@
 {
-  "openapi": "3.0.1",
+  "openapi": "3.0.3",
   "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
-    "license": {
-      "name": "MIT"
-    },
-    "version": "1.0.0"
+    "title": "ermis_chat_user",
+    "version": "1.0.0",
+    "contact": {}
   },
   "servers": [
     {
-      "url": "http://sandbox.mintlify.com"
-    }
-  ],
-  "security": [
-    {
-      "bearerAuth": []
+      "url": "http://localhost:5123/uss/v1"
     }
   ],
   "paths": {
-    "/plants": {
+    "/wallets/auth/start": {
+      "post": {
+        "tags": [
+          "Ermis user Copy"
+        ],
+        "summary": "auth_start",
+        "description": "auth_start",
+        "operationId": "authStart",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "address": {
+                    "type": "string",
+                    "example": "0x1e16149b8f6af2d238ecb6d8e51d9554c1ecfaac1"
+                  },
+                  "chain_id": {
+                    "type": "number",
+                    "example": 0
+                  }
+                }
+              },
+              "examples": {
+                "auth_start": {
+                  "value": {
+                    "address": "0x1e16149b8f6af2d238ecb6d8e51d9554c1ecfaac1",
+                    "chain_id": 0
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/wallets/auth": {
+      "post": {
+        "tags": [
+          "Ermis user Copy"
+        ],
+        "summary": "auth",
+        "description": "auth",
+        "operationId": "auth",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "address": {
+                    "type": "string",
+                    "example": "0x61197c6800f990454903290736aFe5D4fc7a2DD1"
+                  },
+                  "nonce": {
+                    "type": "string",
+                    "example": "7hjN8N4MgGVgnqHUMlUn"
+                  },
+                  "signature": {
+                    "type": "string",
+                    "example": "0xb23c456c9fbc23241ffc9e5052d156052b7c55b211822da32e6562e2ae1600647113ebac12fc78e8dfb4468b4f58f3d7aa9cc4eed9b92b1d083d5e8569f3ea401c"
+                  }
+                }
+              },
+              "examples": {
+                "auth": {
+                  "value": {
+                    "address": "0x61197c6800f990454903290736aFe5D4fc7a2DD1",
+                    "nonce": "7hjN8N4MgGVgnqHUMlUn",
+                    "signature": "0xb23c456c9fbc23241ffc9e5052d156052b7c55b211822da32e6562e2ae1600647113ebac12fc78e8dfb4468b4f58f3d7aa9cc4eed9b92b1d083d5e8569f3ea401c"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/get_token": {
       "get": {
-        "description": "Returns all plants from the system that the user has access to",
+        "tags": [
+          "Ermis user Copy"
+        ],
+        "summary": "get token",
+        "description": "get token",
+        "operationId": "getToken",
         "parameters": [
           {
-            "name": "limit",
+            "name": "api_key",
             "in": "query",
-            "description": "The maximum number of results to return",
             "schema": {
-              "type": "integer",
-              "format": "int32"
+              "type": "string",
+              "example": "RUlVvz2qFeq18oGdYARJo7xadxYxeFav"
+            }
+          },
+          {
+            "name": "address",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "example": "0xfd44c17aea0bbb4fd371cf21d569ec00a16b1172"
             }
           }
         ],
-        "responses": {
-          "200": {
-            "description": "Plant response",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "exampleProperty": {
+                    "type": "string",
+                    "example": "value"
+                  }
+                },
+                "required": [
+                  "exampleProperty"
+                ]
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": ""
+            }
+          }
+        }
+      },
+      "/users/batch": {
+        "post": {
+          "tags": [
+            "Ermis user Copy"
+          ],
+          "summary": "get user batch",
+          "description": "get user batch",
+          "operationId": "getUserBatch",
+          "requestBody": {
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Plant"
+                  "type": "object",
+                  "properties": {
+                    "users": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "example": "0x1e16149b8f6af2d238ecb6d8e51d9554c1ecfaac1:1e0c9a54-125e-4ebd-916d-977e7c302cb2:0:22f494b4-ca91-48e7-b41b-8ab568325ee4"
+                      },
+                      "example": [
+                        "0x1e16149b8f6af2d238ecb6d8e51d9554c1ecfaac1:1e0c9a54-125e-4ebd-916d-977e7c302cb2:0:22f494b4-ca91-48e7-b41b-8ab568325ee4"
+                      ]
+                    }
+                  }
+                },
+                "examples": {
+                  "get user batch": {
+                    "value": {
+                      "users": [
+                        "0x1e16149b8f6af2d238ecb6d8e51d9554c1ecfaac1:1e0c9a54-125e-4ebd-916d-977e7c302cb2:0:22f494b4-ca91-48e7-b41b-8ab568325ee4"
+                      ]
+                    }
                   }
                 }
               }
             }
           },
-          "400": {
-            "description": "Unexpected error",
+          "responses": {
+            "200": {
+              "description": ""
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ]
+        }
+      },
+      "/users/update": {
+        "patch": {
+          "tags": [
+            "Ermis user Copy"
+          ],
+          "summary": "Update user info",
+          "description": "Update user info",
+          "operationId": "updateUserInfo",
+          "requestBody": {
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "example": "hoangbim"
+                    }
+                  }
+                },
+                "examples": {
+                  "Update user info": {
+                    "value": {
+                      "name": "hoangbim"
+                    }
+                  }
                 }
               }
             }
-          }
+          },
+          "responses": {
+            "200": {
+              "description": ""
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ]
         }
       },
-      "post": {
-        "description": "Creates a new plant in the store",
-        "requestBody": {
-          "description": "Plant to add to the store",
-          "content": {
-            "application/json": {
+      "/users/upload": {
+        "post": {
+          "tags": [
+            "Ermis user Copy"
+          ],
+          "summary": "upload image",
+          "description": "upload image",
+          "operationId": "uploadImage",
+          "requestBody": {
+            "content": {
+              "multipart/form-data": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "images": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": ""
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ]
+        }
+      },
+      "/users/search": {
+        "post": {
+          "tags": [
+            "Ermis user Copy"
+          ],
+          "summary": "Search",
+          "description": "Search",
+          "operationId": "search",
+          "parameters": [
+            {
+              "name": "name",
+              "in": "query",
               "schema": {
-                "$ref": "#/components/schemas/NewPlant"
+                "type": "string",
+                "example": "ho"
+              }
+            },
+            {
+              "name": "limit",
+              "in": "query",
+              "schema": {
+                "type": "string",
+                "example": "100"
               }
             }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "plant response",
+          ],
+          "requestBody": {
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Plant"
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "example": "ho"
+                    }
+                  }
+                },
+                "examples": {
+                  "Search": {
+                    "value": {
+                      "name": "ho"
+                    }
+                  }
                 }
               }
             }
           },
-          "400": {
-            "description": "unexpected error",
+          "responses": {
+            "200": {
+              "description": ""
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ]
+        }
+      },
+      "/users": {
+        "get": {
+          "tags": [
+            "Ermis user Copy"
+          ],
+          "summary": "get user list",
+          "description": "get user list",
+          "operationId": "getUserList",
+          "responses": {
+            "200": {
+              "description": ""
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ]
+        }
+      },
+      "/users/clients": {
+        "post": {
+          "tags": [
+            "Ermis user Copy"
+          ],
+          "summary": "get_clients_by_chain_id",
+          "description": "get_clients_by_chain_id",
+          "operationId": "getClientsByChainId",
+          "requestBody": {
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "type": "object",
+                  "properties": {
+                    "chain_id": {
+                      "type": "string",
+                      "example": "0"
+                    }
+                  }
+                },
+                "examples": {
+                  "get_clients_by_chain_id": {
+                    "value": {
+                      "chain_id": "0"
+                    }
+                  }
                 }
               }
             }
-          }
+          },
+          "responses": {
+            "200": {
+              "description": ""
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ]
+        }
+      },
+      "/users/projects": {
+        "post": {
+          "tags": [
+            "Ermis user Copy"
+          ],
+          "summary": "get projects by client and chain id",
+          "description": "get projects by client and chain id",
+          "operationId": "getProjectsByClientAndChainId",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "chain_id": {
+                      "type": "string",
+                      "example": "0"
+                    },
+                    "client_id": {
+                      "type": "string",
+                      "example": "6fbdecb0-1ec8-4e32-99d7-ff2683e308b7"
+                    }
+                  }
+                },
+                "examples": {
+                  "get projects by client and chain id": {
+                    "value": {
+                      "chain_id": "0",
+                      "client_id": "6fbdecb0-1ec8-4e32-99d7-ff2683e308b7"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": ""
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ]
+        }
+      },
+      "/sse/connect": {
+        "get": {
+          "tags": [
+            "Ermis user Copy"
+          ],
+          "summary": "connect sse",
+          "description": "connect sse",
+          "operationId": "connectSse",
+          "responses": {
+            "200": {
+              "description": ""
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ]
         }
       }
     },
-    "/plants/{id}": {
-      "delete": {
-        "description": "Deletes a single plant based on the ID supplied",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of plant to delete",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Plant deleted",
-            "content": {}
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "components": {
-    "schemas": {
-      "Plant": {
-        "required": [
-          "name"
-        ],
-        "type": "object",
-        "properties": {
-          "name": {
-            "description": "The name of the plant",
-            "type": "string"
-          },
-          "tag": {
-            "description": "Tag to specify the type",
-            "type": "string"
-          }
-        }
-      },
-      "NewPlant": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Plant"
-          },
-          {
-            "required": [
-              "id"
-            ],
-            "type": "object",
-            "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
-              }
-            }
-          }
-        ]
-      },
-      "Error": {
-        "required": [
-          "error",
-          "message"
-        ],
-        "type": "object",
-        "properties": {
-          "error": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string"
-          }
+    "components": {
+      "securitySchemes": {
+        "bearerAuth": {
+          "type": "http",
+          "scheme": "bearer"
         }
       }
     },
-    "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer"
+    "tags": [
+      {
+        "name": "Ermis user Copy"
       }
-    }
+    ]
   }
 }

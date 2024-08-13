@@ -31,30 +31,18 @@
       "url": "api-reference"
     }
   ],
-  "anchors": [
-    {
-      "name": "Documentation",
-      "icon": "book-open-cover",
-      "url": "https://mintlify.com/docs"
-    },
-    {
-      "name": "Community",
-      "icon": "slack",
-      "url": "https://mintlify.com/community"
-    },
-    {
-      "name": "Blog",
-      "icon": "newspaper",
-      "url": "https://mintlify.com/blog"
-    }
-  ],
   "navigation": [
     {
-      "group": "Get Started",
+      "group": "Doc",
       "pages": [
         "introduction",
         "quickstart",
         "development"
+      ]
+    },{
+      "group": "web",
+      "pages": [
+        "web/doc"
       ]
     },
     {
@@ -75,12 +63,20 @@
       ]
     },
     {
-      "group": "Endpoint Examples",
+      "group": "Ermis End User",
       "pages": [
-        "api-reference/endpoint/get",
-        "api-reference/endpoint/create",
-        "api-reference/endpoint/delete"
-      ]
+        "api-reference/ermis_end_user/auth_start",
+        "api-reference/ermis_end_user/auth",
+        "api-reference/ermis_end_user/get_token",
+        "api-reference/ermis_end_user/get_user_batch",
+        "api-reference/ermis_end_user/update_user_info",
+        "api-reference/ermis_end_user/upload_image",
+        "api-reference/ermis_end_user/search",
+        "api-reference/ermis_end_user/get_user_list",
+        "api-reference/ermis_end_user/get_clients_by_chain_id",
+        "api-reference/ermis_end_user/get_projects_by_client_and_chain_id",
+        "api-reference/ermis_end_user/connect_sse"
+      ] 
     }
   ],
   "footerSocials": {
