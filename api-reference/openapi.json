@@ -7,14 +7,14 @@
   },
   "servers": [
     {
-      "url": "https://api-dev.ermis.network/uss/v1"
+      "url": "https://api-dev.ermis.network"
     }
   ],
   "paths": {
-    "/wallets/auth/start": {
+    "/uss/v1/wallets/auth/start": {
       "post": {
         "tags": [
-          "Ermis user Copy"
+          "Ermis user"
         ],
         "summary": "Auth start",
         "description": "Auth start",
@@ -27,19 +27,14 @@
                 "properties": {
                   "address": {
                     "type": "string",
-                    "example": "0x1e16149b8f6af2d238ecb6d8e51d9554c1ecfaac1"
-                  },
-                  "chain_id": {
-                    "type": "number",
-                    "example": 0
+                    "example": "0x61197c6800f990454903290736aFe5D4fc7a2DD1"
                   }
                 }
               },
               "examples": {
                 "auth_start": {
                   "value": {
-                    "address": "0x1e16149b8f6af2d238ecb6d8e51d9554c1ecfaac1",
-                    "chain_id": 0
+                    "address": "0x61197c6800f990454903290736aFe5D4fc7a2DD1"
                   }
                 }
               }
@@ -53,10 +48,10 @@
         }
       }
     },
-    "/wallets/auth": {
+    "/uss/v1/wallets/auth": {
       "post": {
         "tags": [
-          "Ermis user Copy"
+          "Ermis user"
         ],
         "summary": "Auth",
         "description": "Auth",
@@ -100,10 +95,10 @@
         }
       }
     },
-    "/get_token": {
+    "/uss/v1/get_token": {
       "get": {
         "tags": [
-          "Ermis user Copy"
+          "Ermis user"
         ],
         "summary": "Get token",
         "description": "Get token",
@@ -133,14 +128,24 @@
         }
       }
     },
-    "/users/batch": {
+    "/uss/v1/users/batch": {
       "post": {
         "tags": [
-          "Ermis user Copy"
+          "Ermis user"
         ],
         "summary": "Get user batch",
         "description": "Get user batch",
         "operationId": "getUserBatch",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "example": "ae3bfaa5-2d8a-49af-aad1-3f1457337d93"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -151,10 +156,10 @@
                     "type": "array",
                     "items": {
                       "type": "string",
-                      "example": "0x1e16149b8f6af2d238ecb6d8e51d9554c1ecfaac1:1e0c9a54-125e-4ebd-916d-977e7c302cb2:0:22f494b4-ca91-48e7-b41b-8ab568325ee4"
+                      "example": "0x1e16149b8f6af2d238ecb6d8e51d9554c1ecfaac1"
                     },
                     "example": [
-                      "0x1e16149b8f6af2d238ecb6d8e51d9554c1ecfaac1:1e0c9a54-125e-4ebd-916d-977e7c302cb2:0:22f494b4-ca91-48e7-b41b-8ab568325ee4"
+                      "0x1e16149b8f6af2d238ecb6d8e51d9554c1ecfaac1"
                     ]
                   }
                 }
@@ -163,7 +168,7 @@
                 "get user batch": {
                   "value": {
                     "users": [
-                      "0x1e16149b8f6af2d238ecb6d8e51d9554c1ecfaac1:1e0c9a54-125e-4ebd-916d-977e7c302cb2:0:22f494b4-ca91-48e7-b41b-8ab568325ee4"
+                      "0x1e16149b8f6af2d238ecb6d8e51d9554c1ecfaac1"
                     ]
                   }
                 }
@@ -183,10 +188,10 @@
         ]
       }
     },
-    "/users/update": {
+    "/uss/v1/users/update": {
       "patch": {
         "tags": [
-          "Ermis user Copy"
+          "Ermis user"
         ],
         "summary": "Update user info",
         "description": "Update user info",
@@ -217,22 +222,17 @@
           "200": {
             "description": ""
           }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
+        }
       }
     },
-    "/users/upload": {
+    "/uss/v1/users/upload": {
       "post": {
         "tags": [
-          "Ermis user Copy"
+          "Ermis user"
         ],
-        "summary": "Upload image",
-        "description": "Upload image",
-        "operationId": "uploadImage",
+        "summary": "Upload user image",
+        "description": "Upload user image",
+        "operationId": "uploadUserImage",
         "requestBody": {
           "content": {
             "multipart/form-data": {
@@ -260,10 +260,10 @@
         ]
       }
     },
-    "/users/search": {
+    "/uss/v1/users/search": {
       "post": {
         "tags": [
-          "Ermis user Copy"
+          "Ermis user"
         ],
         "summary": "Search",
         "description": "Search",
@@ -283,6 +283,14 @@
             "schema": {
               "type": "string",
               "example": "100"
+            }
+          },
+          {
+            "name": "project_id",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "example": "ae3bfaa5-2d8a-49af-aad1-3f1457337d93"
             }
           }
         ],
@@ -312,131 +320,1609 @@
           "200": {
             "description": ""
           }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
+        }
       }
     },
-    "/users": {
+    "/uss/v1/users": {
       "get": {
         "tags": [
-          "Ermis user Copy"
+          "Ermis user"
         ],
         "summary": "Get user list",
         "description": "Get user list",
         "operationId": "getUserList",
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "security": [
+        "parameters": [
           {
-            "bearerAuth": []
-          }
-        ]
-      }
-    },
-    "/users/clients": {
-      "post": {
-        "tags": [
-          "Ermis user Copy"
-        ],
-        "summary": "Get clients by chain id",
-        "description": "Get clients by chain id",
-        "operationId": "getClientsByChainId",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "chain_id": {
-                    "type": "string",
-                    "example": "0"
-                  }
-                }
-              },
-              "examples": {
-                "get_clients_by_chain_id": {
-                  "value": {
-                    "chain_id": "0"
-                  }
-                }
-              }
+            "name": "project_id",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "example": "ae3bfaa5-2d8a-49af-aad1-3f1457337d93"
             }
           }
-        },
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
-      }
-    },
-    "/users/projects": {
-      "post": {
-        "tags": [
-          "Ermis user Copy"
         ],
-        "summary": "Get projects by client and chain id",
-        "description": "Get projects by client and chain id",
-        "operationId": "getProjectsByClientAndChainId",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "chain_id": {
-                    "type": "string",
-                    "example": "0"
-                  },
-                  "client_id": {
-                    "type": "string",
-                    "example": "6fbdecb0-1ec8-4e32-99d7-ff2683e308b7"
-                  }
-                }
-              },
-              "examples": {
-                "get projects by client and chain id": {
-                  "value": {
-                    "chain_id": "0",
-                    "client_id": "6fbdecb0-1ec8-4e32-99d7-ff2683e308b7"
-                  }
-                }
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": ""
           }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
+        }
       }
     },
-    "/sse/connect": {
+    "/uss/v1/sse/subscribe": {
       "get": {
         "tags": [
-          "Ermis user Copy"
+          "Ermis user"
         ],
         "summary": "Connect sse",
         "description": "Connect sse",
         "operationId": "connectSse",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/uss/v1/users/chains": {
+      "get": {
+        "tags": [
+          "Ermis user"
+        ],
+        "summary": "Get chains",
+        "description": "Get chains",
+        "operationId": "getChains",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/uss/v1/users/join": {
+      "post": {
+        "tags": [
+          "Ermis user"
+        ],
+        "summary": "Join project",
+        "description": "Join project",
+        "operationId": "joinProject",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "project_id": {
+                    "type": "string",
+                    "example": "ec964975-ae84-4a8e-91a1-222ca3aeeef8"
+                  }
+                }
+              },
+              "examples": {
+                "Join project": {
+                  "value": {
+                    "project_id": "ec964975-ae84-4a8e-91a1-222ca3aeeef8"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/uss/v1/get_token/refresh": {
+      "post": {
+        "tags": [
+          "Ermis user"
+        ],
+        "summary": "Refresh token",
+        "description": "Refresh token",
+        "operationId": "refreshToken",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "refresh_token": {
+                    "type": "string",
+                    "example": "f0ihDEpQSFDyITK8xz3bDRjK"
+                  }
+                }
+              },
+              "examples": {
+                "Refresh token": {
+                  "value": {
+                    "refresh_token": "f0ihDEpQSFDyITK8xz3bDRjK"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/signal": {
+      "post": {
+        "tags": [
+          "Bellboy"
+        ],
+        "summary": "Signal",
+        "description": "Signal",
+        "operationId": "signal",
+        "parameters": [
+          {
+            "name": "connection_id",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "example": "ed2fbb18-64c0-482c-8c6e-0df7640dfc31"
+            }
+          },
+          {
+            "name": "content-encoding",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "example": "zstd"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "action": {
+                    "type": "string",
+                    "example": "video"
+                  },
+                  "cid": {
+                    "type": "string",
+                    "example": "team:vinh-thang-room"
+                  },
+                  "signal": {
+                    "type": "object",
+                    "properties": {
+                      "sdp": {
+                        "type": "string",
+                        "example": "v=0\r\no=- 3994965880134948223 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0 1 2\r\na=extmap-allow-mixed\r\na=msid-semantic: WMS 65ed3b1c-2abe-4f81-b116-45ea6361b682\r\nm=audio 49926 UDP/TLS/RTP/SAVPF 111 63 9 0 8 13 110 126\r\nc=IN IP4 118.70.175.239\r\na=rtcp:9 IN IP4 0.0.0.0\r\na=candidate:1804640433 1 udp 2122260223 192.168.1.171 49926 typ host generation 0 network-id 1 network-cost 10\r\na=candidate:358564393 1 tcp 1518280447 192.168.1.171 9 typ host tcptype active generation 0 network-id 1 network-cost 10\r\na=candidate:3302637967 1 udp 1686052607 118.70.175.239 49926 typ srflx raddr 192.168.1.171 rport 49926 generation 0 network-id 1 network-cost 10\r\na=ice-ufrag:TSWZ\r\na=ice-pwd:3QuqVW+DL+4rTlPwJcbnmDxD\r\na=fingerprint:sha-256 89:CC:B7:F5:62:05:6C:99:57:DC:12:02:48:52:46:6A:00:85:A6:FC:13:6C:10:FF:8F:0B:45:9E:DB:44:4A:E8\r\na=setup:actpass\r\na=mid:0\r\na=extmap:1 urn:ietf:params:rtp-hdrext:ssrc-audio-level\r\na=extmap:2 http://www.webrtc.org/experiments/rtp-hdrext/abs-send-time\r\na=extmap:3 http://www.ietf.org/id/draft-holmer-rmcat-transport-wide-cc-extensions-01\r\na=extmap:4 urn:ietf:params:rtp-hdrext:sdes:mid\r\na=sendrecv\r\na=msid:65ed3b1c-2abe-4f81-b116-45ea6361b682 8b47d2f0-2ace-4533-99bf-59f60950a87b\r\na=rtcp-mux\r\na=rtpmap:111 opus/48000/2\r\na=rtcp-fb:111 transport-cc\r\na=fmtp:111 minptime=10;useinbandfec=1\r\na=rtpmap:63 red/48000/2\r\na=fmtp:63 111/111\r\na=rtpmap:9 G722/8000\r\na=rtpmap:0 PCMU/8000\r\na=rtpmap:8 PCMA/8000\r\na=rtpmap:13 CN/8000\r\na=rtpmap:110 telephone-event/48000\r\na=rtpmap:126 telephone-event/8000\r\na=ssrc:3442797756 cname:4VIPKC5/kCNHAfQh\r\na=ssrc:3442797756 msid:65ed3b1c-2abe-4f81-b116-45ea6361b682 8b47d2f0-2ace-4533-99bf-59f60950a87b\r\nm=video 64343 UDP/TLS/RTP/SAVPF 96 97 102 103 104 105 106 107 108 109 127 125 39 40 45 46 98 99 100 101 112 113 116 117 118\r\nc=IN IP4 118.70.175.239\r\na=rtcp:9 IN IP4 0.0.0.0\r\na=candidate:1804640433 1 udp 2122260223 192.168.1.171 64343 typ host generation 0 network-id 1 network-cost 10\r\na=candidate:358564393 1 tcp 1518280447 192.168.1.171 9 typ host tcptype active generation 0 network-id 1 network-cost 10\r\na=candidate:3302637967 1 udp 1686052607 118.70.175.239 64343 typ srflx raddr 192.168.1.171 rport 64343 generation 0 network-id 1 network-cost 10\r\na=ice-ufrag:TSWZ\r\na=ice-pwd:3QuqVW+DL+4rTlPwJcbnmDxD\r\na=fingerprint:sha-256 89:CC:B7:F5:62:05:6C:99:57:DC:12:02:48:52:46:6A:00:85:A6:FC:13:6C:10:FF:8F:0B:45:9E:DB:44:4A:E8\r\na=setup:actpass\r\na=mid:1\r\na=extmap:14 urn:ietf:params:rtp-hdrext:toffset\r\na=extmap:2 http://www.webrtc.org/experiments/rtp-hdrext/abs-send-time\r\na=extmap:13 urn:3gpp:video-orientation\r\na=extmap:3 http://www.ietf.org/id/draft-holmer-rmcat-transport-wide-cc-extensions-01\r\na=extmap:5 http://www.webrtc.org/experiments/rtp-hdrext/playout-delay\r\na=extmap:6 http://www.webrtc.org/experiments/rtp-hdrext/video-content-type\r\na=extmap:7 http://www.webrtc.org/experiments/rtp-hdrext/video-timing\r\na=extmap:8 http://www.webrtc.org/experiments/rtp-hdrext/color-space\r\na=extmap:4 urn:ietf:params:rtp-hdrext:sdes:mid\r\na=extmap:10 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id\r\na=extmap:11 urn:ietf:params:rtp-hdrext:sdes:repaired-rtp-stream-id\r\na=sendrecv\r\na=msid:65ed3b1c-2abe-4f81-b116-45ea6361b682 7dd1f6d1-c368-4036-9686-8b813ff5e66d\r\na=rtcp-mux\r\na=rtcp-rsize\r\na=rtpmap:96 VP8/90000\r\na=rtcp-fb:96 goog-remb\r\na=rtcp-fb:96 transport-cc\r\na=rtcp-fb:96 ccm fir\r\na=rtcp-fb:96 nack\r\na=rtcp-fb:96 nack pli\r\na=rtpmap:97 rtx/90000\r\na=fmtp:97 apt=96\r\na=rtpmap:102 H264/90000\r\na=rtcp-fb:102 goog-remb\r\na=rtcp-fb:102 transport-cc\r\na=rtcp-fb:102 ccm fir\r\na=rtcp-fb:102 nack\r\na=rtcp-fb:102 nack pli\r\na=fmtp:102 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=42001f\r\na=rtpmap:103 rtx/90000\r\na=fmtp:103 apt=102\r\na=rtpmap:104 H264/90000\r\na=rtcp-fb:104 goog-remb\r\na=rtcp-fb:104 transport-cc\r\na=rtcp-fb:104 ccm fir\r\na=rtcp-fb:104 nack\r\na=rtcp-fb:104 nack pli\r\na=fmtp:104 level-asymmetry-allowed=1;packetization-mode=0;profile-level-id=42001f\r\na=rtpmap:105 rtx/90000\r\na=fmtp:105 apt=104\r\na=rtpmap:106 H264/90000\r\na=rtcp-fb:106 goog-remb\r\na=rtcp-fb:106 transport-cc\r\na=rtcp-fb:106 ccm fir\r\na=rtcp-fb:106 nack\r\na=rtcp-fb:106 nack pli\r\na=fmtp:106 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=42e01f\r\na=rtpmap:107 rtx/90000\r\na=fmtp:107 apt=106\r\na=rtpmap:108 H264/90000\r\na=rtcp-fb:108 goog-remb\r\na=rtcp-fb:108 transport-cc\r\na=rtcp-fb:108 ccm fir\r\na=rtcp-fb:108 nack\r\na=rtcp-fb:108 nack pli\r\na=fmtp:108 level-asymmetry-allowed=1;packetization-mode=0;profile-level-id=42e01f\r\na=rtpmap:109 rtx/90000\r\na=fmtp:109 apt=108\r\na=rtpmap:127 H264/90000\r\na=rtcp-fb:127 goog-remb\r\na=rtcp-fb:127 transport-cc\r\na=rtcp-fb:127 ccm fir\r\na=rtcp-fb:127 nack\r\na=rtcp-fb:127 nack pli\r\na=fmtp:127 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=4d001f\r\na=rtpmap:125 rtx/90000\r\na=fmtp:125 apt=127\r\na=rtpmap:39 H264/90000\r\na=rtcp-fb:39 goog-remb\r\na=rtcp-fb:39 transport-cc\r\na=rtcp-fb:39 ccm fir\r\na=rtcp-fb:39 nack\r\na=rtcp-fb:39 nack pli\r\na=fmtp:39 level-asymmetry-allowed=1;packetization-mode=0;profile-level-id=4d001f\r\na=rtpmap:40 rtx/90000\r\na=fmtp:40 apt=39\r\na=rtpmap:45 AV1/90000\r\na=rtcp-fb:45 goog-remb\r\na=rtcp-fb:45 transport-cc\r\na=rtcp-fb:45 ccm fir\r\na=rtcp-fb:45 nack\r\na=rtcp-fb:45 nack pli\r\na=fmtp:45 level-idx=5;profile=0;tier=0\r\na=rtpmap:46 rtx/90000\r\na=fmtp:46 apt=45\r\na=rtpmap:98 VP9/90000\r\na=rtcp-fb:98 goog-remb\r\na=rtcp-fb:98 transport-cc\r\na=rtcp-fb:98 ccm fir\r\na=rtcp-fb:98 nack\r\na=rtcp-fb:98 nack pli\r\na=fmtp:98 profile-id=0\r\na=rtpmap:99 rtx/90000\r\na=fmtp:99 apt=98\r\na=rtpmap:100 VP9/90000\r\na=rtcp-fb:100 goog-remb\r\na=rtcp-fb:100 transport-cc\r\na=rtcp-fb:100 ccm fir\r\na=rtcp-fb:100 nack\r\na=rtcp-fb:100 nack pli\r\na=fmtp:100 profile-id=2\r\na=rtpmap:101 rtx/90000\r\na=fmtp:101 apt=100\r\na=rtpmap:112 H264/90000\r\na=rtcp-fb:112 goog-remb\r\na=rtcp-fb:112 transport-cc\r\na=rtcp-fb:112 ccm fir\r\na=rtcp-fb:112 nack\r\na=rtcp-fb:112 nack pli\r\na=fmtp:112 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=64001f\r\na=rtpmap:113 rtx/90000\r\na=fmtp:113 apt=112\r\na=rtpmap:116 red/90000\r\na=rtpmap:117 rtx/90000\r\na=fmtp:117 apt=116\r\na=rtpmap:118 ulpfec/90000\r\na=ssrc-group:FID 818394749 1078010932\r\na=ssrc:818394749 cname:4VIPKC5/kCNHAfQh\r\na=ssrc:818394749 msid:65ed3b1c-2abe-4f81-b116-45ea6361b682 7dd1f6d1-c368-4036-9686-8b813ff5e66d\r\na=ssrc:1078010932 cname:4VIPKC5/kCNHAfQh\r\na=ssrc:1078010932 msid:65ed3b1c-2abe-4f81-b116-45ea6361b682 7dd1f6d1-c368-4036-9686-8b813ff5e66d\r\nm=application 49540 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 118.70.175.239\r\na=candidate:1804640433 1 udp 2122260223 192.168.1.171 49540 typ host generation 0 network-id 1 network-cost 10\r\na=candidate:358564393 1 tcp 1518280447 192.168.1.171 9 typ host tcptype active generation 0 network-id 1 network-cost 10\r\na=candidate:3302637967 1 udp 1686052607 118.70.175.239 49540 typ srflx raddr 192.168.1.171 rport 49540 generation 0 network-id 1 network-cost 10\r\na=ice-ufrag:TSWZ\r\na=ice-pwd:3QuqVW+DL+4rTlPwJcbnmDxD\r\na=fingerprint:sha-256 89:CC:B7:F5:62:05:6C:99:57:DC:12:02:48:52:46:6A:00:85:A6:FC:13:6C:10:FF:8F:0B:45:9E:DB:44:4A:E8\r\na=setup:actpass\r\na=mid:2\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n"
+                      },
+                      "type": {
+                        "type": "string",
+                        "example": "offer"
+                      }
+                    }
+                  },
+                  "type": {
+                    "type": "string",
+                    "example": "signal.video.call"
+                  }
+                }
+              },
+              "examples": {
+                "Signal": {
+                  "value": {
+                    "action": "video",
+                    "cid": "team:vinh-thang-room",
+                    "signal": {
+                      "sdp": "v=0\r\no=- 3994965880134948223 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0 1 2\r\na=extmap-allow-mixed\r\na=msid-semantic: WMS 65ed3b1c-2abe-4f81-b116-45ea6361b682\r\nm=audio 49926 UDP/TLS/RTP/SAVPF 111 63 9 0 8 13 110 126\r\nc=IN IP4 118.70.175.239\r\na=rtcp:9 IN IP4 0.0.0.0\r\na=candidate:1804640433 1 udp 2122260223 192.168.1.171 49926 typ host generation 0 network-id 1 network-cost 10\r\na=candidate:358564393 1 tcp 1518280447 192.168.1.171 9 typ host tcptype active generation 0 network-id 1 network-cost 10\r\na=candidate:3302637967 1 udp 1686052607 118.70.175.239 49926 typ srflx raddr 192.168.1.171 rport 49926 generation 0 network-id 1 network-cost 10\r\na=ice-ufrag:TSWZ\r\na=ice-pwd:3QuqVW+DL+4rTlPwJcbnmDxD\r\na=fingerprint:sha-256 89:CC:B7:F5:62:05:6C:99:57:DC:12:02:48:52:46:6A:00:85:A6:FC:13:6C:10:FF:8F:0B:45:9E:DB:44:4A:E8\r\na=setup:actpass\r\na=mid:0\r\na=extmap:1 urn:ietf:params:rtp-hdrext:ssrc-audio-level\r\na=extmap:2 http://www.webrtc.org/experiments/rtp-hdrext/abs-send-time\r\na=extmap:3 http://www.ietf.org/id/draft-holmer-rmcat-transport-wide-cc-extensions-01\r\na=extmap:4 urn:ietf:params:rtp-hdrext:sdes:mid\r\na=sendrecv\r\na=msid:65ed3b1c-2abe-4f81-b116-45ea6361b682 8b47d2f0-2ace-4533-99bf-59f60950a87b\r\na=rtcp-mux\r\na=rtpmap:111 opus/48000/2\r\na=rtcp-fb:111 transport-cc\r\na=fmtp:111 minptime=10;useinbandfec=1\r\na=rtpmap:63 red/48000/2\r\na=fmtp:63 111/111\r\na=rtpmap:9 G722/8000\r\na=rtpmap:0 PCMU/8000\r\na=rtpmap:8 PCMA/8000\r\na=rtpmap:13 CN/8000\r\na=rtpmap:110 telephone-event/48000\r\na=rtpmap:126 telephone-event/8000\r\na=ssrc:3442797756 cname:4VIPKC5/kCNHAfQh\r\na=ssrc:3442797756 msid:65ed3b1c-2abe-4f81-b116-45ea6361b682 8b47d2f0-2ace-4533-99bf-59f60950a87b\r\nm=video 64343 UDP/TLS/RTP/SAVPF 96 97 102 103 104 105 106 107 108 109 127 125 39 40 45 46 98 99 100 101 112 113 116 117 118\r\nc=IN IP4 118.70.175.239\r\na=rtcp:9 IN IP4 0.0.0.0\r\na=candidate:1804640433 1 udp 2122260223 192.168.1.171 64343 typ host generation 0 network-id 1 network-cost 10\r\na=candidate:358564393 1 tcp 1518280447 192.168.1.171 9 typ host tcptype active generation 0 network-id 1 network-cost 10\r\na=candidate:3302637967 1 udp 1686052607 118.70.175.239 64343 typ srflx raddr 192.168.1.171 rport 64343 generation 0 network-id 1 network-cost 10\r\na=ice-ufrag:TSWZ\r\na=ice-pwd:3QuqVW+DL+4rTlPwJcbnmDxD\r\na=fingerprint:sha-256 89:CC:B7:F5:62:05:6C:99:57:DC:12:02:48:52:46:6A:00:85:A6:FC:13:6C:10:FF:8F:0B:45:9E:DB:44:4A:E8\r\na=setup:actpass\r\na=mid:1\r\na=extmap:14 urn:ietf:params:rtp-hdrext:toffset\r\na=extmap:2 http://www.webrtc.org/experiments/rtp-hdrext/abs-send-time\r\na=extmap:13 urn:3gpp:video-orientation\r\na=extmap:3 http://www.ietf.org/id/draft-holmer-rmcat-transport-wide-cc-extensions-01\r\na=extmap:5 http://www.webrtc.org/experiments/rtp-hdrext/playout-delay\r\na=extmap:6 http://www.webrtc.org/experiments/rtp-hdrext/video-content-type\r\na=extmap:7 http://www.webrtc.org/experiments/rtp-hdrext/video-timing\r\na=extmap:8 http://www.webrtc.org/experiments/rtp-hdrext/color-space\r\na=extmap:4 urn:ietf:params:rtp-hdrext:sdes:mid\r\na=extmap:10 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id\r\na=extmap:11 urn:ietf:params:rtp-hdrext:sdes:repaired-rtp-stream-id\r\na=sendrecv\r\na=msid:65ed3b1c-2abe-4f81-b116-45ea6361b682 7dd1f6d1-c368-4036-9686-8b813ff5e66d\r\na=rtcp-mux\r\na=rtcp-rsize\r\na=rtpmap:96 VP8/90000\r\na=rtcp-fb:96 goog-remb\r\na=rtcp-fb:96 transport-cc\r\na=rtcp-fb:96 ccm fir\r\na=rtcp-fb:96 nack\r\na=rtcp-fb:96 nack pli\r\na=rtpmap:97 rtx/90000\r\na=fmtp:97 apt=96\r\na=rtpmap:102 H264/90000\r\na=rtcp-fb:102 goog-remb\r\na=rtcp-fb:102 transport-cc\r\na=rtcp-fb:102 ccm fir\r\na=rtcp-fb:102 nack\r\na=rtcp-fb:102 nack pli\r\na=fmtp:102 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=42001f\r\na=rtpmap:103 rtx/90000\r\na=fmtp:103 apt=102\r\na=rtpmap:104 H264/90000\r\na=rtcp-fb:104 goog-remb\r\na=rtcp-fb:104 transport-cc\r\na=rtcp-fb:104 ccm fir\r\na=rtcp-fb:104 nack\r\na=rtcp-fb:104 nack pli\r\na=fmtp:104 level-asymmetry-allowed=1;packetization-mode=0;profile-level-id=42001f\r\na=rtpmap:105 rtx/90000\r\na=fmtp:105 apt=104\r\na=rtpmap:106 H264/90000\r\na=rtcp-fb:106 goog-remb\r\na=rtcp-fb:106 transport-cc\r\na=rtcp-fb:106 ccm fir\r\na=rtcp-fb:106 nack\r\na=rtcp-fb:106 nack pli\r\na=fmtp:106 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=42e01f\r\na=rtpmap:107 rtx/90000\r\na=fmtp:107 apt=106\r\na=rtpmap:108 H264/90000\r\na=rtcp-fb:108 goog-remb\r\na=rtcp-fb:108 transport-cc\r\na=rtcp-fb:108 ccm fir\r\na=rtcp-fb:108 nack\r\na=rtcp-fb:108 nack pli\r\na=fmtp:108 level-asymmetry-allowed=1;packetization-mode=0;profile-level-id=42e01f\r\na=rtpmap:109 rtx/90000\r\na=fmtp:109 apt=108\r\na=rtpmap:127 H264/90000\r\na=rtcp-fb:127 goog-remb\r\na=rtcp-fb:127 transport-cc\r\na=rtcp-fb:127 ccm fir\r\na=rtcp-fb:127 nack\r\na=rtcp-fb:127 nack pli\r\na=fmtp:127 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=4d001f\r\na=rtpmap:125 rtx/90000\r\na=fmtp:125 apt=127\r\na=rtpmap:39 H264/90000\r\na=rtcp-fb:39 goog-remb\r\na=rtcp-fb:39 transport-cc\r\na=rtcp-fb:39 ccm fir\r\na=rtcp-fb:39 nack\r\na=rtcp-fb:39 nack pli\r\na=fmtp:39 level-asymmetry-allowed=1;packetization-mode=0;profile-level-id=4d001f\r\na=rtpmap:40 rtx/90000\r\na=fmtp:40 apt=39\r\na=rtpmap:45 AV1/90000\r\na=rtcp-fb:45 goog-remb\r\na=rtcp-fb:45 transport-cc\r\na=rtcp-fb:45 ccm fir\r\na=rtcp-fb:45 nack\r\na=rtcp-fb:45 nack pli\r\na=fmtp:45 level-idx=5;profile=0;tier=0\r\na=rtpmap:46 rtx/90000\r\na=fmtp:46 apt=45\r\na=rtpmap:98 VP9/90000\r\na=rtcp-fb:98 goog-remb\r\na=rtcp-fb:98 transport-cc\r\na=rtcp-fb:98 ccm fir\r\na=rtcp-fb:98 nack\r\na=rtcp-fb:98 nack pli\r\na=fmtp:98 profile-id=0\r\na=rtpmap:99 rtx/90000\r\na=fmtp:99 apt=98\r\na=rtpmap:100 VP9/90000\r\na=rtcp-fb:100 goog-remb\r\na=rtcp-fb:100 transport-cc\r\na=rtcp-fb:100 ccm fir\r\na=rtcp-fb:100 nack\r\na=rtcp-fb:100 nack pli\r\na=fmtp:100 profile-id=2\r\na=rtpmap:101 rtx/90000\r\na=fmtp:101 apt=100\r\na=rtpmap:112 H264/90000\r\na=rtcp-fb:112 goog-remb\r\na=rtcp-fb:112 transport-cc\r\na=rtcp-fb:112 ccm fir\r\na=rtcp-fb:112 nack\r\na=rtcp-fb:112 nack pli\r\na=fmtp:112 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=64001f\r\na=rtpmap:113 rtx/90000\r\na=fmtp:113 apt=112\r\na=rtpmap:116 red/90000\r\na=rtpmap:117 rtx/90000\r\na=fmtp:117 apt=116\r\na=rtpmap:118 ulpfec/90000\r\na=ssrc-group:FID 818394749 1078010932\r\na=ssrc:818394749 cname:4VIPKC5/kCNHAfQh\r\na=ssrc:818394749 msid:65ed3b1c-2abe-4f81-b116-45ea6361b682 7dd1f6d1-c368-4036-9686-8b813ff5e66d\r\na=ssrc:1078010932 cname:4VIPKC5/kCNHAfQh\r\na=ssrc:1078010932 msid:65ed3b1c-2abe-4f81-b116-45ea6361b682 7dd1f6d1-c368-4036-9686-8b813ff5e66d\r\nm=application 49540 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 118.70.175.239\r\na=candidate:1804640433 1 udp 2122260223 192.168.1.171 49540 typ host generation 0 network-id 1 network-cost 10\r\na=candidate:358564393 1 tcp 1518280447 192.168.1.171 9 typ host tcptype active generation 0 network-id 1 network-cost 10\r\na=candidate:3302637967 1 udp 1686052607 118.70.175.239 49540 typ srflx raddr 192.168.1.171 rport 49540 generation 0 network-id 1 network-cost 10\r\na=ice-ufrag:TSWZ\r\na=ice-pwd:3QuqVW+DL+4rTlPwJcbnmDxD\r\na=fingerprint:sha-256 89:CC:B7:F5:62:05:6C:99:57:DC:12:02:48:52:46:6A:00:85:A6:FC:13:6C:10:FF:8F:0B:45:9E:DB:44:4A:E8\r\na=setup:actpass\r\na=mid:2\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n",
+                      "type": "offer"
+                    },
+                    "type": "signal.video.call"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/channels/{type}/{channel_id}/file": {
+      "post": {
+        "tags": [
+          "Bellboy"
+        ],
+        "summary": "Upload",
+        "description": "Upload",
+        "operationId": "upload",
+        "parameters": [
+          {
+            "name": "content-encoding",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "example": "zstd"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "type",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "team"
+          }
+        },
+        {
+          "name": "channel_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "vinh-thang-room"
+          }
+        }
+      ]
+    },
+    "/channels/{type}/{channel_id}/attachment": {
+      "post": {
+        "tags": [
+          "Bellboy"
+        ],
+        "summary": "Get Attachment",
+        "description": "Get Attachment",
+        "operationId": "getAttachment",
+        "parameters": [
+          {
+            "name": "content-encoding",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "example": "zstd"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "type",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "team"
+          }
+        },
+        {
+          "name": "channel_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "vinh-thang-room"
+          }
+        }
+      ]
+    },
+    "/channels/team/Hello/read": {
+      "post": {
+        "tags": [
+          "Bellboy"
+        ],
+        "summary": "Mark Read",
+        "description": "Mark Read",
+        "operationId": "markRead",
+        "parameters": [
+          {
+            "name": "content-encoding",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "example": "zstd"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/devices/add": {
+      "post": {
+        "tags": [
+          "Bellboy"
+        ],
+        "summary": "Add Device",
+        "description": "Add Device",
+        "operationId": "addDevice",
+        "parameters": [
+          {
+            "name": "stream-auth-type",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "example": "jwt"
+            }
+          },
+          {
+            "name": "x-stream-client",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "example": "stream-chat-android-ui-components-1.0.0|os=Android 14|api_version=34|device_vendor=samsung|device_model=SM-A536E|offline_enabled=true"
+            }
+          },
+          {
+            "name": "cache-control",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "example": "no-cache"
+            }
+          },
+          {
+            "name": "content-encoding",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "example": "zstd"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "example": "fr_5Kduo7k_nv4tXSDdmgU:APA91bHNYs7m0w8CUTyxUdkUQXiUfSGB1OtViR3tp5CHgAMSPGl2O5VzSsMrIhgXlHrNHGlDlyctPtcZssvaP4Vxs58wGjmJ757Ct_36-z9atC7UnOnzgFFLpu8eonxMpTUHNhFy9Vsz"
+                  },
+                  "push_provider": {
+                    "type": "string",
+                    "example": "firebase"
+                  }
+                }
+              },
+              "examples": {
+                "Add Device": {
+                  "value": {
+                    "id": "fr_5Kduo7k_nv4tXSDdmgU:APA91bHNYs7m0w8CUTyxUdkUQXiUfSGB1OtViR3tp5CHgAMSPGl2O5VzSsMrIhgXlHrNHGlDlyctPtcZssvaP4Vxs58wGjmJ757Ct_36-z9atC7UnOnzgFFLpu8eonxMpTUHNhFy9Vsz",
+                    "push_provider": "firebase"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/devices/delete": {
+      "post": {
+        "tags": [
+          "Bellboy"
+        ],
+        "summary": "Remove Device",
+        "description": "Remove Device",
+        "operationId": "removeDevice",
+        "parameters": [
+          {
+            "name": "stream-auth-type",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "example": "jwt"
+            }
+          },
+          {
+            "name": "x-stream-client",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "example": "stream-chat-android-ui-components-1.0.0|os=Android 14|api_version=34|device_vendor=samsung|device_model=SM-A536E|offline_enabled=true"
+            }
+          },
+          {
+            "name": "cache-control",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "example": "no-cache"
+            }
+          },
+          {
+            "name": "content-encoding",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "example": "zstd"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "example": "fr_5Kduo7k_nv4tXSDdmgU:APA91bHNYs7m0w8CUTyxUdkUQXiUfSGB1OtViR3tp5CHgAMSPGl2O5VzSsMrIhgXlHrNHGlDlyctPtcZssvaP4Vxs58wGjmJ757Ct_36-z9atC7UnOnzgFFLpu8eonxMpTUHNhFy9Vsz"
+                  }
+                }
+              },
+              "examples": {
+                "Remove Device": {
+                  "value": {
+                    "id": "fr_5Kduo7k_nv4tXSDdmgU:APA91bHNYs7m0w8CUTyxUdkUQXiUfSGB1OtViR3tp5CHgAMSPGl2O5VzSsMrIhgXlHrNHGlDlyctPtcZssvaP4Vxs58wGjmJ757Ct_36-z9atC7UnOnzgFFLpu8eonxMpTUHNhFy9Vsz"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/channels/{type}/{channel_id}/event": {
+      "post": {
+        "tags": [
+          "Bellboy"
+        ],
+        "summary": "Send Event",
+        "description": "Send Event",
+        "operationId": "sendEvent",
+        "parameters": [
+          {
+            "name": "content-encoding",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "example": "zstd"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "event": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "example": "typing.stop"
+                      }
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "Send Event": {
+                  "value": {
+                    "event": {
+                      "type": "typing.stop"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "type",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "messaging"
+          }
+        },
+        {
+          "name": "channel_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "!members-f27068eeb5bb0415f2ccf51b20c51680"
+          }
+        }
+      ]
+    },
+    "/messages/{type}/{channel_id}/{message_id}/reaction/{reaction_type}": {
+      "post": {
+        "tags": [
+          "Bellboy"
+        ],
+        "summary": "Send Reaction",
+        "description": "Send Reaction",
+        "operationId": "sendReaction",
+        "parameters": [
+          {
+            "name": "content-encoding",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "example": "zstd"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Bellboy"
+        ],
+        "summary": "Delete Reaction",
+        "description": "Delete Reaction",
+        "operationId": "deleteReaction",
+        "parameters": [
+          {
+            "name": "content-encoding",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "example": "zstd"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "type",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "team"
+          }
+        },
+        {
+          "name": "channel_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "vinhtc-test-channel"
+          }
+        },
+        {
+          "name": "message_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "0x360a45f70de193090a1b13da8393a02f9119aecd-1717387949"
+          }
+        },
+        {
+          "name": "reaction_type",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "haha"
+          }
+        }
+      ]
+    },
+    "/messages/{type}/{channel_id}/{message_id}": {
+      "post": {
+        "tags": [
+          "Bellboy"
+        ],
+        "summary": "Update Message",
+        "description": "Update Message",
+        "operationId": "updateMessage",
+        "parameters": [
+          {
+            "name": "content-encoding",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "example": "zstd"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "example": "wtf message"
+                  }
+                }
+              },
+              "examples": {
+                "Update Message": {
+                  "value": {
+                    "text": "wtf message"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Bellboy"
+        ],
+        "summary": "Delete Message",
+        "description": "Delete Message",
+        "operationId": "deleteMessage",
+        "parameters": [
+          {
+            "name": "content-encoding",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "example": "zstd"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "type",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "team"
+          }
+        },
+        {
+          "name": "channel_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "vinh-thang-room"
+          }
+        },
+        {
+          "name": "message_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "818a8768-92d9-483e-9294-c7f530fc9cb8"
+          }
+        }
+      ]
+    },
+    "/channels/{type}/{channel_id}/message": {
+      "post": {
+        "tags": [
+          "Bellboy"
+        ],
+        "summary": "Send Message",
+        "description": "Send Message",
+        "operationId": "sendMessage",
+        "parameters": [
+          {
+            "name": "content-encoding",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "example": "zstd"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "object",
+                    "properties": {
+                      "attachments": {
+                        "type": "array",
+                        "items": {},
+                        "example": []
+                      },
+                      "id": {
+                        "type": "string",
+                        "example": "{{$guid}}"
+                      },
+                      "mentioned_users": {
+                        "type": "array",
+                        "items": {},
+                        "example": []
+                      },
+                      "text": {
+                        "type": "string",
+                        "example": "{{$randomWords}}"
+                      }
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "Send Message": {
+                  "value": {
+                    "message": {
+                      "attachments": [],
+                      "id": "{{$guid}}",
+                      "mentioned_users": [],
+                      "text": "{{$randomWords}}"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "type",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "team"
+          }
+        },
+        {
+          "name": "channel_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room"
+          }
+        }
+      ]
+    },
+    "/channels/{type}/{channel_id}": {
+      "post": {
+        "tags": [
+          "Bellboy"
+        ],
+        "summary": "Update Channel",
+        "description": "Update Channel",
+        "operationId": "updateChannel",
+        "parameters": [
+          {
+            "name": "content-encoding",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "example": "zstd"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "remove_capabilities": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "example": "delete-own-message"
+                    },
+                    "example": [
+                      "delete-own-message"
+                    ]
+                  }
+                }
+              },
+              "examples": {
+                "Add Channel Member Capa": {
+                  "value": {
+                    "add_capabilities": [
+                      "delete-own-message"
+                    ]
+                  }
+                },
+                "Add Member Capa": {
+                  "value": {
+                    "add_capabilities": [
+                      "delete-own-message"
+                    ],
+                    "user_id": "0x75c4ff25f1d81803675f687d52a4906855d61ad8"
+                  }
+                },
+                "Add Members": {
+                  "value": {
+                    "add_members": [
+                      "0x75c4ff25f1d81803675f687d52a4906855d61ad8"
+                    ]
+                  }
+                },
+                "Ban Members": {
+                  "value": {
+                    "ban_members": [
+                      "0x75c4ff25f1d81803675f687d52a4906855d61ad8"
+                    ]
+                  }
+                },
+                "Demote Members": {
+                  "value": {
+                    "demote_members": [
+                      "0x75c4ff25f1d81803675f687d52a4906855d61ad8"
+                    ]
+                  }
+                },
+                "Promote Members": {
+                  "value": {
+                    "promote_members": [
+                      "0x75c4ff25f1d81803675f687d52a4906855d61ad8"
+                    ]
+                  }
+                },
+                "Remove Channel Member Capa": {
+                  "value": {
+                    "remove_capabilities": [
+                      "delete-own-message"
+                    ]
+                  }
+                },
+                "Remove Member Capa": {
+                  "value": {
+                    "remove_capabilities": [
+                      "delete-own-message"
+                    ],
+                    "user_id": "0x75c4ff25f1d81803675f687d52a4906855d61ad8"
+                  }
+                },
+                "Remove Members": {
+                  "value": {
+                    "remove_members": [
+                      "0x75c4ff25f1d81803675f687d52a4906855d61ad8"
+                    ]
+                  }
+                },
+                "Unban Members": {
+                  "value": {
+                    "uban_members": [
+                      "0x75c4ff25f1d81803675f687d52a4906855d61ad8"
+                    ]
+                  }
+                },
+                "Update Channel": {
+                  "value": {
+                    "data": {
+                      "name": "membership6"
+                    },
+                    "message": {
+                      "text": "Channel name changed to membership6"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Bellboy"
+        ],
+        "summary": "Delete Channel",
+        "description": "Delete Channel",
+        "operationId": "deleteChannel",
+        "parameters": [
+          {
+            "name": "content-encoding",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "example": "zstd"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "type",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "team"
+          }
+        },
+        {
+          "name": "channel_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "vinh-thang-room"
+          }
+        }
+      ]
+    },
+    "/invites/{channel_type}/{channel_id}/{type}": {
+      "post": {
+        "tags": [
+          "Bellboy"
+        ],
+        "summary": "Invite Accept Reject",
+        "description": "Invite Accept Reject",
+        "operationId": "inviteAcceptReject",
+        "parameters": [
+          {
+            "name": "content-encoding",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "example": "zstd"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "channel_type",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "team"
+          }
+        },
+        {
+          "name": "channel_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room"
+          }
+        },
+        {
+          "name": "type",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "accept"
+          },
+          "description": "accept | reject"
+        }
+      ]
+    },
+    "/capabilities/{type}/{channel_id}/member": {
+      "post": {
+        "tags": [
+          "Bellboy"
+        ],
+        "summary": "Get Meber Capa",
+        "description": "Get Meber Capa",
+        "operationId": "getMeberCapa",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "members": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "example": "0x360a45f70de193090a1b13da8393a02f9119aecd"
+                    },
+                    "example": [
+                      "0x360a45f70de193090a1b13da8393a02f9119aecd",
+                      "0x75c4ff25f1d81803675f687d52a4906855d61ad8"
+                    ]
+                  }
+                }
+              },
+              "examples": {
+                "Get Meber Capa": {
+                  "value": {
+                    "members": [
+                      "0x360a45f70de193090a1b13da8393a02f9119aecd",
+                      "0x75c4ff25f1d81803675f687d52a4906855d61ad8"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "type",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "team"
+          }
+        },
+        {
+          "name": "channel_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room"
+          }
+        }
+      ]
+    },
+    "/capabilities/{type}/{channel_id}/channel": {
+      "post": {
+        "tags": [
+          "Bellboy"
+        ],
+        "summary": "Get Channel Meber Capa",
+        "description": "Get Channel Meber Capa",
+        "operationId": "getChannelMeberCapa",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "type",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "team"
+          }
+        },
+        {
+          "name": "channel_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room"
+          }
+        }
+      ]
+    },
+    "/channels/{type}/{channel_id}/query": {
+      "post": {
+        "tags": [
+          "Bellboy"
+        ],
+        "summary": "Query Channel",
+        "description": "Query Channel",
+        "operationId": "queryChannel",
+        "parameters": [
+          {
+            "name": "content-encoding",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "example": "zstd"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "members": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "example": "0x360a45f70de193090a1b13da8393a02f9119aecd"
+                        },
+                        "example": [
+                          "0x360a45f70de193090a1b13da8393a02f9119aecd",
+                          "0x75c4ff25f1d81803675f687d52a4906855d61ad8"
+                        ]
+                      },
+                      "name": {
+                        "type": "string",
+                        "example": "Vinh-Thang-Room"
+                      }
+                    }
+                  },
+                  "messages": {
+                    "type": "object",
+                    "properties": {
+                      "limit": {
+                        "type": "number",
+                        "example": 10
+                      },
+                      "offset": {
+                        "type": "number",
+                        "example": 0
+                      },
+                      "search_term": {
+                        "type": "string",
+                        "example": "white"
+                      }
+                    }
+                  },
+                  "presence": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "project_id": {
+                    "type": "string",
+                    "example": "b44937e4-c0d4-4a73-847c-3730a923ce83"
+                  },
+                  "state": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "watch": {
+                    "type": "boolean",
+                    "example": true
+                  }
+                }
+              },
+              "examples": {
+                "Query Channel": {
+                  "value": {
+                    "data": {
+                      "members": [
+                        "0x360a45f70de193090a1b13da8393a02f9119aecd",
+                        "0x75c4ff25f1d81803675f687d52a4906855d61ad8"
+                      ],
+                      "name": "Vinh-Thang-Room"
+                    },
+                    "messages": {
+                      "limit": 10,
+                      "offset": 0,
+                      "search_term": "white"
+                    },
+                    "presence": false,
+                    "project_id": "b44937e4-c0d4-4a73-847c-3730a923ce83",
+                    "state": true,
+                    "watch": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "type",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "team"
+          }
+        },
+        {
+          "name": "channel_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room"
+          }
+        }
+      ]
+    },
+    "/channels": {
+      "post": {
+        "tags": [
+          "Bellboy"
+        ],
+        "summary": "Get Channel",
+        "description": "Get Channel",
+        "operationId": "getChannel",
+        "parameters": [
+          {
+            "name": "content-encoding",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "example": "zstd"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "filter_conditions": {
+                    "type": "object",
+                    "properties": {
+                      "other_roles": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "example": "pending"
+                        },
+                        "example": [
+                          "pending"
+                        ]
+                      },
+                      "project_id": {
+                        "type": "string",
+                        "example": "b44937e4-c0d4-4a73-847c-3730a923ce83"
+                      },
+                      "roles": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "example": "owner"
+                        },
+                        "example": [
+                          "owner"
+                        ]
+                      },
+                      "type": {
+                        "type": "string",
+                        "example": "team"
+                      }
+                    }
+                  },
+                  "limit": {
+                    "type": "number",
+                    "example": 3
+                  },
+                  "message_limit": {
+                    "type": "number",
+                    "example": 25
+                  },
+                  "offset": {
+                    "type": "number",
+                    "example": 0
+                  },
+                  "presence": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "sort": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "direction": {
+                          "type": "number",
+                          "example": -1
+                        },
+                        "field": {
+                          "type": "string",
+                          "example": "last_message_at"
+                        }
+                      }
+                    },
+                    "example": [
+                      {
+                        "direction": -1,
+                        "field": "last_message_at"
+                      },
+                      {
+                        "direction": -1,
+                        "field": "updated_at"
+                      }
+                    ]
+                  },
+                  "state": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "watch": {
+                    "type": "boolean",
+                    "example": true
+                  }
+                }
+              },
+              "examples": {
+                "Get Channel": {
+                  "value": {
+                    "filter_conditions": {
+                      "other_roles": [
+                        "pending"
+                      ],
+                      "project_id": "b44937e4-c0d4-4a73-847c-3730a923ce83",
+                      "roles": [
+                        "owner"
+                      ],
+                      "type": "team"
+                    },
+                    "limit": 3,
+                    "message_limit": 25,
+                    "offset": 0,
+                    "presence": true,
+                    "sort": [
+                      {
+                        "direction": -1,
+                        "field": "last_message_at"
+                      },
+                      {
+                        "direction": -1,
+                        "field": "updated_at"
+                      }
+                    ],
+                    "state": true,
+                    "watch": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/contacts/list": {
+      "post": {
+        "tags": [
+          "Bellboy"
+        ],
+        "summary": "Get Contact",
+        "description": "Get Contact",
+        "operationId": "getContact",
+        "parameters": [
+          {
+            "name": "content-encoding",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "example": "zstd"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "project_id": {
+                    "type": "string",
+                    "example": "b44937e4-c0d4-4a73-847c-3730a923ce83"
+                  }
+                }
+              },
+              "examples": {
+                "Get Contact": {
+                  "value": {
+                    "project_id": "b44937e4-c0d4-4a73-847c-3730a923ce83"
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": ""
@@ -458,9 +1944,17 @@
       }
     }
   },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
   "tags": [
     {
-      "name": "Ermis user Copy"
+      "name": "Ermis user"
+    },
+    {
+      "name": "Bellboy"
     }
   ]
 }

@@ -15,16 +15,6 @@
       "to": "#07C983"
     }
   },
-  "topbarLinks": [
-    {
-      "name": "Support",
-      "url": "mailto:hi@mintlify.com"
-    }
-  ],
-  "topbarCtaButton": {
-    "name": "Dashboard",
-    "url": "https://dashboard.mintlify.com"
-  },
   "tabs": [
     {
       "name": "API Reference",
@@ -58,31 +48,46 @@
       ]
     },
     {
-      "group": "API Documentation",
+      "group": "Ermis user",
       "pages": [
-        "api-reference/introduction"
+        "api-reference/ermis-user/auth_start",
+        "api-reference/ermis-user/auth",
+        "api-reference/ermis-user/get-token",
+        "api-reference/ermis-user/get-user-batch",
+        "api-reference/ermis-user/update-user-info",
+        "api-reference/ermis-user/upload-user-image",
+        "api-reference/ermis-user/search",
+        "api-reference/ermis-user/get-user-list",
+        "api-reference/ermis-user/connect-sse",
+        "api-reference/ermis-user/get-chains",
+        "api-reference/ermis-user/join-project",
+        "api-reference/ermis-user/refresh-token"
       ]
     },
     {
-      "group": "Ermis End User",
+      "group": "Bellboy",
       "pages": [
-        "api-reference/ermis-user-copy/auth_start",
-        "api-reference/ermis-user-copy/auth",
-        "api-reference/ermis-user-copy/get-token",
-        "api-reference/ermis-user-copy/get-user-batch",
-        "api-reference/ermis-user-copy/update-user-info",
-        "api-reference/ermis-user-copy/upload-image",
-        "api-reference/ermis-user-copy/search",
-        "api-reference/ermis-user-copy/get-user-list",
-        "api-reference/ermis-user-copy/get_clients_by_chain_id",
-        "api-reference/ermis-user-copy/get-projects-by-client-and-chain-id",
-        "api-reference/ermis-user-copy/connect-sse"
-      ] 
+        "api-reference/bellboy/signal",
+        "api-reference/bellboy/upload",
+        "api-reference/bellboy/get-attachment",
+        "api-reference/bellboy/mark-read",
+        "api-reference/bellboy/add-device",
+        "api-reference/bellboy/remove-device",
+        "api-reference/bellboy/send-event",
+        "api-reference/bellboy/send-reaction",
+        "api-reference/bellboy/delete-reaction",
+        "api-reference/bellboy/update-message",
+        "api-reference/bellboy/delete-message",
+        "api-reference/bellboy/send-message",
+        "api-reference/bellboy/update-channel",
+        "api-reference/bellboy/delete-channel",
+        "api-reference/bellboy/invite-accept-reject",
+        "api-reference/bellboy/get-meber-capa",
+        "api-reference/bellboy/get-channel-meber-capa",
+        "api-reference/bellboy/query-channel",
+        "api-reference/bellboy/get-channel",
+        "api-reference/bellboy/get-contact"
+      ]
     }
-  ],
-  "footerSocials": {
-    "x": "https://x.com/mintlify",
-    "github": "https://github.com/mintlify",
-    "linkedin": "https://www.linkedin.com/company/mintsearch"
-  }
+  ]
 }
