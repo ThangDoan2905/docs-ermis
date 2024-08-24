@@ -1,0 +1,10 @@
+services:
+  docs-ermis:
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
+    image: registry.ermis.network/ermis/docs-ermis:v1.0.0
+    container_name: docs-ermis
+    ports:
+      - "3334:3334"
+    restart: always
