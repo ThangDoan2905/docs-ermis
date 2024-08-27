@@ -2,8 +2,8 @@
   "$schema": "https://mintlify.com/schema.json",
   "name": "Starter Kit",
   "logo": {
-    "dark": "/logo/Logo Ermis.svg",
-    "light": "/logo/Logo Ermis.svg"
+    "dark": "/logo/dark.svg",
+    "light": "/logo/light.svg"
   },
   "favicon": "/favicon.svg",
   "colors": {
@@ -32,9 +32,9 @@
       ]
     },
     {
-      "group": "web",
+      "group": "JavaScript",
       "pages": [
-        "web/doc"
+        "JavaScript/doc"
       ]
     },
     {
@@ -47,12 +47,6 @@
       "group": "android",
       "pages": [
         "android/doc"
-      ]
-    },
-    {
-      "group": "preview",
-      "pages": [
-        "as"
       ]
     },
     {
@@ -95,15 +89,16 @@
         "api-reference/bellboy/send-event",
         "api-reference/bellboy/send-reaction",
         "api-reference/bellboy/delete-reaction",
+        "api-reference/bellboy/send-message",
         "api-reference/bellboy/update-message",
         "api-reference/bellboy/delete-message",
-        "api-reference/bellboy/send-message",
-        "api-reference/bellboy/update-channel",
+        "api-reference/bellboy/update-channel-member-capa",
         "api-reference/bellboy/delete-channel",
-        "api-reference/bellboy/invite-accept-reject",
+        "api-reference/bellboy/invite-accept-|-reject",
         "api-reference/bellboy/get-meber-capa",
         "api-reference/bellboy/get-channel-meber-capa",
-        "api-reference/bellboy/query-channel",
+        "api-reference/bellboy/search-channel-messages",
+        "api-reference/bellboy/query-channel-detail",
         "api-reference/bellboy/get-channel",
         "api-reference/bellboy/get-contact"
       ]
