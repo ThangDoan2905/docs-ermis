@@ -94,7 +94,7 @@
         "api-reference/bellboy/delete-message",
         "api-reference/bellboy/update-channel-member-capa",
         "api-reference/bellboy/delete-channel",
-        "api-reference/bellboy/invite-accept-|-reject",
+        "api-reference/bellboy/invite-accept-reject",
         "api-reference/bellboy/get-meber-capa",
         "api-reference/bellboy/get-channel-meber-capa",
         "api-reference/bellboy/search-channel-messages",
