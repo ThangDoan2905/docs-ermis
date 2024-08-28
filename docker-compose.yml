@@ -6,5 +6,5 @@ services:
     image: registry.ermis.network/ermis/docs-ermis:v1.0.7
     container_name: docs-ermis
     ports:
-      - "3334:3334"
+      - "3333:3334"
     restart: always
