@@ -7,7 +7,13 @@
   },
   "servers": [
     {
-      "url": "https://api-dev.ermis.network"
+      "url": "https://{host}",
+      "variables": {
+        "host": {
+          "default": "example.com",
+          "description": "The API host"
+        }
+      }
     }
   ],
   "paths": {
