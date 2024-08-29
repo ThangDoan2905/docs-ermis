@@ -24,14 +24,6 @@
   "openapi": ["api-reference/openapi.json"],
   "navigation": [
     {
-      "group": "Doc",
-      "pages": [
-        "introduction",
-        "quickstart",
-        "development"
-      ]
-    },
-    {
       "group": "JavaScript",
       "pages": [
         "JavaScript/doc"
@@ -47,17 +39,6 @@
       "group": "android",
       "pages": [
         "android/doc"
-      ]
-    },
-    {
-      "group": "Essentials",
-      "pages": [
-        "essentials/markdown",
-        "essentials/code",
-        "essentials/images",
-        "essentials/settings",
-        "essentials/navigation",
-        "essentials/reusable-snippets"
       ]
     },
     {
