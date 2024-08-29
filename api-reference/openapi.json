@@ -480,7 +480,7 @@
                 "type": "object",
                 "example": {
                   "type": "signal.video.call",
-                  "cid": "team:b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room",
+                  "cid": "{{cid}}",
                   "action": "video",
                   "signal": {
                     "type": "offer",
@@ -570,7 +570,7 @@
               "type": "string"
             },
             "required": true,
-            "example": "team"
+            "example": "{{channel_type}}"
           },
           {
             "name": "channel_id",
@@ -579,7 +579,7 @@
               "type": "string"
             },
             "required": true,
-            "example": "b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room"
+            "example": "{{channel_id}}"
           }
         ],
         "responses": {
@@ -626,7 +626,7 @@
               "type": "string"
             },
             "required": true,
-            "example": "team"
+            "example": "{{channel_type}}"
           },
           {
             "name": "channel_id",
@@ -635,7 +635,7 @@
               "type": "string"
             },
             "required": true,
-            "example": "b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room"
+            "example": "{{channel_id}}"
           }
         ],
         "responses": {
@@ -690,7 +690,7 @@
               "type": "string"
             },
             "required": true,
-            "example": "team"
+            "example": "{{channel_type}}"
           },
           {
             "name": "channel_id",
@@ -699,7 +699,7 @@
               "type": "string"
             },
             "required": true,
-            "example": "b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room"
+            "example": "{{channel_id}}"
           }
         ],
         "responses": {
@@ -788,6 +788,111 @@
               "type": "string"
             },
             "example": "zstd"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/channels/{type}/{channel_id}/notification": {
+      "post": {
+        "tags": [
+          "Bellboy"
+        ],
+        "summary": "Update Notification",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "notification": true
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "example": "application/json"
+          },
+          {
+            "name": "stream-auth-type",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "example": "jwt"
+          },
+          {
+            "name": "X-Stream-Client",
+            "in": "header",
+            "schema": {
+              "type": "number"
+            },
+            "example": "stream-chat-android-ui-components-1.0.0|os=Android 14|api_version=34|device_vendor=samsung|device_model=SM-A536E|offline_enabled=true"
+          },
+          {
+            "name": "Cache-Control",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "example": "no-cache"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "example": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiMHgwM2ViZWE1ZjAxOGUxOGQyNTBmNzZlOGI5NDhmZThkYzJhYjZjYTI4IiwiZXhwIjoxNzE2NTM4NjUzMTAyfQ.-fsIdauVgypCKp7zTcwGWodnJrDmN1EwgZXwN2fKs9M"
+          },
+          {
+            "name": "Content-Encoding",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "example": "zstd"
+          },
+          {
+            "name": "type",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "example": "{{channel_type}}"
+          },
+          {
+            "name": "channel_id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "example": "{{channel_id}}"
           }
         ],
         "responses": {
@@ -932,7 +1037,7 @@
               "type": "string"
             },
             "required": true,
-            "example": "team"
+            "example": "{{channel_type}}"
           },
           {
             "name": "channel_id",
@@ -941,7 +1046,7 @@
               "type": "string"
             },
             "required": true,
-            "example": "b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room"
+            "example": "{{channel_id}}"
           }
         ],
         "responses": {
@@ -988,7 +1093,7 @@
               "type": "string"
             },
             "required": true,
-            "example": "team"
+            "example": "{{channel_type}}"
           },
           {
             "name": "channel_id",
@@ -997,7 +1102,7 @@
               "type": "string"
             },
             "required": true,
-            "example": "b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room"
+            "example": "{{channel_id}}"
           },
           {
             "name": "message_id",
@@ -1057,7 +1162,7 @@
               "type": "string"
             },
             "required": true,
-            "example": "team"
+            "example": "{{channel_type}}"
           },
           {
             "name": "channel_id",
@@ -1066,7 +1171,7 @@
               "type": "string"
             },
             "required": true,
-            "example": "b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room"
+            "example": "{{channel_id}}"
           },
           {
             "name": "message_id",
@@ -1138,7 +1243,7 @@
               "type": "string"
             },
             "required": true,
-            "example": "team"
+            "example": "{{channel_type}}"
           },
           {
             "name": "channel_id",
@@ -1147,7 +1252,7 @@
               "type": "string"
             },
             "required": true,
-            "example": "b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room"
+            "example": "{{channel_id}}"
           }
         ],
         "responses": {
@@ -1203,7 +1308,7 @@
               "type": "string"
             },
             "required": true,
-            "example": "team"
+            "example": "{{channel_type}}"
           },
           {
             "name": "channel_id",
@@ -1212,7 +1317,7 @@
               "type": "string"
             },
             "required": true,
-            "example": "b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room"
+            "example": "{{channel_id}}"
           },
           {
             "name": "message_id",
@@ -1263,7 +1368,7 @@
               "type": "string"
             },
             "required": true,
-            "example": "team"
+            "example": "{{channel_type}}"
           },
           {
             "name": "channel_id",
@@ -1272,7 +1377,7 @@
               "type": "string"
             },
             "required": true,
-            "example": "b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room"
+            "example": "{{channel_id}}"
           },
           {
             "name": "message_id",
@@ -1325,7 +1430,7 @@
               "type": "string"
             },
             "required": true,
-            "example": "team"
+            "example": "{{channel_type}}"
           },
           {
             "name": "channel_id",
@@ -1334,7 +1439,7 @@
               "type": "string"
             },
             "required": true,
-            "example": "b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room"
+            "example": "{{channel_id}}"
           }
         ],
         "responses": {
@@ -1385,7 +1490,7 @@
               "type": "string"
             },
             "required": true,
-            "example": "team"
+            "example": "{{channel_type}}"
           },
           {
             "name": "channel_id",
@@ -1394,7 +1499,7 @@
               "type": "string"
             },
             "required": true,
-            "example": "b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room"
+            "example": "{{channel_id}}"
           }
         ],
         "responses": {
@@ -1441,7 +1546,7 @@
               "type": "string"
             },
             "required": true,
-            "example": "team"
+            "example": "{{channel_type}}"
           },
           {
             "name": "channel_id",
@@ -1450,7 +1555,7 @@
               "type": "string"
             },
             "required": true,
-            "example": "b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room"
+            "example": "{{channel_id}}"
           },
           {
             "name": "type",
@@ -1511,7 +1616,7 @@
               "type": "string"
             },
             "required": true,
-            "example": "team"
+            "example": "{{channel_type}}"
           },
           {
             "name": "channel_id",
@@ -1520,7 +1625,7 @@
               "type": "string"
             },
             "required": true,
-            "example": "b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room"
+            "example": "{{channel_id}}"
           }
         ],
         "responses": {
@@ -1559,7 +1664,7 @@
               "type": "string"
             },
             "required": true,
-            "example": "team"
+            "example": "{{channel_type}}"
           },
           {
             "name": "channel_id",
@@ -1568,7 +1673,7 @@
               "type": "string"
             },
             "required": true,
-            "example": "b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room"
+            "example": "{{channel_id}}"
           }
         ],
         "responses": {
@@ -1597,7 +1702,7 @@
               "schema": {
                 "type": "object",
                 "example": {
-                  "cid": "team:b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room",
+                  "cid": "{{cid}}",
                   "search_term": "Analyst",
                   "limit": 25,
                   "offset": 0
@@ -1646,7 +1751,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "example": "{\n    \"data\": {// Use when create channel\n        \"name\": \"Vinh-Thang-Room\",\n        // \"image\": \"\",\n        // \"description\":\"Something\",\n        \"members\": [\n            \"0x360a45f70de193090a1b13da8393a02f9119aecd\",\n            \"0x75c4ff25f1d81803675f687d52a4906855d61ad8\"\n        ]\n    },\n    \"project_id\": \"b44937e4-c0d4-4a73-847c-3730a923ce83\",\n    \"messages\": {\n        // \"id_lt\": \"6e4aa399-37fa-43eb-a994-9517266af148\",\n        // \"id_gt\": \"6e4aa399-37fa-43eb-a994-9517266af148\",\n        // \"id_around\": \"6e4aa399-37fa-43eb-a994-9517266af148\",\n        \"limit\": 25    \n    }\n}"
+                "example": "{\n    \"data\": {// Use when create channel\n        \"name\": \"Vinh-Thang-Room\",\n        // \"image\": \"\",\n        // \"description\":\"Something\",\n        \"members\": [\n            \"0x360a45f70de193090a1b13da8393a02f9119aecd\",\n            \"0x75c4ff25f1d81803675f687d52a4906855d61ad8\"\n        ]\n    },\n    \"project_id\": \"{{project_id}}\",\n    \"messages\": {\n        // \"id_lt\": \"6e4aa399-37fa-43eb-a994-9517266af148\",\n        // \"id_gt\": \"6e4aa399-37fa-43eb-a994-9517266af148\",\n        // \"id_around\": \"6e4aa399-37fa-43eb-a994-9517266af148\",\n        \"limit\": 25    \n    }\n}"
               }
             }
           }
@@ -1709,7 +1814,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "example": "{\n    \"filter_conditions\": {\n        \"type\": [\"general\", \"team\"],\n        // \"limit\": 3,\n        // \"offset\": 0,\n        \"roles\": [\"owner\"],\n        // \"other_roles\": [\"pending\"],\n        \"project_id\": \"b44937e4-c0d4-4a73-847c-3730a923ce83\" \n    },\n    \"sort\": [\n        {\n            \"field\": \"last_message_at\",\n            \"direction\": -1\n        }\n    ],\n    \"message_limit\": 25\n}"
+                "example": "{\n    \"filter_conditions\": {\n        // \"type\": [\"general\", \"team\"],\n        // \"limit\": 3,\n        // \"offset\": 0,\n        // \"roles\": [\"owner\"],\n        // \"other_roles\": [\"pending\"],\n        \"project_id\": \"{{project_id}}\" \n    },\n    \"sort\": [\n        {\n            \"field\": \"last_message_at\",\n            \"direction\": -1\n        }\n    ],\n    \"message_limit\": 25\n}"
               }
             }
           }
@@ -1755,7 +1860,7 @@
               "schema": {
                 "type": "object",
                 "example": {
-                  "project_id": "b44937e4-c0d4-4a73-847c-3730a923ce83"
+                  "project_id": "{{project_id}}"
                 }
               }
             }

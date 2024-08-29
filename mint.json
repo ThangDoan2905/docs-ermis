@@ -7,12 +7,12 @@
   },
   "favicon": "/favicon.svg",
   "colors": {
-    "primary": "#0D9373",
-    "light": "#07C983",
-    "dark": "#0D9373",
+    "primary": "#2727B0",
+    "light": "#298AD4",
+    "dark": "#2727B0",
     "anchors": {
-      "from": "#0D9373",
-      "to": "#07C983"
+      "from": "#2727B0",
+      "to": "#298AD4"
     }
   },
   "tabs": [
@@ -44,7 +44,7 @@
     {
       "group": "Ermis user",
       "pages": [
-        "api-reference/ermis-user/auth_start",
+        "api-reference/ermis-user/auth-start",
         "api-reference/ermis-user/auth",
         "api-reference/ermis-user/get-token",
         "api-reference/ermis-user/get-user-batch",
@@ -66,6 +66,7 @@
         "api-reference/bellboy/get-attachment",
         "api-reference/bellboy/mark-read",
         "api-reference/bellboy/add-device",
+        "api-reference/bellboy/update-notification",
         "api-reference/bellboy/remove-device",
         "api-reference/bellboy/send-event",
         "api-reference/bellboy/send-reaction",
@@ -75,7 +76,7 @@
         "api-reference/bellboy/delete-message",
         "api-reference/bellboy/update-channel-member-capa",
         "api-reference/bellboy/delete-channel",
-        "api-reference/bellboy/invite-accept-reject",
+        "api-reference/bellboy/invite-accept-|-reject",
         "api-reference/bellboy/get-meber-capa",
         "api-reference/bellboy/get-channel-meber-capa",
         "api-reference/bellboy/search-channel-messages",

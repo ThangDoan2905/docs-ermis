@@ -1,98 +1,71 @@
 ---
-title: 'Documentation for ios'
-description: 'Learn how to preview changes locally'
+title: Introduction
+description: 'Welcome to the home of your new documentation'
 ---
 
-<Info>
-  **Prerequisite** You should have installed Node.js (version 18.10.0 or
-  higher).
-</Info>
+<img
+  className="block dark:hidden"
+  src="/images/hero-light.svg"
+  alt="Hero Light"
+/>
+<img
+  className="hidden dark:block"
+  src="/images/hero-dark.svg"
+  alt="Hero Dark"
+/>
 
-Step 1. Install Mintlify on your OS:
+## Setting up
 
-<CodeGroup>
+The first step to world-class documentation is setting up your editing environments.
 
-```bash npm
-npm i -g mintlify
-```
+<CardGroup cols={2}>
+  <Card
+    title="Edit Your Docs"
+    icon="pen-to-square"
+    href="https://mintlify.com/docs/quickstart"
+  >
+    Get your docs set up locally for easy development
+  </Card>
+  <Card
+    title="Preview Changes"
+    icon="image"
+    href="https://mintlify.com/docs/development"
+  >
+    Preview your changes before you push to make sure they're perfect
+  </Card>
+</CardGroup>
 
-```bash yarn
-yarn global add mintlify
-```
+## Make it yours
 
-</CodeGroup>
+Update your docs to your brand and add valuable content for the best user conversion.
 
-Step 2. Go to the docs are located (where you can find `mint.json`) and run the following command:
-
-```bash
-mintlify dev
-```
-
-The documentation website is now available at `http://localhost:3000`.
-
-### Custom Ports
-
-Mintlify uses port 3000 by default. You can use the `--port` flag to customize the port Mintlify runs on. For example, use this command to run in port 3333:
-
-```bash
-mintlify dev --port 3333
-```
-
-You will see an error like this if you try to run Mintlify in a port that's already taken:
-
-```md
-Error: listen EADDRINUSE: address already in use :::3000
-```
-
-## Mintlify Versions
-
-Each CLI is linked to a specific version of Mintlify. Please update the CLI if your local website looks different than production.
-
-<CodeGroup>
-
-```bash npm
-npm i -g mintlify@latest
-```
-
-```bash yarn
-yarn global upgrade mintlify
-```
-
-</CodeGroup>
-
-## Deployment
-
-<Tip>
-  Unlimited editors available under the [Startup
-  Plan](https://mintlify.com/pricing)
-</Tip>
-
-You should see the following if the deploy successfully went through:
-
-<Frame>
-  <img src="/images/checks-passed.png" style={{ borderRadius: '0.5rem' }} />
-</Frame>
-
-## Troubleshooting
-
-Here's how to solve some common problems when working with the CLI.
-
-<AccordionGroup>
-  <Accordion title="Mintlify is not loading">
-    Update to Node v18. Run `mintlify install` and try again.
-  </Accordion>
-  <Accordion title="No such file or directory on Windows">
-Go to the `C:/Users/Username/.mintlify/` directory and remove the `mint`
-folder. Then Open the Git Bash in this location and run `git clone
-https://github.com/mintlify/mint.git`.
-
-Repeat step 3.
-
-  </Accordion>
-  <Accordion title="Getting an unknown error">
-    Try navigating to the root of your device and delete the ~/.mintlify folder.
-    Then run `mintlify dev` again.
-  </Accordion>
-</AccordionGroup>
-
-Curious about what changed in a CLI version? [Check out the CLI changelog.](/changelog/command-line)
+<CardGroup cols={2}>
+  <Card
+    title="Customize Style"
+    icon="palette"
+    href="https://mintlify.com/docs/settings/global"
+  >
+    Customize your docs to your company's colors and brands
+  </Card>
+  <Card
+    title="Reference APIs"
+    icon="code"
+    href="https://mintlify.com/docs/api-playground/openapi"
+  >
+    Automatically generate endpoints from an OpenAPI spec
+  </Card>
+  <Card
+    title="Add Components"
+    icon="screwdriver-wrench"
+    href="https://mintlify.com/docs/components/accordion"
+  >
+    Build interactive features and designs to guide your users
+  </Card>
+  <Card
+    title="Get Inspiration"
+    icon="stars"
+    href="https://mintlify.com/customers"
+  >
+    Check out our showcase of our favorite documentation
+  </Card>
+</CardGroup>
