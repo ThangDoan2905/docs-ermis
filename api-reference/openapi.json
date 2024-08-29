@@ -7,20 +7,20 @@
   },
   "servers": [
     {
-      "url": "https://{host}",
+      "url": "https://{https_host}",
       "variables": {
-        "host": {
-          "default": "example.com",
-          "description": "The API host"
+        "https_host": {
+          "default": "api-staging.ermis.network",
+          "description": "The HTTPs API host"
         }
       }
     },
     {
-      "url": "http://{host}",
+      "url": "http://{http_host}",
       "variables": {
-        "host": {
-          "default": "example.com",
-          "description": "The API host"
+        "http_host": {
+          "default": "127.0.0.1",
+          "description": "The HTTP API host"
         }
       }
     }
