@@ -14,6 +14,15 @@
           "description": "The API host"
         }
       }
+    },
+    {
+      "url": "http://{host}",
+      "variables": {
+        "host": {
+          "default": "example.com",
+          "description": "The API host"
+        }
+      }
     }
   ],
   "paths": {
