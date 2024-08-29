@@ -30,18 +30,6 @@
       ]
     },
     {
-      "group": "ios",
-      "pages": [
-        "ios/doc"
-      ]
-    },
-    {
-      "group": "android",
-      "pages": [
-        "android/doc"
-      ]
-    },
-    {
       "group": "Ermis user",
       "pages": [
         "api-reference/ermis-user/auth-start",
