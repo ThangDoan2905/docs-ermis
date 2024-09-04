@@ -1,71 +1,856 @@
 ---
-title: Introduction
-description: 'Welcome to the home of your new documentation'
+title: 'Chat SDK for IOS'
 ---
 
-<img
-  className="block dark:hidden"
-  src="/images/hero-light.svg"
-  alt="Hero Light"
-/>
-<img
-  className="hidden dark:block"
-  src="/images/hero-dark.svg"
-  alt="Hero Dark"
-/>
+## [Ermis](https://ermis.network) home page
 
-## Setting up
+[![Platform](https://img.shields.io/badge/platform-iOS-orange.svg)](https://cocoapods.org/pods/SendBirdUIKit) [![Languages](https://img.shields.io/badge/language-Swift-orange.svg)](https://github.com/sendbird/sendbird-uikit-ios) [![Swift Package Manager](https://img.shields.io/badge/SPM-compatible-green.svg)](https://github.com/sendbird/sendbird-uikit-ios-spm)
 
-The first step to world-class documentation is setting up your editing environments.
+## Table of contents
 
-<CardGroup cols={2}>
-  <Card
-    title="Edit Your Docs"
-    icon="pen-to-square"
-    href="https://mintlify.com/docs/quickstart"
-  >
-    Get your docs set up locally for easy development
-  </Card>
-  <Card
-    title="Preview Changes"
-    icon="image"
-    href="https://mintlify.com/docs/development"
-  >
-    Preview your changes before you push to make sure they're perfect
-  </Card>
-</CardGroup>
+1.  [Introduction](#introduction)
+1.  [Requirements](#requirements)
+1.  [Getting Started](#getting-started)
+1.  [Features](#features)
+1.  [Error codes](#error-codes)
 
-## Make it yours
+## Introduction
 
-Update your docs to your brand and add valuable content for the best user conversion.
+The ErmisChat SDK for iOS allows you to add real-time chat into your client app with minimal effort.
 
-<CardGroup cols={2}>
-  <Card
-    title="Customize Style"
-    icon="palette"
-    href="https://mintlify.com/docs/settings/global"
-  >
-    Customize your docs to your company's colors and brands
-  </Card>
-  <Card
-    title="Reference APIs"
-    icon="code"
-    href="https://mintlify.com/docs/api-playground/openapi"
-  >
-    Automatically generate endpoints from an OpenAPI spec
-  </Card>
-  <Card
-    title="Add Components"
-    icon="screwdriver-wrench"
-    href="https://mintlify.com/docs/components/accordion"
-  >
-    Build interactive features and designs to guide your users
-  </Card>
-  <Card
-    title="Get Inspiration"
-    icon="stars"
-    href="https://mintlify.com/customers"
-  >
-    Check out our showcase of our favorite documentation
-  </Card>
-</CardGroup>
+### Requirements
+
+The minimum requirements for Sendbird UIKit for iOS are:
+
+- iOS 14 or higher
+- Swift 5.0 or higher
+- Ermis Chat SDK for iOS 1.0.0 or higher
+
+<br /> 
+
+## Getting started
+
+This section shows you the prerequisites you need to check for using ErmisChat SDK for iOS. If you have any comments or questions regarding bugs and feature requests.
+
+<br />
+
+## Step-by-Step Guide:
+
+### Step 1: Generate API key and ProjectID
+
+Before installing ErmisChat SDK, you need to generate an **API key** and **ProjectID** on the [Ermis Dashboard](https://ermis.network). This **API key** and **ProjectID** will be required when initializing the Chat SDK.
+
+> **Note**: Ermis Dashboard will be available soon. Please contact our support team to create a client account and receive your API key. Contact support: [tony@ermis.network](mailto:tony@ermis.network)
+
+### Step 2: Install the Chat SDK
+
+You can add ErmisChat SDK to your project with Swift Package Manager.
+
+**Swift Package Manager**
+
+1. Open Xcode, go to your project's `General` settings tab, and select your project under `Project` in the left column.
+2. Go to the Swift packages tab and click the + button.
+3. When a pop-up shows, enter the package URL https://...
+4. Swift Package Manager automatically sets the dependency rule to "Up To Next Major" and installs the latest version.
+
+### Step 3: Install the WalletConnect
+
+To support Sign In with Wallet, ErmisChat needs to communicate with other Wallet applications. In our examplem, we use [Web3Modal](https://github.com/WalletConnect/web3modal) of `WalletConnect` to communicate with Wallet application.
+
+### Step 4: Integrate Login via Wallet
+
+When start app, you need to create `ErmisClient` instatance first.
+
+```swift
+import ErmisChat
+
+let config = ErmisClientConfig(apiKeyString: apiKey)
+let client = ErmisClient(config: config,
+                         token: token // If user isn't loggin -> send nil 
+                        )
+```
+
+#### 4.1: Create challenge
+
+First of all, you need to connect our App to Wallet application. 
+
+```swift
+Web3Modal.present(from: self)
+```
+
+After user connect their wallet, call `startAuth` to create challenge message.
+
+```swift
+let response = try await client.startAuth(with: address)
+let challengeMessage = response.challenge
+```
+**Note**: You should save `nonce` of `challenge`, we will need it in step 4.3.
+
+#### 4.2: Sign wallet
+
+After receiving the challenge message, you need to sign the wallet to get the signature. To do this, send `eth_sgnTypedData` request with parameters are wallet address and chalenge message.
+
+```swift
+let request = W3MJSONRPC.eth_signTypedData(
+    address: address,
+    message: response.challenge
+)
+
+try await Web3Modal.instance.request(request)
+```
+
+#### 4.3: Get authentication info
+
+After user sign, use `signature` from response to call `walletAuthenticate` function.
+This will return `AuthenticationPayload`. It contains `token`, and `refreshToken` which require to connect user.
+
+```swift
+client.walletAuthenticate(with: signature,
+                          address: address,
+                          nonce: nonce) // This is nonce value is get from challenge message from step 4.1
+```
+
+### Step 5: Connect user in SDK
+
+Once initialized, you must specify the current user with connectUser:
+
+```swift
+// The SDK auto handle refreshToken eachtime it expired.
+// But when the refreshToken also expired this closure will be call. 
+let onRefreshTokenExpired: (() -> Void)? = {
+    // You can handle yourself, like logout user ...
+}
+// This closure return eachtime token changed
+let onAuthenticationChanged: (AuthenticationPayload) -> Void = { authenticationPayload in
+    // Save new token
+}
+// This intance support refreshToken
+let refreshTokenHelper = ErmisRefreshTokenHelper(token: token,
+                                                 refreshToken: refreshToken,
+                                                 onAuthorizationChanged: onAuthenticationChanged,
+                                                 onRefreshTokenExpired: onRefreshTokenExpired)
+// Connect user
+client.connectUser(userInfo: userInfo,
+                    refreshTokenHelper: refreshTokenHelper,
+                    completion: completion)
+```
+
+To logout, call `logout` function in ```ErmisClient```
+
+```swift
+client.logout(completion: completion)
+```
+<br />
+
+### Step 6: Sending your first message
+
+Now that the Chat SDK has been imported, we're ready to start sending a message.
+Here are the steps to sending your first message using Chat SDK:
+
+#### 6.1 Query users
+
+Get users in your project to create channel:
+
+```swift
+    let userSearchController = client.userSearchController()
+    userSearchController.search(term: nil, completion: nil)
+```
+
+Then you can get users list in `ChatUserSearchControllerDelegate`:
+
+```swift
+protocol ChatUserSearchControllerDelegate {
+    func controller(
+        _ controller: ChatUserSearchController,
+        didChangeUsers changes: [ListChange<ChatUser>]
+    )
+}
+```
+
+> **Note**: To see all about query users, see: [User management](#user-management)
+
+#### 6.2 Create new channel
+
+Next step, we need to create new `ChatChannelController`. This object is a controller class which alows mutating and observing changes of a channel.
+We can create two type of channelController:
+
+1. Create channel controller for a `Conversation`
+
+```swift
+let channelController = try client.channelController(createDirectMessageChannelWith: [chatUser.id],
+                                                     name: nil,
+                                                     imageURL: nil,
+                                                     extraData: [:])
+                                            
+// Call synchronize to create conversation:
+
+channelController.synchronize { [weak self] error in
+    ...
+}
+```
+
+1. Create channel controller for a `Channel`:
+
+
+```swift
+let channelController = try client.channelController(
+    createChannelWithId: .init(type: .team,
+                               projectId: projectId, // The projectId, you can get from ErmisClient.
+                               id: String.randomId),
+    name: name, // Name of the channel
+    members: memberIds // List memberIds, the member will receive invited to join this channel.
+)
+
+// Call synchronize to create conversation:
+
+Call `synchronize` to create directChannel
+
+channelController.synchronize { [weak self] error in
+    ...
+}
+```
+
+### Send message
+
+```swift
+channelController.createNewMessage(text: "New message")
+
+// Call synchronize to create message on backend
+channelController.synchronize { [weak self] error in
+    ...
+}
+```
+
+<br />
+
+## Features
+
+1. [User management](#user-management)
+1. [Channel management](#channel-management)
+1. [Message management](#message-management)
+1. [Events](#events)
+
+### User management
+
+1. Get user with ids:
+
+```swift
+class ChatChannelController {
+    public func fetchUsers(with ids: [String],
+                           projectId: String,
+                           completion: @escaping (Result<[ChatUser], Error>) -> Void) {}
+}
+```
+
+**Parameters:**
+
+|  **Name**  |    **Type**   | **Required** | **Description**                                                                                          |
+|:----------:|:-------------:|:------------:|----------------------------------------------------------------------------------------------------------|
+|     ids    | `Array<String>` |     true     | A list of userId of user.                                                                                |
+| completion |    Closure    |     false    | A closure to be executed when the process is completed. Contains Result of  `ChatUser`  list or  `Error` |
+
+Or you can use `ChatUserSearchController`, then search with nil term. See [Search users](#search-users)
+
+```swift
+let userSearchController = client.userSearchController()
+userSearchController.search(term: nil, completion: nil)
+```
+
+Then you can get users list in `ChatUserSearchControllerDelegate`:
+
+```swift
+protocol ChatUserSearchControllerDelegate {
+    func controller(
+        _ controller: ChatUserSearchController,
+        didChangeUsers changes: [ListChange<ChatUser>]
+    )
+}
+```
+
+### Channel management
+
+#### 1. Query channels
+
+After create channel. User ChatChannelListController to get joined channel list or invited channel list.
+
+`ChatChannelListController` is object manage channel list.
+You can init it from `ErmisClient`, see following examples:
+
+1. Joined channel list
+
+```swift
+let channelListQuery: ChannelListQuery = .init(
+    filter: .joinedChannels(memberId: userId,
+                            projectId: projectId),
+    sort: [
+        .init(key: .lastMessageAt),
+        .init(key: .updatedAt)
+    ]
+)
+
+guard let channelListController = chat.channelListController(query: channelListQuery) else {
+    return
+}
+```
+
+2. Invited channel list
+
+```swift
+let invitedChannelListQuery = ChannelListQuery(filter: .invitedChannels(memberId: userId,
+                                                                        projectId: projectId),
+                                               sort: [.init(key: .createdAt,
+                                                      isAscending: true)]
+)
+
+guard let invitedChannelController = chat.invitedChannelListController(query: invitedChannelListQuery) else {
+    return
+}
+```
+
+After init, you need to call `synchronize` function to get all channels match your query:
+
+```swift
+controller.synchronize()
+```
+
+To handle when channels changed, set `delegate` of `ChatChannelListController` to your class, and make it conform to `ChatChannelControllerDelegate` protocol.
+
+#### 2. Create channel
+
+1. Create channel controller for a `Conversation`
+
+```swift
+let channelController = try client.channelController(createDirectMessageChannelWith: [chatUser.id],
+                                                     name: nil,
+                                                     imageURL: nil,
+                                                     extraData: [:])
+                                            
+// Call synchronize to create conversation:
+
+channelController.synchronize { [weak self] error in
+    ...
+}
+```
+
+2. Create channel controller for a `Channel`:
+
+
+```swift
+let channelController = try client.channelController(
+    createChannelWithId: .init(type: .team,
+                               projectId: projectId, // The projectId, you can get from ErmisClient.
+                               id: String.randomId),
+    name: name, // Name of the channel
+    members: memberIds // List memberIds, the member will receive invited to join this channel.
+)
+
+// Call synchronize to create conversation:
+
+Call `synchronize` to create directChannel
+
+channelController.synchronize { [weak self] error in
+    ...
+}
+```
+
+#### 3. Accept/Reject invite:
+
+To accept/reject an invitation, use `acceptInvite`/`rejectInvite` function in `ChatChannelController`
+
+```swift
+class ChatChannelController {
+    // Accept invite
+    func acceptInvite(completion: ((Error?) -> Void)? = nil) {}
+}
+```
+
+ **Parameters:**
+
+|  **Name**  |      **Type**     | **Required** | **Description**                       |
+|:----------:|:-----------------:|:------------:|---------------------------------------|
+| completion | (Error?) -> Void  |     false    | Called when the API call is finished. |
+
+
+```swift
+class ChatChannelController {
+    // Accept invite
+    func rejectInvite(completion: ((Error?) -> Void)? = nil) {}
+}
+```
+
+ **Parameters:**
+
+|  **Name**  |      **Type**     | **Required** | **Description**                       |
+|:----------:|:-----------------:|:------------:|---------------------------------------|
+| completion | (Error?) -> Void  |     false    | Called when the API call is finished. |
+
+#### 4. Query channel
+
+`ChatChannelController` is a controller class which allows mutating and observing changes of a specific chat channel.
+
+You can init channelController from `ErmisClient`
+
+```swift
+func channelController(
+    for cid: ChannelId,
+    channelListQuery: ChannelListQuery? = nil,
+    messageOrdering: MessageOrdering = .topToBottom
+)
+```
+**Parameters:**
+
+|     **Name**     |     **Type**     | **Required** | **Description**                                    |
+|:----------------:|:----------------:|:------------:|----------------------------------------------------|
+|        cid       |     ChannelId    |     true     | The id of the channel this controller represents.  |
+| channelListQuery | ChannelListQuery |     false    | The channel list query this controller is part of. |
+|  messageOrdering |  MessageOrdering |     false    | Describes the ordering the messages are presented. |
+
+#### 5. Setting a channel
+
+The channel settings feature allows users to customize channel attributes such as name, description, membership permissions, and notification settings to suit their communication needs.
+
+
+**5.1. Edit channel information (name, avatar, description)**
+
+You can edit name, avatar, description of channel by function `updateChannel`
+
+```swift
+channelController.updateChannel(name: updatedName,
+                                description: updatedDescription,
+                                imageURL: updatedAvatarUrl) { [weak self] error in
+    ...                           
+}
+```
+**Parameters:**
+
+|   **Name**  | **Type** | **Required** | **Description**                                                                       |
+|:-----------:|:--------:|:------------:|---------------------------------------------------------------------------------------|
+|     name    |  String  |     false    | The updated name of channel, if name doesn't changed, just send  `nil`.               |
+| description |  String  |     false    | The updated description of channel, if description doesn't changed, just send  `nil`. |
+|   imageUrl  |  String  |     false    | The updated avatar url of channel, if avatar dessn't changed, just send   `nil`.      |
+
+**Note**: To upload avatar, see [Upload file](#2-upload-file)
+
+**5.2. Adding & Removing Channel Members**
+
+Add or remove members:
+
+```swift
+// Add members
+channelController.addMembers(userIds: [member.userId]) { [weak self] error in
+    ...
+}
+// Remove members
+channelController.removeMembers(userIds: [member.userId]) { [weak self] error in
+    ...
+}
+```
+**Parameters:**
+
+| **Name** | **Type** | **Required** | **Description**          |
+|:--------:|:--------:|:------------:|--------------------------|
+|  userIds | [String] |     true     | Set of member id to add. |
+
+To get list of suggestion members, use `ChatChannelMemberListController`
+
+```swift
+
+let channelMemberQuery = ChannelMemberListQuery(
+    cid: cid,
+    filter: .autocomplete(.name, text: term),
+    sort: [.init(key: .name, isAscending: true)]
+)
+
+client.memberListController(query: channelMemberQuery)
+```
+**Parameters:**
+
+| **Name** |  **Type** | **Required** | **Description**                 |
+|:--------:|:---------:|:------------:|---------------------------------|
+|    cid   | ChannelId |     true     | ChannelId of channel.           |
+|   term   |   String  |     true     | search string to filter member. |
+
+then track delegate of `ChatChannelMemberListController` to observer list channel members:
+
+```swift
+func memberListController(
+    _ controller: ChatChannelMemberListController,
+    didChangeMembers changes: [ListChange<ChatChannelMember>]
+)
+```
+
+**5.3. Adding & Removing Moderators to a Channel**
+
+To change role of members using promotes/demote members:
+
+```swift
+// Promote members
+func promoteMembers(_ members: [String], completion: ((Error?) -> Void)?)
+// Demote members
+func demoteMembers(_ members: [String], completion: ((Error?) -> Void)?)
+```
+
+**Parameters:**
+
+|  **Name**  |        **Type**        | **Required** | **Description**                                                                          |
+|:----------:|:----------------------:|:------------:|------------------------------------------------------------------------------------------|
+|  memberIds |         [String]       |     true     | The list of member id that will be promoted/demoted                                      |
+| completion | (( Error ?) ->  Void ) |     false    | Called when the API call is finished. Called with  ` Error ` if the remote update fails. |
+
+**5.4. Ban & Unban Channel Members**
+
+```swift
+// Ban members
+func banMembers(_ members: [String], completion: ((Error?) -> Void)?)
+// Unban members
+func unbanMembers(_ members: [String], completion: ((Error?) -> Void)?)
+```
+
+**Parameters:**
+
+|  **Name**  |        **Type**        | **Required** | **Description**                                                                          |
+|:----------:|:----------------------:|:------------:|------------------------------------------------------------------------------------------|
+|  memberIds |         [String]       |     true     | The list of member id that will be banned/unbanned                                       |
+| completion | (( Error ?) ->  Void ) |     false    | Called when the API call is finished. Called with  ` Error ` if the remote update fails. |
+
+**5.5. Channel Capabilities**
+
+Permissions is saved as `memberCapabilities` in channel.
+We can add/remove permission:
+
+```swift
+func updateChannelCapabilities(in cid: ChannelId,
+                                   removedCapabilities: [String] = [],
+                                   addedCapabilities: [String] = [],
+                                   completion: ((Error?) -> Void)?)
+```
+
+**Parameters:**
+
+|       **Name**      |       **Type**      | **Required** | **Description**                                                                            |
+|:-------------------:|:-------------------:|:------------:|--------------------------------------------------------------------------------------------|
+|         cid         |      ChannelId      |     true     | Channel Id of the channel                                                                  |
+| removedCapabilities |       [String]      |     false    | Capabilities you want to adding                                                            |
+|  addedCapabilities  |       [String]      |     false    | Capabilities you want to removing                                                          |
+|      completion     | ( Error ?) ->  Void |     false    | Called when the API call is finished. Called with   ` Error `  if the remote update fails. |
+
+**Capabilities:**
+
+| **Name**           | **What it indicates**                           |
+|--------------------|-------------------------------------------------|
+| send-message       | Ability to send a message                       |
+| update-own-message | Ability to update own messages in the channel   |
+| delete-own-message | Ability to delete own messages from the channel |
+| send-reaction      | Ability to send reactions                       |
+
+**5.6. Query Attachments in a channel**
+
+Call this api to get all attachments, then filter in local to get the result you want.
+
+
+```swift
+func getAttachments(in cid: ChannelId,
+                    completion: @escaping (Result<ChannelAttachmentListPayload, Error>) -> Void)
+```
+
+**Parameters:**
+
+|  **Name**  |                         **Type**                         | **Required** | **Description**                                                                                                                                              |
+|:----------:|:--------------------------------------------------------:|:------------:|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|     cid    |                         ChannelId                        |     true     | Channel Id of the channel                                                                                                                                    |
+| completion | `(Result<ChannelAttachmentListPayload,  Error >)->  Void` |     false    | Called when the API call is finished. Called with    ` Error `   if the remote update fails. Called with `ChannelAttachmentListPayload` if api call success. |
+|            |                                                          |              |                                                                                                                                                              |
+|            |                                                          |              |                                                                                                                                                              |
+
+<br />
+
+### Message management
+
+#### 1. Sending a message
+
+**Sending message**
+
+To send a message, call `createNewMessage` function from `ChatChannelController` object. This will create a new message from local.
+
+```swift
+func createNewMessage(
+        messageId: MessageId? = nil,
+        text: String,
+        isSilent: Bool = false,
+        attachments: [AnyAttachmentPayload] = [],
+        mentionedUserIds: [UserId] = [],
+        quotedMessageId: MessageId? = nil,
+        skipPush: Bool = false,
+        skipEnrichUrl: Bool = false,
+        extraData: [String: RawJSON] = [:],
+        completion: ((Result<MessageId, Error>) -> Void)? = nil
+) 
+```
+
+**Parameters:**
+
+|     **Name**     |              **Type**              | **Required** | **Description**                                                                                                                                                             |
+|:----------------:|:----------------------------------:|:------------:|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|     messageId    |              MessageId             |     false    | The id for the sent message. By default, it is automatically generated by Ermis.                                                                                            |
+|       text       |               String               |     true     | Text of the message.                                                                                                                                                        |
+|     isSilent     |                Bool                |     false    | A flag indicating whether the message is a silent message. Silent messages are special messages that don't increase the unread messages count nor mark a channel as unread. |
+|    attachments   |       [AnyAttachmentPayload]       |     false    | An array of the attachments for the message.     `Note` : can be built-in types, custom attachment types conforming to `AttachmentEnvelope` protocol.                       |
+| mentionedUserIds |              [UserId]              |     false    | List user id was mentioned.                                                                                                                                                 |
+|  quotedMessageId |              MessageId             |     false    | An id of the message new message quotes. (inline reply).                                                                                                                    |
+|     skipPush     |                Bool                |     false    | If true, skips sending push notification to channel members.                                                                                                                |
+|   skipEnrichUrl  |                Bool                |     false    | If true, the url preview won't be attached to the message.                                                                                                                  |
+|     extraData    |          [String:RawJSON]          |     false    | Additional extra data of the message object.                                                                                                                                |
+|    completion    | `(Result<MessageId, Error>) -> Void` |     false    | Called when saving the message to the local DB finishes.                                                                                                                    |
+
+Then call `synchronize` to sync new message to backend.
+
+```swift
+func synchronize(_ completion: ((_ error: Error?) -> Void)? = nil)
+```
+
+**Parameters:**
+
+|  **Name**  |     **Type**     | **Required** | **Description**                                                                          |
+|:----------:|:----------------:|:------------:|------------------------------------------------------------------------------------------|
+| completion | (Error?) -> Void |     false    | Called when the API call is finished. Called with  ` Error ` if the remote update fails. |
+
+**Sending status**
+
+You can track sending status of `ChatMessage` with instance `localState` and `readByCount`.
+Here is the example:
+
+```swift
+var deliveryStatus: MessageDeliveryStatus? {
+    guard isSentByCurrentUser else {
+        // Delivery status exists only for messages sent by the current user.
+        return nil
+    }
+
+    guard type == .regular || type == .reply else {
+        // Delivery status only makes sense for regular messages and thread replies.
+        return nil
+    }
+
+    switch localState {
+    case .pendingSend, .sending, .pendingSync, .syncing, .deleting:
+        return .pending
+    case .sendingFailed, .syncingFailed, .deletingFailed:
+        return .failed
+    case nil:
+        return readByCount > 0 ? .read : .sent
+    }
+}
+```
+
+#### 2. Upload file
+
+To upload channel attachment, call `uploadAttachment` function in `ChatChannelController` object.
+
+```swift
+public func  uploadAttachment(
+    localFileURL: URL,
+    type: AttachmentType,
+    progress: ((Double) -> Void)? = nil,
+    completion: @escaping ((Result<UploadedAttachment, Error>) -> Void)
+)
+```
+
+**Parameters:**:
+
+|   **Name**   |                   **Type**                  | **Required** | **Description**                                                                                                                                                                                                                   |
+|:------------:|:-------------------------------------------:|:------------:|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| localFileURL |                     URL                     |     true     | Local URL of the file. *Note*: With image file, we can use `temporaryLocalFileUrl` function to create localURL from UIImage.                                                                                                      |
+|     type     |                AttachmentType               |     true     | The attachment type.                                                                                                                                                                                                              |
+|   progress   |              ((Double) -> Void)             |     false    | Upload progress closure.                                                                                                                                                                                                          |
+|  completion  | `(Result<UploadedAttachment, Error>)-> Void` |     false    | Called when the API call is finished. Called with  ` Error ` if the remote update fails. Call with `UploadedAttachment` if the remote update success. `UploadedAttachment` containing the remote URL and the attachment metadata. |
+
+#### 3. Edit message
+
+To edit a message, call `editMessage` function in `MessageController` object:
+
+```swift
+func editMessage(
+        text: String,
+        skipEnrichUrl: Bool = false,
+        attachments: [AnyAttachmentPayload] = [],
+        extraData: [String: RawJSON]? = nil,
+        completion: ((Error?) -> Void)? = nil
+)
+```
+
+|    **Name**   |                   **Type**                  | **Required** | **Description**                                                                                           |
+|:-------------:|:-------------------------------------------:|:------------:|-----------------------------------------------------------------------------------------------------------|
+|      text     |                    String                   |     true     | The updated message text.                                                                                 |
+| skipEnrichUrl |                     Bool                    |     false    | If true, the url preview won't be attached to the message.                                                |
+|  attachments  |            [AnyAttachmentPayload]           |     false    | An array of the attachments for the message.                                                              |
+|   extraData   | `(Result<UploadedAttachment, Error>) -> Void` |     false    | Custom extra data. When `nil` is passed the message custom fields stay the same. Equals `nil` by default. |
+|   completion  |               (Error?) -> Void              |     false    | Called when the API call is finished. Called with  ` Error `if the remote update fails.                   |
+
+
+#### 4. Delete message
+
+To delete message call `deleteMessage` function in `MessageController`:
+
+```swift
+public func deleteMessage(hard: Bool = false, completion: ((Error?) -> Void)? = nil)
+```
+
+**Parameters:**
+
+|  **Name**  |     **Type**     | **Required** | **Description**                                                                                                  |
+|:----------:|:----------------:|:------------:|------------------------------------------------------------------------------------------------------------------|
+|    hard    |       Bool       |     false    | A Boolean value to determine if the message will be delete permanently on the backend. By default it is `false`. |
+| completion | (Error?) -> Void |     false    | Called when the API call is finished. Called with  ` Error `if the remote update fails.                          |
+
+#### 5. Search message
+
+```swift
+public
+func search(term: String,
+            limit: Int = 25,
+            offset: Int = 0,
+            completion: @escaping (Result<ChannelSearchPayload, Error>) -> Void)
+```
+**Parameters:**
+
+|  **Name**  |                    **Type**                   | **Required** | **Description**                                                                                                      |
+|:----------:|:---------------------------------------------:|:------------:|----------------------------------------------------------------------------------------------------------------------|
+|    term    |                     String                    |     true     | The string text to search.                                                                                           |
+|    limit   |                      Int                      |     false    | Max number of result items per page.                                                                                 |
+|   offset   |                      Int                      |     false    | Offset message index.                                                                                                |
+| completion | `(Result<ChannelSearchPayload, Error>) -> Void` |     false    | Called when the API call is finished. Called with  `Error` if fails. Called with `ChannelSearchPayload` if success.  |
+
+#### 6. Unread messages
+
+**Marking a channel as read**
+
+Marks the channel as read.
+
+```swift
+public func markRead(completion: ((Error?) -> Void)? = nil)
+```
+
+**Parameters:**
+
+|  **Name**  |               **Type**               | **Required** | **Description**                       |
+|:----------:|:------------------------------------:|:------------:|---------------------------------------|
+| completion | `(Result<ChatChannel, Error>) -> Void` |     false    | Called when the API call is finished. |
+
+#### 7. Reactions
+
+The Reaction feature allows users to send, manage reactions on messages, and remove reactions when necessary.
+
+
+```swift
+//Add reaction
+public func addReaction(
+    _ type: MessageReactionType,
+    completion: ((Error?) -> Void)? = nil
+)
+// Remove reactions
+public func deleteReaction(
+    _ type: MessageReactionType,
+    completion: ((Error?) -> Void)? = nil
+)
+```
+
+**Parameters:**
+
+|  **Name**  |       **Type**      | **Required** | **Description**                       |
+|:----------:|:-------------------:|:------------:|---------------------------------------|
+|    type    | MessageReactionType |     true     | The reaction type.                    |
+| completion |  (Error?) -> Void   |     false    | Called when the API call is finished. |
+
+#### 8. Typing Indicators
+
+```swift
+class ChatChannelController {
+    // Start typing
+    public func sendStartTypingEvent(completion: ((Error?) -> Void)? = nil)
+    // Stop typing
+    public func sendStopTypingEvent(completion: ((Error?) -> Void)? = nil)  
+}                              
+```
+
+**Parameters:**
+
+|  **Name**  |       **Type**      | **Required** | **Description**                       |
+|:----------:|:-------------------:|:------------:|---------------------------------------|
+|    type    | MessageReactionType |     true     | The reaction type.                    |
+| completion |  (Error?) -> Void   |     false    | Called when the API call is finished. |
+
+To track current typing users in channel, use `typingUsersPublisher` in `ChatChannelController`
+
+
+### Events
+
+Events keep the client updated with changes in a channel, such as new messages, reactions, or members joining the channel.
+A full list of events is shown below. The next section of the documentation explains how to listen for these events.
+| Event | Trigger | Recipients
+|:---|:----|:-----
+| `health.check` | every 30 second to confirm that the client connection is still alive | all clients
+| `message.new` | when a new message is added on a channel | clients watching the channel
+| `message.read` | when a channel is marked as read | clients watching the channel
+| `message.deleted` | when a message is deleted | clients watching the channel
+| `message.updated` | when a message is updated | clients watching the channel
+| `typing.start` | when a user starts typing | clients watching the channel
+| `typing.stop` | when a user stops typing | clients watching the channel
+| `reaction.new` | when a message reaction is added | clients watching the channel
+| `reaction.deleted` | when a message reaction is deleted | clients watching the channel
+| `member.added` | when a member is added to a channel | clients watching the channel
+| `member.removed` | when a member is removed from a channel | clients watching the channel
+| `member.promoted` | when a member is added moderator to a channel | clients watching the channel
+| `member.demoted` | when a member is removed moderator to a channel | clients watching the channel
+| `member.banned` | when a member is ban to a channel | clients watching the channel
+| `member.unbanned` | when a member is unban to a channel | clients watching the channel
+| `notification.added_to_channel` | when the user is added to the list of channel members | clients from the user added that are not watching the channel
+| `notification.invite_accepted` | when the user accepts an invite | clients from the user invited that are not watching the channel
+| `notification.invite_rejected` | when the user rejects an invite | clients from the user invited that are not watching the channel
+| `channel.deleted` | when a channel is deleted | clients watching the channel
+| `channel.updated` | when a channel is updated | clients watching the channel
+
+To observer events, use delegate of `EventsController`.
+
+```swift
+let eventsController = client.eventsController()
+eventsController.delegate = self
+```
+
+```swift
+protocol EventsControllerDelegate: AnyObject {
+    func eventsController(_ controller: EventsController, didReceiveEvent event: Event)
+}
+```
+
+<br />
+
+## Error codes
+
+Below you can find the complete list of errors that are returned by the API together with the description, API code, and corresponding HTTP, Websocket status of each error.
+
+#### 1. HTTP codes
+
+| Name                      | HTTP Status Code | HTTP Status           | Ermis code | Description                                               |
+| :------------------------ | :--------------- | :-------------------- | :--------- | --------------------------------------------------------- |
+| InternalServerError       | 500              | Internal Server Error | 0          | Triggered when something goes wrong in our system         |
+| ServiceUnavailable        | 503              | Service Unavailable   | 1          | Triggered when our system is unavailable to call          |
+| Unauthorized              | 401              | Unauthorized          | 2          | Invalid JWT token                                         |
+| NotFound                  | 404              | Not Found             | 3          | Resource not found                                        |
+| InputError                | 400              | Bad Request           | 4          | When wrong data/parameter is sent to the API              |
+| ChannelNotFound           | 400              | Bad Request           | 5          | Channel is not existed                                    |
+| NoPermissionInChannel     | 400              | Bad Request           | 6          | No permission for this action in the channel              |
+| NotAMemberOfChannel       | 400              | Bad Request           | 7          | Not a member of channel                                   |
+| BannedFromChannel         | 400              | Bad Request           | 8          | User is banned from this channel                          |
+| HaveToAcceptInviteFirst   | 400              | Bad Request           | 9          | User must accept the invite to gain permission            |
+| DisabledChannelMemberCapa | 400              | Bad Request           | 10         | This action is disable for channel member role            |
+| AlreadyAMemberOfChannel   | 400              | Bad Request           | 11         | User is already part of the channel and cannot join again |
+
+#### 2. Websocket codes
+
+| Websocket Code | Message          | Description                                   |
+| :------------- | :--------------- | :-------------------------------------------- |
+| 1011           | Internal Error   | Return when something wrong in our system     |
+| 1006           | Abnormal Closure | Return when there is connection error         |
+| 1005           | Jwt Expire       | Return when jwt is expired                    |
+| 1003           | Unsupported Data | Return when client send non text data         |
+| 1000           | Normal Closure   | Return when client or server close connection |
