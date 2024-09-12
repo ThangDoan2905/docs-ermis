@@ -1341,7 +1341,7 @@
               "type": "string"
             },
             "required": true,
-            "example": "3d8688e3-1724-4c5b-80d5-84164cd08bcc"
+            "example": "441bf4a5-b3c9-4e66-85dc-12c9fbb8fdbd"
           }
         ],
         "responses": {
@@ -1401,7 +1401,7 @@
               "type": "string"
             },
             "required": true,
-            "example": "818a8768-92d9-483e-9294-c7f530fc9cb8"
+            "example": "dbf4fadb-224e-4b46-8e83-cfe40c0c7cd4"
           }
         ],
         "responses": {
@@ -1498,6 +1498,59 @@
           }
         ],
         "parameters": [
+          {
+            "name": "type",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "example": "{{channel_type}}"
+          },
+          {
+            "name": "channel_id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "example": "{{channel_id}}"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/channels/{type}/{channel_id}/truncate": {
+      "delete": {
+        "tags": [
+          "Bellboy"
+        ],
+        "summary": "Truncate Channel",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Content-Encoding",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "example": "zstd"
+          },
           {
             "name": "type",
             "in": "path",
@@ -1718,7 +1771,7 @@
                 "type": "object",
                 "example": {
                   "cid": "{{cid}}",
-                  "search_term": "Analyst",
+                  "search_term": "input",
                   "limit": 25,
                   "offset": 0
                 }
