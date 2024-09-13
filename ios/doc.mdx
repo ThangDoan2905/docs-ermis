@@ -71,7 +71,7 @@ let client = ErmisClient(config: config,
 
 To support Login via Wallet, ErmisChat needs to communicate with various Wallet applications. In this example, we use [Web3Modal](https://github.com/WalletConnect/web3modal) of `WalletConnect` to faciliate communication with wallet applications.
 
-#### 4.1: Create a Challenge
+#### 4.1 Create a Challenge
 
 First [install and setup](https://docs.walletconnect.com/appkit/ios/core/installation) `Web3Modal` library.
 
@@ -96,7 +96,7 @@ Web3Modal.instance.sessionSettlePublisher.receive(on: DispatchQueue.main).sink {
 }
 ```
 
-#### 4.2: Sign wallet
+#### 4.2 Sign wallet
 
 After receiving the challenge message, you need to sign it with the wallet to obtain the signature. To do this, send `eth_signTypedData` request with the wallet address and challenge message as parameters.
 
@@ -110,7 +110,7 @@ try await Web3Modal.instance.request(request)
 ```
 > **Note**: This will send a sign message to user's wallet. To automatic switch to user wallet app, call `Web3Modal.instance.launchCurrentWallet`.
 
-#### 4.3: Get authentication information
+#### 4.3 Get authentication information
 
 After user sign this message, the `sessionResponsePublisher` will emit an response. Use `signature` from response to call `walletAuthenticate` function.
 This will return `AuthenticationPayload`. It contains `token`, and `refreshToken` which require to connect user.
