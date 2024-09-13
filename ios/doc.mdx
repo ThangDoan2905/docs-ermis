@@ -18,7 +18,7 @@ title: 'Chat SDK for IOS'
 
 The ErmisChat SDK for iOS allows you to integrate real-time chat into your client app with minimal effort.
 
-### Requirements
+## Requirements
 
 The minimum requirements for ErmisChat SDK for iOS are:
 
@@ -237,7 +237,7 @@ channelController.synchronize { [weak self] error in
 }
 ```
 
-### 6.3 Send messages
+#### 6.3 Send messages
 
 To send a message, use the `createNewMessage` function from the `channelController`:
 ```swift
@@ -260,7 +260,7 @@ channelController.synchronize { [weak self] error in
 
 ### User management
 
-**1. Get users with UserIDs**
+#### **1. Get users with UserIDs**
 
 ```swift
 class ChannelController {
@@ -277,7 +277,7 @@ class ChannelController {
 |     ids    |               `Array`               |     true     | A list of userId of user.                                            |
 | completion | `Result<[ChatUser],Error>) -> Void` |     false    | Called when the API call is finished. Called with `Error` if failed. |
 
-**2. Search users**
+#### **2. Search users**
 
 To fetch/search user, we use `UserSearchController`. We create this intance from `ErmisClient`. 
 
@@ -329,7 +329,7 @@ protocol UserSearchControllerDelegate {
 
 All your contact ids will be store in `friendContactIds`, this value will set after you call `search` function.
 
-**3. Update personal profile**
+#### **3. Update personal profile**
 
 Using `CurrentUserController` function allows you to observe and mutate the current user's profile.
 
