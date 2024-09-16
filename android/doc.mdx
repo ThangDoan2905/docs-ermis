@@ -1,98 +1,895 @@
 ---
-title: 'Documentation for android'
-description: 'Learn how to preview changes locally'
+title: 'Chat SDK for Android'
 ---
 
-<Info>
-  **Prerequisite** You should have installed Node.js (version 18.10.0 or
-  higher).
-</Info>
+## [Ermis](https://ermis.network) home page
 
-Step 1. Install Mintlify on your OS:
+## Table of contents
 
-<CodeGroup>
+1.  [Introduction](#introduction)
+1.  [Requirements](#requirements)
+1.  [Getting Started](#getting-started)
+1.  [Features](#features)
+1.  [Error codes](#error-codes)
 
-```bash npm
-npm i -g mintlify
+## Introduction
+
+The ErmisChat SDK for Android allows you to add real-time chat into your client app with minimal effort.
+
+## Requirements
+
+The minimum requirements for the Chat SDK for Android are:
+
+- Android 6.0 (API level 23) or higher
+- Android Gradle plugin 3.4.2 or higher
+- Firebase Cloud Messaging 19.0.1 or higher
+
+<br />
+
+## Getting started
+
+This section shows you the prerequisites you need to check for using ErmisChat SDK for Android. If you have any comments or questions regarding bugs and feature requests, please reach out to us.
+
+<br />
+
+## Step-by-Step Guide:
+
+### Step 1: Generate API key and ProjectID
+
+Before installing ErmisChat SDK, you need to generate an **API key** and **ProjectID** on the [Ermis Dashboard](https://ermis.network). This **API key** and **ProjectID** will be required when initializing the Chat SDK.
+
+> **Note**: Ermis Dashboard will be available soon. Please contact our support team to create a client account and receive your API key. Contact support: [tony@ermis.network](mailto:tony@ermis.network)
+
+### Step 2: Install the Chat SDK
+
+Add the dependency to the project's top-level build.gradle file:
+
+```gradle
+dependencies {
+    implementation 'com.github.ermisnetwork:ermis-android-sdk:Tag'
+}
 ```
 
-```bash yarn
-yarn global add mintlify
+### Step 3: Install the WalletConnect
+
+To support Sign In with Wallet, ErmisChat needs to communicate with other Wallet applications. In our examplem, we use [Web3Modal](https://github.com/WalletConnect/web3modal) of `WalletConnect` to communicate with Wallet application.
+
+### Step 4: Integrate Login via Wallet
+
+When starting the app, you need to create an instance of `ErmisClient` first:
+
+```kotlin
+
+val client = ChatClient.Builder(apiKey, context).build()
+
 ```
 
-</CodeGroup>
+#### 4.1 Create challenge
 
-Step 2. Go to the docs are located (where you can find `mint.json`) and run the following command:
+First [install and setup](https://docs.walletconnect.com/appkit/android/core/installation) `Web3Modal` library.
 
-```bash
-mintlify dev
+After install and setup Web3Modal, connect your app to a wallet application.
+
+```kotlin
+Web3Modal.setDelegate(web3ModalModalDelegate)
+findNavController().openWeb3Modal(shouldOpenChooseNetwork = true) { throwable ->
+                
+}
 ```
 
-The documentation website is now available at `http://localhost:3000`.
+Web3Modal will show list of wallet for user to choose and connect. After users connect their wallet, the `web3ModalModalDelegate` will publish an event. After this event emit, call `walletConnect` to create a challenge message.
 
-### Custom Ports
-
-Mintlify uses port 3000 by default. You can use the `--port` flag to customize the port Mintlify runs on. For example, use this command to run in port 3333:
-
-```bash
-mintlify dev --port 3333
+```kotlin
+private val web3ModalModalDelegate = object : Web3Modal.ModalDelegate {
+    override fun onSessionApproved(approvedSession: Modal.Model.ApprovedSession) {
+        val address = Web3Modal.getAccount().address
+        ErmisClient.instance().walletConnect(address).enqueue { result ->
+            when (result) {
+                is Result.Success -> {
+                    val challengeMessage = result.value.challenge
+                }
+                is Result.Failure -> {
+    
+                }
+            }
+        }
+    }
+    ...
+}
 ```
 
-You will see an error like this if you try to run Mintlify in a port that's already taken:
+#### 4.2 Sign wallet
 
-```md
-Error: listen EADDRINUSE: address already in use :::3000
+After receiving the challenge message, you need to sign the wallet to get the signature. To do this, send `eth_sgnTypedData` request with the wallet address and challenge message as parameters.
+
+```kotlin
+val stringifiedParams = change.replace("\"", "\\\"")
+val params = "[\"$account\",\"$stringifiedParams\"]"
+val requestParams = Modal.Params.Request(
+    // method = "personal_sign",
+    method = "eth_signTypedData",
+    params = params,
+)
+Web3Modal.request(
+    request = requestParams,
+    onSuccess = { data ->
+        /* callback that letting you know that you have successful request */
+        
+    },
+    onError = { error ->
+        /* callback for error */
+        
+    }
+)
+....
+private val web3ModalModalDelegate = object : Web3Modal.ModalDelegate {
+    ...
+    override fun onSessionRequestResponse(response: Modal.Model.SessionRequestResponse) {
+        when (response.result) {
+            is Modal.Model.JsonRpcResponse.JsonRpcResult -> {
+                val signature = response.result
+            }
+            is Modal.Model.JsonRpcResponse.JsonRpcError -> {
+            }
+        }
+    }
+    ...
+}
+
 ```
 
-## Mintlify Versions
+#### 4.3 Get authentication information
 
-Each CLI is linked to a specific version of Mintlify. Please update the CLI if your local website looks different than production.
+After the user signs, use the `signature` from the response to call the `walletAuthenticate` function.
+This will return an `AuthenticationPayload`, which contains the `token`, and `refreshToken` required to connect the user.
 
-<CodeGroup>
+```kotlin
+ErmisClient.instance().walletSignin(address, signature, nonce)
+.enqueue { result ->
+    when (result) {
+        is Result.Success -> {
+            val id = result.value.user_id,
+            val token = "Bearer ${result.value.token}"
+            val refresh_token = result.value.refresh_token
+        }
+        is Result.Failure -> {
 
-```bash npm
-npm i -g mintlify@latest
+        }
+    }
+}
 ```
 
-```bash yarn
-yarn global upgrade mintlify
+### Step 5: Connect user in SDK
+
+Once initialized, you must specify the current userby calling the `connectUser` function:
+
+```kotlin
+// Connect user
+ErmisClient.instance().connectUser(chatUser, user.token)
+//or
+val tokenProvider = object : TokenProvider {
+    override fun loadToken(): String {
+        return newToken
+    }
+}
+ErmisClient.instance().connectUser(chatUser, tokenProvider)
+ //The [tokenProvider] implementation is used for the initial token,
+ //and it's also invoked whenever the user's token has expired, to fetch a new token.
 ```
 
-</CodeGroup>
+To logout, call `disconnect` function in ```ErmisClient```
 
-## Deployment
+```kotlin
+client.disconnect(true).await()
+```
+<br />
 
-<Tip>
-  Unlimited editors available under the [Startup
-  Plan](https://mintlify.com/pricing)
-</Tip>
+### Step 6: Sending your first message
 
-You should see the following if the deploy successfully went through:
+Now that the Chat SDK has been imported, you're ready to start sending a message.
+Here are the steps to send your first message using Chat SDK:
 
-<Frame>
-  <img src="/images/checks-passed.png" style={{ borderRadius: '0.5rem' }} />
-</Frame>
+#### 6.1 Query users
 
-## Troubleshooting
+Get users in your project:
 
-Here's how to solve some common problems when working with the CLI.
+```kotlin
+    client.queryUsers(searchQuery)
+```
 
-<AccordionGroup>
-  <Accordion title="Mintlify is not loading">
-    Update to Node v18. Run `mintlify install` and try again.
-  </Accordion>
-  <Accordion title="No such file or directory on Windows">
-Go to the `C:/Users/Username/.mintlify/` directory and remove the `mint`
-folder. Then Open the Git Bash in this location and run `git clone
-https://github.com/mintlify/mint.git`.
+> **Note**: To see all about query users, see: [User management](#user-management)
 
-Repeat step 3.
+#### 6.2 Create a new channel
 
-  </Accordion>
-  <Accordion title="Getting an unknown error">
-    Try navigating to the root of your device and delete the ~/.mintlify folder.
-    Then run `mintlify dev` again.
-  </Accordion>
-</AccordionGroup>
 
-Curious about what changed in a CLI version? [Check out the CLI changelog.](/changelog/command-line)
+```kotlin
+chatClient.createChannel(
+    channelType = channelType, // "messaging" is direct, "team" is group
+    channelId = channelId, // isEmpty is direct, random string is group
+    memberIds = listOf(currentUserId, othherUserId),
+).await()
+                                            
+```
+
+#### 6.3 Send a message
+
+```kotlin
+val message = Message(text = "New message")
+chatClient.sendMessage(
+    channelType,
+    channelId,
+    message,
+)
+```
+
+<br />
+
+## Features
+
+1. [User management](#user-management)
+1. [Channel management](#channel-management)
+1. [Message management](#message-management)
+1. [Events](#events)
+
+### User management
+
+#### **1. Get users with UserIDs:**
+
+```kotlin
+chatClient.getUsersByIds(userIds).enqueue { result ->
+    when(result) {
+        is Result.Success -> {
+            val list: List<User> = result.value
+        }
+        is Result.Failure -> {
+
+        }
+    }
+}
+```
+
+**Parameters:**
+
+|  **Name**  |    **Type**   | **Required** | **Description**                                                                                          |
+|:----------:|:-------------:|:------------:|----------------------------------------------------------------------------------------------------------|
+|     userIds    | `Array<String>` |     true     | A list of userId of user.                                                                                |
+
+#### **2. Search users:**
+
+```kotlin
+chatClient.chatClient.queryUsers(term, page: Int = 1, limit: Int = 30).enqueue { result ->
+    when(result) {
+        is Result.Success -> {
+            val list: List<User> = result.value
+        }
+        is Result.Failure -> {
+
+        }
+    }
+}
+```
+ **Parameters:**
+
+|  **Name**  |           **Type**           | **Required** | **Description**                                                      |
+|:----------:|:----------------------------:|:------------:|----------------------------------------------------------------------|
+|     term   |            `String`          |     false    | Search term. If empty string or `null`, all users are fetched.        |
+
+#### **3. Update personal profile**
+
+To update user's profile, using these functions:
+
+```kotlin
+chatClient.updateUserProfile(name).await()
+chatClient.updateUserAvatar(imageFile).await()
+```
+
+ **Parameters:**
+
+|  **Name**  |           **Type**           | **Required** | **Description**                                                      |
+|:----------:|:----------------------------:|:------------:|----------------------------------------------------------------------|
+|    name    |           `String`           |     false    | Optionally provide a new name to be updated.                         |
+|  imageFile |            `File`            |     true    | Provide a new image file to be updated.                   |
+
+### Channel management
+
+#### 1. Query channel list
+
+After create channel, use `queryChannels` function from `ErmisClient` object to get joined channel list or invited channel list, see following examples:
+
+**1.1. Joined channel list**
+ 
+```kotlin
+val result = chatClient.queryChannels(
+    request = QueryChannelsRequest(
+        filter = Filters.joindChannels(
+            memberId = userId,
+        )
+    ),
+).await()
+```
+
+**1.2. Invited channel list**
+
+```kotlin
+val result = chatClient.queryChannels(
+    request = QueryChannelsRequest(
+        filter = Filters.invitedChannels(
+            memberId = userId,
+        )
+    ),
+).await()
+```
+
+#### 2. Create a channel
+
+```kotlin
+chatClient.createChannel(
+    channelType = channelType, // "messaging" is direct, "team" is group
+    channelId = channelId, // isEmpty is direct, random string is group
+    memberIds = memberIds, // List memberIds, the member will receive invited to join this channel.
+    extraData = mapOf("name" to name), // Name of the channel
+).await()
+```
+
+#### 3. Accept/Reject Invite
+
+To accept/reject an invitation, use `acceptInvite`/`rejectInvite` function in `ErmisClient`
+
+```kotlin
+client
+    .acceptInvite(channelType = channelType, channelId = channelId)
+    .enqueue(
+        onSuccess = {
+
+        },
+        onError = { error->
+
+        }
+    )
+```
+
+```kotlin
+client
+    .rejectInvite(channelType = channelType, channelId = channelId)
+    .enqueue(
+        onSuccess = {
+
+        },
+        onError = { error->
+
+        }
+    )
+```
+
+
+#### 4. Query a channel
+
+Queries the channel state and returns information about its members, watchers and messages.
+
+```kotlin
+    val pageSize = 10
+    // Request for the first page
+    val request = QueryChannelRequest()
+        .withMessages(pageSize)
+    val channelClient = ErmisClient.instance().channel(cid)
+    channelClient.query(request).enqueue { result ->
+        if (result.isSuccess) {
+            val messages: List<Message> = result.value.messages
+            if (messages.size < pageSize) {
+                // All messages loaded
+            } else {
+                // Load next page
+                val nextRequest = QueryChannelRequest()
+                    .withMessages(Pagination.LESS_THAN, messages.last().id, pageSize)
+                // ...
+            }
+        } else {
+            // Handle result.error()
+        }
+    }
+```
+**Parameters:**
+
+|     **Name**     |     **Type**     | **Required** | **Description**                                    |
+|:----------------:|:----------------:|:------------:|----------------------------------------------------|
+|        cid       |     String    |     true     | The id of the channel that this controller represents.  |
+| request | QueryChannelRequest |     false    | The request's parameters are combined into the [QueryChannelRequest] class |
+
+#### 5. Query Message List
+
+**5.1 Load the First page of messages** 
+
+To retrieve the first page of messages for a  channel, use the `limit` parameter to specify how many messages to load:
+
+```kotlin
+val request = QueryChannelRequest().withMessages(limit)
+channelClient.query(request).enqueue { result ->
+        if (result.isSuccess) {
+            val messages: List<Message> = result.value.messages
+        }
+    }
+```
+
+**Parameters:**
+
+|  **Name**  | **Type** | **Required** | **Description**                                                                                                                     |
+|:----------:|:--------:|:------------:|-------------------------------------------------------------------------------------------------------------------------------------|
+| completion |  Closure |     false    | The completion. Will be called when the network request is finished. If request fails, the completion will be called with an error. |
+
+**5.2 Load Previous Messages**
+
+To retrieve previous messages in a channel, use the `limit` parameter to specify how many messages to load before the message with the ID `messageId`:
+
+```kotlin
+val nextRequest = QueryChannelRequest().withMessages(Pagination.LESS_THAN, messageId, limit)
+channelClient.query(nextRequest).enqueue { result ->
+        if (result.isSuccess) {
+            val messages: List<Message> = result.value.messages
+        }
+    }
+```
+
+**Parameters:**
+
+|  **Name**  |  **Type** | **Required** | **Description**                                                                                                                     |
+|:----------:|:---------:|:------------:|-------------------------------------------------------------------------------------------------------------------------------------|
+|  messageId | MessageId |     false    | ID of the last fetched message. You will get messages  ` older ` than the provided ID.                                              |
+|    limit   |    Int    |     false    | Limit for page size. By default it is 25.                                                                                           |
+
+**5.3 Load Next Messages**
+
+To retrieve the next set of messages in a channel, use the `limit` parameter to specify how many messages to load after the messages to load afer the mesage with the ID `messageId`:
+
+```kotlin
+val nextRequest = QueryChannelRequest().withMessages(Pagination.GREATER_THAN, messageId, limit)
+channelClient.query(nextRequest).enqueue { result ->
+        if (result.isSuccess) {
+            val messages: List<Message> = result.value.messages
+        }
+    }
+```
+
+**5.4 Load Message Around ID**
+
+To retrieve messages around a specific message, use the `limit` parameter to specify how many messages to return before and after the message with the ID `messageId`
+
+```kotlin
+val nextRequest = QueryChannelRequest().withMessages(Pagination.AROUND_ID, messageId, limit)
+channelClient.query(nextRequest).enqueue { result ->
+        if (result.isSuccess) {
+            val messages: List<Message> = result.value.messages
+        }
+    }
+```
+
+
+#### 6. Setting a channel
+
+The channel settings feature allows users to customize channel attributes such as name, description, membership permissions, and notification settings to suit their communication needs.
+
+
+**6.1. Edit channel information (name, avatar, description)**
+
+You can edit name, avatar, description of channel by function `update` from `ChannelClient`:
+
+```kotlin
+    val mapEdit = hashMapOf<String,String>()
+    mapEdit.put("name", name)
+    mapEdit.put("description", description)
+    mapEdit.put("image", imageUrl)
+    channelClient.update(mapEdit).await()
+```
+**Parameters:**
+
+|   **Name**  | **Type** | **Required** | **Description**                                                                       |
+|:-----------:|:--------:|:------------:|---------------------------------------------------------------------------------------|
+|     name    |  String  |     false    | The updated name of channel, if name doesn't changed, do not send.               |
+| description |  String  |     false    | The updated description of channel, if description doesn't changed, do not send. |
+|   imageUrl  |  String  |     false    | The updated avatar url of channel, if avatar dessn't changed, do not send.      |
+
+**Note**: To upload avatar, see [Upload file](#2-upload-file)
+
+**6.2. Adding & Removing Channel Members**
+
+Add or remove members:
+
+```kotlin
+// Add members
+channelClient.addMembers(userIds).enqueue(
+    onError = { error ->
+                    
+    },
+)
+// Remove members
+channelClient.removeMembers(userIds).enqueue(
+    onError = { error ->
+                    
+    },
+)
+```
+**Parameters:**
+
+| **Name** | **Type** | **Required** | **Description**          |
+|:--------:|:--------:|:------------:|--------------------------|
+|  userIds | `[String]` |     true     | Set of member id to add/remove. |
+
+
+**6.3. Adding & Removing Moderators to a Channel**
+
+To change role of members, use `promotes/demote members`:
+
+```kotlin
+// Promote members
+channelClient.promoteMembersChannel(memberIds).await()
+// Demote members
+channelClient.demoteMembersChannel(memberIds).await()
+```
+
+**Parameters:**
+
+|  **Name**  |        **Type**        | **Required** | **Description**                                                                          |
+|:----------:|:----------------------:|:------------:|------------------------------------------------------------------------------------------|
+|  memberIds |         [String]       |     true     | The list of member id that will be promoted/demoted                                      |
+
+**6.4. Ban & Unban Channel Members**
+The ban and unban feature allows administrators to block or unblock members with the “member” role in a channel, managing their access rights.
+```kotlin
+// Ban members
+channelClient.banMembersChannel(memberIds)
+// Unban members
+channelClient.unbanMembersChannel(memberIds)
+```
+
+**Parameters:**
+
+|  **Name**  |        **Type**        | **Required** | **Description**                                                                          |
+|:----------:|:----------------------:|:------------:|------------------------------------------------------------------------------------------|
+|  memberIds |         [String]       |     true     | The list of member id that will be banned/unbanned                                       |
+
+**6.5. Channel Capabilities**
+
+This feature allows owner to configure permissions for members with the “member” role to send, edit, delete, and react to messages, ensuring chat content control.
+Permissions is saved as `memberCapabilities` in channel.
+We can add/remove permission:
+
+```kotlin
+    client.channel(cid).updatePermisionMembersChannel(add = addedCapabilities, delete = removedCapabilities)
+        .enqueue { result ->
+            when (result) {
+                is Result.Success -> {}
+                is Result.Failure -> {}
+            }
+        }
+```
+
+**Parameters:**
+
+|       **Name**      |       **Type**      | **Required** | **Description**                                                                            |
+|:-------------------:|:-------------------:|:------------:|--------------------------------------------------------------------------------------------|
+|         cid         |      ChannelId      |     true     | Channel Id of the channel                                                                  |
+| removedCapabilities |       `[String]`      |     false    | Capabilities you want to adding                                                            |
+|  addedCapabilities  |       `[String]`      |     false    | Capabilities you want to removing                                                          |
+
+
+**Capabilities:**
+
+| **Name**           | **What it indicates**                           |
+|--------------------|-------------------------------------------------|
+| send-message       | Ability to send a message                       |
+| update-own-message | Ability to update own messages in the channel   |
+| delete-own-message | Ability to delete own messages from the channel |
+| send-reaction      | Ability to send reactions                       |
+
+**6.6. Query Attachments in a channel**
+
+This feature allows users to view all media files shared in a channel, including images, videos, and audio.
+Call this API to retrieve all attachments, then filter them locally to obtain the result you need.
+
+
+```kotlin
+    val result = client.channel(cid).getAttachmentsOfChannel().await()
+    when (result) {
+        is Result.Success -> {
+            val attachments = result.value.attachments
+        }
+        is Result.Failure -> {}
+    }
+```
+
+**Parameters:**
+
+|  **Name**  |                         **Type**                         | **Required** | **Description**                                                                                                                                              |
+|:----------:|:--------------------------------------------------------:|:------------:|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|     cid    |                         ChannelId                        |     true     | Channel Id of the channel                                                                                                                                    |
+
+
+### Message management
+
+#### 1. Sending a message
+
+This feature allows user to send a message to a specified channel or DM:
+
+**Sending message**
+
+To send a message, call `sendMessage` function from `ErmisClient` or `ChannelClient` object.
+
+```kotlin
+val message = Message(
+                id = messageId,
+                cid = cid,
+                text = text,
+                parentId = parentMessageId,
+                replyMessageId = replyMessageId,
+                attachments = attachments,
+                mentionedUsersIds = mentionedUserIds,
+            )
+client.sendMessage(channelType, channelId, message)
+```
+
+**Parameters:**
+
+|     **Name**     |              **Type**              | **Required** | **Description**                                                                                                                                                             |
+|:----------------:|:----------------------------------:|:------------:|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|     messageId    |              MessageId             |     false    | The id for the sent message. By default, it is automatically generated by Ermis.                                                                                            |
+|       text       |               String               |     true     | Text of the message.                                                                                                                                                        |
+|     cid     |                ChannelId                |     false    | Channel Id of the channel. |
+|    attachments   |       [Attachment]       |     false    | An array of the attachments for the message.     `Note` : can be built-in types, custom attachment types.                       |
+| mentionedUserIds |              [UserId]              |     false    | List user id was mentioned.                                                                                                                                                 |
+|  replyMessageId |              MessageId             |     false    | The ID of the quoted message, if the message is a quoted reply.                                                                                                                    |
+|   parentMessageId  |                MessageId                |     false    | The ID of the parent message, if the message is a thread reply.                                                                                                                  |
+
+
+#### 2. Upload files
+
+To upload channel attachment, call `sendFile` function in `ErmisClient` object.
+
+```kotlin
+val result = client.sendFile(channelType, channelId, file, progressCallback).await()
+when (result) {
+    is Result.Success -> {
+        val fileUrl = result.value.file
+    }
+}
+```
+
+**Parameters:**:
+
+|   **Name**   |                   **Type**                  | **Required** | **Description**                                                                                                                                                                                                                   |
+|:------------:|:-------------------------------------------:|:------------:|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| channelType |                     String                     |     true     | The type of the channel.                                                                                                      |
+|     channelId     |                String               |     true     | The ID of the channel.                                                                                                                                                                                                              |
+|   file   |              File             |     true    | The file that will be uploaded.                                                                                                                                                                                                          |
+|  progressCallback  | ProgressCallback |     false    | The callback to track progress |
+
+#### 3. Edit messages
+
+To edit a message, call `updateMessage` function in `ErmisClient` object:
+
+```kotlin
+val messageUpdate = message.copy(text = "Edit message")
+client.updateMessage(message)
+```
+
+
+#### 4. Delete messages
+
+To delete an existing message, call `deleteMessage` function in `ErmisClient` or `ChannelClient`:
+
+```kotlin
+chatClient.deleteMessage(messageId, channelId, channelType, hard)
+```
+
+**Parameters:**
+
+|  **Name**  |     **Type**     | **Required** | **Description**                                                                                                  |
+|:----------:|:----------------:|:------------:|------------------------------------------------------------------------------------------------------------------|
+|    hard    |       Boolean       |     false    | A Boolean value to determine if the message will be delete permanently on the backend. By default it is `false`. |                        |
+
+#### 5. Search messages
+
+This feature allows user to search for a specific message in a channel:
+
+```kotlin
+channelClient.searchMessageOfChannel(term, limit, offset)
+```
+**Parameters:**
+
+|  **Name**  |                    **Type**                   | **Required** | **Description**                                                                                                      |
+|:----------:|:---------------------------------------------:|:------------:|----------------------------------------------------------------------------------------------------------------------|
+|    term    |                     String                    |     true     | The string text to search.                                                                                           |
+|    limit   |                      Int                      |     false    | Max number of result items per page.                                                                                 |
+|   offset   |                      Int                      |     false    | Offset message index.                                                                                                |
+
+#### 6. Unread messages
+
+The Unread Message Count indicates how many messages were received wwhile a user was offline. After reconnecting or logging in, user can view the total number of missed messages in a channel or DM.
+
+**6.1 Get unread messages count for channels**
+
+To get unread message count, using `currentUserUnreadCount` in `Channel`
+
+```kotlin
+let unreadCount = channel.currentUserUnreadCount
+```
+
+**6.2 Marking a channel as read**
+
+To marks the channel as read, call `markRead` function in `ErmisClient` or `ChannelClient`:
+
+```kotlin
+channelClient.markRead()
+```
+
+#### 7. Reactions
+
+The Reaction feature allows users to send, manage reactions on messages, and remove reactions when necessary.
+
+
+```kotlin
+//Add reaction
+val reaction = Reaction(
+        messageId = messageId,
+        type = "like",
+        score = 1,
+        channelType = channelType,
+        channelId = channelId
+    )
+chatClient.sendReaction(reaction, enforceUnique, cid)
+
+// Remove reactions
+client.deleteReaction(messageId, reactionType, cid)
+```
+
+**Parameters:**
+
+|  **Name**  |       **Type**      | **Required** | **Description**                       |
+|:----------:|:-------------------:|:------------:|---------------------------------------|
+|    enforceUnique    | Boolean |     true     | Flag to determine whether the reaction should replace other ones added by the current user..                    |
+| reactionType |  String   |     true    | The type of reaction. |
+
+#### 8. Typing Indicators
+Typing indicators feature lets users see who is currently typing in the channel
+```kotlin
+// start typing
+client.keystroke(channelType, channelId, parentId)    
+// stop typing
+client.stopTyping(channelType, channelId, parentId)                        
+```
+
+**Parameters:**
+
+|  **Name**  |       **Type**      | **Required** | **Description**                       |
+|:----------:|:-------------------:|:------------:|---------------------------------------|
+|    parentId    | String |     false     | Set this field to `message.id` to indicate that typing event is happening in a thread.  |
+
+#### 9. System messages
+
+Below you can find the complete list of system message that are returned by messages from channel. You can define from syntax message by description.
+
+| Name                            | Syntax                   | Description                                       |
+| :------------------------------ | :----------------------- | :------------------------------------------------ |
+| UpdateChannelName               | `1 user_id channel_name` | Member X updated name of channel                  |
+| UpdateChannelImage              | `2 user_id`              | Member X updated image of channel                 |
+| UpdateChannelDescription        | `3 user_id`              | Member X updated description of channel           |
+| MemberRemoved                   | `4 user_id`              | Member X has been removed from this channel       |
+| MemberBanned                    | `5 user_id`              | Member X has been banned from interacting         |
+| MemberUnbanned                  | `6 user_id`              | Member X has been unbanned from interacting       |
+| MemberPromoted                  | `7 user_id`              | Member X has been assigned as the moderator       |
+| MemberDemoted                   | `8 user_id`              | Member X has been demoted to member               |
+| UpdateChannelMemberCapabilities | `9 user_id`              | Member X has updated member permission of channel |
+| InviteAccepted                  | `10 user_id`             | Member X has joined this channel                  |
+| InviteRejected                  | `11 user_id`             | Member X has rejected to join this channel        |
+| MemberLeave                     | `12 user_id`             | Member X has leaved this channel                  |
+
+
+### Events
+
+Events keep the client updated with changes in a channel, such as new messages, reactions, or members joining the channel.
+A full list of events is shown below. The next section of the documentation explains how to listen for these events.
+| Event | Trigger | Recipients
+|:---|:----|:-----
+| `health.check` | every 30 second to confirm that the client connection is still alive | all clients
+| `message.new` | when a new message is added on a channel | clients watching the channel
+| `message.read` | when a channel is marked as read | clients watching the channel
+| `message.deleted` | when a message is deleted | clients watching the channel
+| `message.updated` | when a message is updated | clients watching the channel
+| `typing.start` | when a user starts typing | clients watching the channel
+| `typing.stop` | when a user stops typing | clients watching the channel
+| `reaction.new` | when a message reaction is added | clients watching the channel
+| `reaction.deleted` | when a message reaction is deleted | clients watching the channel
+| `member.added` | when a member is added to a channel | clients watching the channel
+| `member.removed` | when a member is removed from a channel | clients watching the channel
+| `member.promoted` | when a member is added moderator to a channel | clients watching the channel
+| `member.demoted` | when a member is removed moderator to a channel | clients watching the channel
+| `member.banned` | when a member is ban to a channel | clients watching the channel
+| `member.unbanned` | when a member is unban to a channel | clients watching the channel
+| `notification.added_to_channel` | when the user is added to the list of channel members | clients from the user added that are not watching the channel
+| `notification.invite_accepted` | when the user accepts an invite | clients from the user invited that are not watching the channel
+| `notification.invite_rejected` | when the user rejects an invite | clients from the user invited that are not watching the channel
+| `channel.deleted` | when a channel is deleted | clients watching the channel
+| `channel.updated` | when a channel is updated | clients watching the channel
+
+To observer events, use subscribe of `ErmisClient`.
+
+```kotlin
+val listener = ChatEventListener<ChatEvent> { event ->
+
+}
+ErmisClient.instance().subscribe(listener)
+```
+
+```kotlin
+
+public fun subscribe(
+    listener: ChatEventListener<ChatEvent>,
+): Disposable {
+    return eventsObservable.subscribe(listener = listener)
+}
+
+public fun subscribeFor(
+    vararg eventTypes: String,
+    listener: ChatEventListener<ChatEvent>,
+): Disposable {
+    val filter = { event: ChatEvent ->
+        event.type in eventTypes
+    }
+    return eventsObservable.subscribe(filter, listener)
+}
+
+public fun subscribeFor(
+    lifecycleOwner: LifecycleOwner,
+    vararg eventTypes: String,
+    listener: ChatEventListener<ChatEvent>,
+): Disposable {
+    val disposable = subscribeFor(
+        *eventTypes,
+        listener = { event ->
+            if (lifecycleOwner.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
+                listener.onEvent(event)
+            }
+        },
+    )
+
+    lifecycleOwner.lifecycle.addObserver(
+        object : DefaultLifecycleObserver {
+            override fun onDestroy(owner: LifecycleOwner) {
+                disposable.dispose()
+            }
+        },
+    )
+    return disposable
+}
+```
+
+<br />
+
+## Error codes
+
+Below you can find the complete list of errors that are returned by the API together with the description, API code, and corresponding HTTP, Websocket status of each error.
+
+### 1. HTTP codes
+
+| Name                      | HTTP Status Code | HTTP Status           | Ermis code | Description                                               |
+| :------------------------ | :--------------- | :-------------------- | :--------- | --------------------------------------------------------- |
+| InternalServerError       | 500              | Internal Server Error | 0          | Triggered when something goes wrong in our system         |
+| ServiceUnavailable        | 503              | Service Unavailable   | 1          | Triggered when our system is unavailable to call          |
+| Unauthorized              | 401              | Unauthorized          | 2          | Invalid JWT token                                         |
+| NotFound                  | 404              | Not Found             | 3          | Resource not found                                        |
+| InputError                | 400              | Bad Request           | 4          | When wrong data/parameter is sent to the API              |
+| ChannelNotFound           | 400              | Bad Request           | 5          | Channel is not existed                                    |
+| NoPermissionInChannel     | 400              | Bad Request           | 6          | No permission for this action in the channel              |
+| NotAMemberOfChannel       | 400              | Bad Request           | 7          | Not a member of channel                                   |
+| BannedFromChannel         | 400              | Bad Request           | 8          | User is banned from this channel                          |
+| HaveToAcceptInviteFirst   | 400              | Bad Request           | 9          | User must accept the invite to gain permission            |
+| DisabledChannelMemberCapa | 400              | Bad Request           | 10         | This action is disable for channel member role            |
+| AlreadyAMemberOfChannel   | 400              | Bad Request           | 11         | User is already part of the channel and cannot join again |
+
+### 2. Websocket codes
+
+| Websocket Code | Message          | Description                                   |
+| :------------- | :--------------- | :-------------------------------------------- |
+| 1011           | Internal Error   | Return when something goes wrong in our system     |
+| 1006           | Abnormal Closure | Return when there is a connection error         |
+| 1005           | Jwt Expire       | Return when the JWT has expired                    |
+| 1003           | Unsupported Data | Return when the client send non-text data         |
+| 1000           | Normal Closure   | Return when the client or server closes connection normally |
