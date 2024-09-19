@@ -2,10 +2,31 @@
 title: 'Chat SDK for IOS'
 ---
 
+<span style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+  <img
+    src="https://img.shields.io/badge/platform-iOS-orange.svg"
+    noZoom
+    alt="Platform"
+    style={{ display: 'inline-block', cursor: 'pointer' }}
+    onClick={() => window.open('https://www.apple.com/ios', '_blank')}
+  />
+  <img
+    src="https://img.shields.io/badge/language-Swift-orange.svg"
+    noZoom
+    alt="Languages"
+    style={{ display: 'inline-block', cursor: 'pointer' }}
+    onClick={() => window.open('https://www.swift.org', '_blank')}
+  />
+  <img
+    src="https://img.shields.io/badge/SPM-compatible-green.svg"
+    noZoom
+    alt="Swift Package Manager"
+    style={{ display: 'inline-block', cursor: 'pointer' }}
+    onClick={() => window.open('https://github.com/ermisnetwork/ermis-ios-sdk', '_blank')}
+  />
+</span>
+
 ## [Ermis](https://ermis.network) home page
-
-[![Platform](https://img.shields.io/badge/platform-iOS-orange.svg)](https://www.apple.com/ios) [![Languages](https://img.shields.io/badge/language-Swift-orange.svg)](https://www.swift.org) [![Swift Package Manager](https://img.shields.io/badge/SPM-compatible-green.svg)](https://github.com/ermisnetwork/ermis-ios-sdk)
-
 ## Table of contents
 
 1.  [Introduction](#introduction)
@@ -581,7 +602,7 @@ channelController.updateChannel(name: updatedName,
 | description |       `String`      |     false    | The updated description of channel, if description doesn't changed, just send nil. |
 |   imageUrl  |       `String`      |     false    | The updated avatar url of channel, if avatar dessn't changed, just send nil.       |
 
-**Note**: To upload avatar, see [Upload file](#2-upload-file)
+**Note**: To upload avatar, see [Upload file](#2-upload-files)
 
 **6.2. Adding & Removing Channel Members**
 
