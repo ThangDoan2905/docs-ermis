@@ -1,0 +1,880 @@
+---
+title: 'Chat UI SDK Implementation for iOS'
+---
+
+## [ErmisChat](https://ermis.network) home page
+
+<span style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+  <img
+    src="https://img.shields.io/badge/platform-iOS-orange.svg"
+    noZoom
+    alt="Platform"
+    style={{ display: 'inline-block', cursor: 'pointer' }}
+    onClick={() => window.open('https://www.apple.com/ios', '_blank')}
+  />
+  <img
+    src="https://img.shields.io/badge/language-Swift-orange.svg"
+    noZoom
+    alt="Languages"
+    style={{ display: 'inline-block', cursor: 'pointer' }}
+    onClick={() => window.open('https://www.swift.org', '_blank')}
+  />
+  <img
+    src="https://img.shields.io/badge/SPM-compatible-green.svg"
+    noZoom
+    alt="Swift Package Manager"
+    style={{ display: 'inline-block', cursor: 'pointer' }}
+    onClick={() => window.open('https://github.com/ermisnetwork/ermis-ios-sdk', '_blank')}
+  />
+</span>
+
+## Table of contents
+
+1.  [Introduction](#introduction)
+1.  [Requirements](#requirements)
+1.  [Getting Started](#getting-started)
+1.  [Appearance](#appearance)
+1.  [Views](#views)
+1.  [Component list](#component-list)
+
+## Introduction
+
+The ErmisChatUI SDK for iOS empowers developers to integrate chat functionality seamlessly into their iOS applications. With a set of pre-built, customizable UI components, the SDK provides a quick and efficient way to build a modern and responsive chat interface tailored to your application's design and user experience requirements.
+
+## Requirements
+
+The minimum requirements for ErmisChatUI SDK for iOS are:
+
+- iOS 14 or higher
+- Swift 5.0 or higher
+
+## Getting started
+
+This section shows you the prerequisites you needed to use the ErmisChatUI SDK for iOS. If you have any comments or questions regarding bugs and feature requests, please reach out to us.
+
+## Installation
+
+See installation, and setup from [ErmisChat SDK](https://docs.ermis.network/ios/doc) documentations.
+
+## Appearance
+
+ErmisChatUI SDK provide you an easy way to customize the appearance of your application by modifying `Apppearance.default`. It's recommended to make these changes as early as possible, such as in `Appdelegate` or `SceneDelegate` when the application launches.
+
+### 1. Colors
+
+To change the brand color, simply set the `tintColor` of `UIWindow`:
+
+```swift
+window.tintColor = .red
+```
+
+To modify other colors, assign value of `colors` in `Appearance`:
+
+```swift
+Appearance.default.colors.text = .black
+```
+
+Below is the list of available colors:
+
+**Text colors:**
+
+- `text`
+- `textInverted`
+- `textLowEmphasis`
+- `textLinkColor`
+- `staticColorText`
+- `staticBlackColorText`
+- `subtitleText`
+- `highlightedColorForColor`
+- `disabledColorForColor`
+- `unselectedColorForColor`
+
+**Background colors:**
+
+- `background`
+- `background1`
+- `background2`
+- `background3`
+- `background4`
+- `background5`
+- `background6`
+- `background7`
+- `background8`
+- `overlayBackground`
+- `popoverBackground`
+- `highlightedBackground`
+- `highlightedAccentBackground`
+- `highlightedAccentBackground1`
+- `messageCellHighlightBackground`
+- `pinnedMessageBackground`
+- `jumpToUnreadButtonBackground`
+
+**Border and shadow colors:**
+
+- `shadow`
+- `lightBorder`
+- `border`
+- `border2`
+- `border3`
+- `hoverButtonShadow`
+
+**Other colors:**
+
+- `alert`
+- `alternativeActiveTint`
+- `inactiveTint`
+- `alternativeInactiveTint`
+- `accentPrimary`
+
+
+### 2. Change fonts
+
+To change fonts, set value of `fonts` in `Appearance`
+
+```swift
+Appearance.default.fonts.body = .systemFont(ofSize: 20)
+```
+Below is the list of available fonts:
+
+- `caption2`
+- `caption1`
+- `footnoteBold`
+- `footnote`
+- `subheadline`
+- `subheadlineBold`
+- `body`
+- `bodyBold`
+- `bodyItalic`
+- `headline`
+- `headlineBold`
+- `title`
+- `title3`
+- `emoji`
+
+### 3. Icons
+
+To change images, set value of `images` in `Appearance`
+
+```swift
+Appearance.default.images.close = UIImage(named: "ic_close")
+```
+
+Below is the list of available images:
+
+**Common icons:**
+- `loadingIndicator`
+- `close`
+- `discard`
+- `link`
+- `closeCircleTransparent`
+- `discardAttachment`
+- `back`
+- `onlyVisibleToCurrentUser`
+- `more`
+- `share`
+- `commands`
+- `smallBolt`
+- `openAttachments`
+- `shrinkInputArrow`
+- `sendArrow`
+- `scrollDownArrow`
+- `whiteCheckmark`
+- `confirmCheckmark`
+- `bigConfirmCheckmark`
+- `folder`
+- `restart`
+- `emptyChannelListMessageBubble`
+- `emptySearch`
+- `download`
+
+**Recording icons:**
+
+- `mic`
+- `lock`
+- `chevronLeft`
+- `chevronUp`
+- `trash`
+- `stop`
+- `playFill`
+- `pauseFill`
+- `recordingPlay`
+- `recordingPause`
+- `rateButtonPillBackground`
+- `sliderThumb`
+
+**Message receipt status icons:**
+
+- `messageDeliveryStatusSending`
+- `messageDeliveryStatusSent`
+- `messageDeliveryStatusRead`
+- `messageDeliveryStatusFailed`
+
+**File icons:**
+
+- `file7z`
+- `fileAac`
+- `fileCsv`
+- `fileDoc`
+- `fileDocx`
+- `fileHtml`
+- `fileMd`
+- `fileMp3`
+- `fileOdt`
+- `filePdf`
+- `filePpt`
+- `filePptx`
+- `fileRar`
+- `fileRtf`
+- `fileTargz`
+- `fileTxt`
+- `fileXls`
+- `fileXlsx`
+- `filezip`
+- `fileFallback`
+
+**Message action icons:**
+
+- `messageActionSwipeReply`
+- `messageActionInlineReply`
+- `messageActionThreadReply`
+- `messageActionMarkUnread`
+- `messageActionEdit`
+- `messageActionCopy`
+- `messageActionBlockUser`
+- `messageActionMuteUser`
+- `messageActionDelete`
+- `messageActionResend`
+- `messageActionFlag`
+
+**FileAttachment icons:**
+
+- `camera`
+- `bigPlay`
+- `play`
+- `pause`
+
+**Command icons:**
+
+- `commandBan`
+- `commandFlag`
+- `commandGiphy`
+- `commandImgur`
+- `commandMention`
+- `commandMute`
+- `commandUnban`
+- `commandUnmute`
+- `commandFallback`
+
+**Other icons**:
+
+- `messageListErrorIndicator`
+- `userAvatarPlaceholder`
+
+
+### 4. Change formatter
+
+To change formatter, set value in `Appearance.formatters`
+
+```swift
+Appearance.default.formatters.systemMessage = CustomeSystemMessageFormatter()
+```
+
+Below is the table of available formatters:
+
+| **Name**                      | **Type**                        | **Description**                                                                                                                                                                                                 |
+|-------------------------------|---------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `MessageTimestampFormatter`   | `MessageTimestampFormatter`     | A formatter that converts the message to textual representation in the message list.                                                                                                                            |
+| `channelListMessageTimestamp` | `MessageTimestampFormatter`     | A formatter that converts the message to textual representation in the channel list.                                                                                                                            |
+| `messageDateSeparator`        | `MessageDateSeparatorFormatter` | A formatter that converts the message date separator to textual representation. This formatter is used to display the message date between each group of messages and the top date overlay in the message list. |
+| `userLastActivity`            | `UserLastActivityFormatter`     | A formatter that converts the time a user was last active to textual representation.                                                                                                                            |
+| `videoDuration`               | `VideoDurationFormatter`        | A formatter that converts the video duration to textual representation.                                                                                                                                         |
+| `uploadingProgress`           | `UploadingProgressFormatter`    | A formatter that converts the progress percentage to textual representation.                                                                                                                                    |
+| `channelName`                 | `ChannelNameFormatter`          | A formatter that generates a name for the given channel.                                                                                                                                                        |
+| `markdownFormatter`           | `MarkdownFormatter`             | A formatter used for text Markdown                                                                                                                                                                              |
+| `audioPlaybackRateFormatter`  | `AudioPlaybackRateFormatter`    | A formatter that converts an audio playback rate to textual representation.                                                                                                                                     |
+| `audioRecordingNameFormatter` | `AudioRecordingNameFormatter`   | A formatter that provides a name for a recording based on its position in a list of recordings.                                                                                                                 |
+| `systemMessage`               | `SystemMessageFormatter`        | A formatter that provides a text message for system message.                                                                                                                                                    |
+
+## Views
+
+1. [Custom UI](#custom-ui)
+1. [Channel List](#channel-list)
+1. [Channel](#channel)
+1. [Channel Settings](#channel-settings)
+1. [Message List](#message-list)
+1. [Composer](#composer)
+
+### 1. Custom UI
+
+ErmisChatUI SDK provides a default UI set. If you prefer not to use default UI, you can cusomize it by following these steps:
+
+1. Create your custom component by subclassing the component you want to modify.
+2. Configure the SDK to use your custom component.
+
+```swift
+// Create custome component
+class CustomChannelViewController: ChannelViewController {
+    .....
+}
+// Configure the SDK to using new component
+Components.default.channelVC = CustomChannelViewController.self
+```
+
+> **Note**: You should configure the SDK components as soon as possible when your application starts.
+
+All components conform to `BaseViewProtocol`, ``, you can override function from this protocol to customize the UI:
+
+```swift
+public protocol BaseViewProtocol {
+    /// Main point of customization for the view functionality.
+    ///
+    /// **It's called zero or one time(s) during the view's lifetime.** Calling super implementation is required.
+    func setUp()
+
+    /// Main point of customization for the view appearance.
+    ///
+    /// **It's called multiple times during the view's lifetime.** The default implementation of this method is empty
+    /// so calling `super` is usually not needed.
+    func setUpAppearance()
+
+    /// Main point of customization for the view layout.
+    ///
+    /// **It's called zero or one time(s) during the view's lifetime.** Calling super is recommended but not required
+    /// if you provide a complete layout for all subviews.
+    func setUpUI()
+
+    /// Main point of customizing the way the view updates its content.
+    ///
+    /// **It's called every time view's content changes.** Calling super is recommended but not required if you update
+    /// the content of all subviews of the view.
+    func contentDidChanged()
+}
+```
+
+You can see a full list of available components [here](#component-list) 
+
+### 2. Channel list
+
+#### 2.1 Channel list
+
+**1. Basic**
+
+The `ChannelListViewController` is a class used to create channel list view.
+Below is the method to create this object:
+
+```swift
+let channelListController = client.channelListController(query: query)
+let channelListViewController = ChannelListViewController.make(with: channelListController)
+```
+
+**2. View states**
+
+By default, the SDK automatically handles the view for special states, such as: loading, error or empty states.. If you want to customize the view for these states, create your own view class then configure it to `Components`:
+
+```swift
+Components.default.channelListEmptyView = CustomChannelListEmptyView.self
+Components.default.channelListErrorView = CustomChanneListErrorView.self
+Components.default.channelListLoadingView = CustomChannListLoadingView.self
+```
+
+If you want don't want SDK to handle this for you, set the `isChannelListStatesEnabled` to `false`:
+
+```swift
+Components.default.isChannelListStatesEnabled = false
+```
+
+**3. Search**
+
+The SDK provides three types of search: by channel name, or by invited channel name.
+You can choose your search type by setting `channelListSearchType`:
+
+```swift
+// Enable search by channel
+Components.default.channelListSearchType = .channels
+// Enable search by invited channel
+Components.default.channelListSearchType = .invitedChannels
+```
+
+If you want to customize the UI, you can create a new subclass of the default component. For example:
+
+```swift
+// Create subclass of default component
+class CustomChannelSearchViewController: ChannelSearchViewController {
+    ...
+}
+// Configure in Components
+Components.default.channelListSearchType = .channel(CustomChannelSearchViewController.self)
+```
+
+#### 2.2 Channel list item
+
+By default, the SDK uses `ChannelListItemView` to display channels in the [Channel list](#2-channel-list). If you don't want to use the default item view, create your own subclass then configure to `Components`:
+
+```swift 
+// Create your own class
+class CustomChannelListItemView: ChannelListItemView {
+    ...
+}
+// Configure SDK to use your custom item view
+Components.default.channelContentView = CustomChannelListItemView.self
+```
+
+### 3. Channel
+
+The `ChannelViewController` is one of the most important components in the SDK. It displays messages from the channel and allows user to send new messages. It consists of three main parts:
+
+| **Name**          | **Type**                    | **Description**                                 |
+|-------------------|-----------------------------|-------------------------------------------------|
+| headerView        | `ChannelHeaderView`         | The view that display informations of channel.  |
+| messageListVC     | `MessageListViewController` | The list of messages of the channel.            |
+| messageComposerVC | `ComposerViewController`    | The view that handles the creation of messages. |
+
+If you want to customze the UI, you can subclass the `ChannelViewController` then configure it with `Components`:
+
+```swift
+// Subclass ChannelViewController
+class CustomChannelViewController: ChannelViewController {
+    ...
+}
+// Configure to Components
+Components.default.channelVC = CustomChannelViewController.self
+```
+
+In the SDK, this viewController will automatically show when user selects a channel in [Channel list](#2-channel-list). If you want to display it in other cases, you can create it like this:
+
+```swift
+let channelId = ....
+let channelController = client.channelController(for: channelId)
+let channelViewController = ChannelViewController()
+channelViewController.channelController = channelController
+```
+
+### 4. Channel header
+
+The channel header displays channel infomation in the ChannelViewController. By default, it appears in the `titleView` of the `navigationItem`.
+To customize the channelHeader, subclass `ChannelHeaderView` then configure it to `Composers`:
+
+```swift
+class CustomChannelHeaderView: ChannelHeaderView {
+    ...
+}
+
+Components.default.channelHeaderView = CustomChannelHeaderView.self
+```
+
+### 5. Message list
+
+The message list displays all messages in the channel. If you want to customize the UI of this, create a new subclass of `MessageListViewController` then configure it to `Composer`:
+
+```swift
+// Create subclass of MessageListViewController
+class CustomMessageListViewController: MessageListViewController {
+    ...
+}
+// Configure to Components
+Components.default.messageListVC = CustomMessageListViewController.self
+```
+
+In the SDK, it is automatically configured in the `ChannelViewController`. If you want to create and use it manually, you can do so by following these code:
+
+```swift
+let messageListViewController = MessageListViewController
+messageListViewController.client = ...// ErmisClient
+messageListViewController.dataSource = ...// MessageListViewControllerDataSource
+messageListViewController.delegate = ...// MessageListViewControllerDelegate
+```
+
+#### 5.1 Message item
+
+The SDK provides you with sevral ways to customize message items. We separate these into various components, each with its own purpose.
+
+| **Type**                       | **Description**                                                            |
+|--------------------------------|----------------------------------------------------------------------------|
+| `MessageLayoutOptionsResolver` | Calculates `MessageLayoutOptions` for each message                         |
+| `MessageLayoutOptions`         | Contains information needed to render UI of message cell                   |
+| `MessageContentView`           | Parent view which holds all message view                                   |
+| `MessageBubbleView`            | A bubble which wraps message content inside                                |
+| `ReactionsBubbleView`          | A bubble which wraps `MessageReactionView` inside                          |
+| `MessageReactionsView`         | A view which show all reactions of messages                                |
+| `MessageReactionItemView`      | A view which show single reaction                                          |
+| `MessageCellHeaderFooterView`  | The view that displays any header or footer decorations above & below cell |
+
+#### 5.2 Customization
+
+**1. Change the Message Bubble View**
+
+To customize the message bubble view, simply create a new subclass of `MessageBubbleView` then configure it to `Components`:
+
+```swift
+// Subclass MessageBubbleView
+class CustomMessageBubbleView: MessageBubbleView {
+    ....
+}
+// Configure to Component
+Components.default.messageBubbleView = CustomMessageBubbleView.self
+```
+
+**2. Change Layouts**
+
+The `MessageLayoutOptions` contains information for rendering the UI of the message cell. To change the layout of the cell, simply modify `MessageLayoutOptions`, and the UI will update accordingly. To change `MessageLayoutOptions`, subclass `MessageLayoutOptionsResolver` and override the method `optionsForMessage`:
+
+```swift
+// Subclass MessageLayoutOptionsResolver
+class CustomMessageLayoutOptionsResolver: MessageLayoutOptionsResolver {
+    override func optionsForMessage(
+        at indexPath: IndexPath,
+        in channel: Channel,
+        with messages: AnyRandomAccessCollection<ChatMessage>,
+        appearance: Appearance
+    ) -> MessageLayoutOptions { 
+        var options = super.optionsForMessage(at: indexPath, in: channel, with: messages, appearance: appearance)
+        // Add or remove options for modify UI
+        // Remove avatar, all cell will don't show user avatar
+        options.remove([.avatar])
+        // Add timeStamp, all cell will show timestamp
+        options.insert([.timestamp])
+        return options
+    }
+}
+
+Components.default.messageLayoutOptionsResolver = CustomMessageLayoutOptionsResolver.self
+```
+
+You can also add a new option to `MessageLayoutOption` like this:
+
+```swift
+extension MessageLayoutOption {
+    static let customOption: Self = "customOption"
+}
+```
+
+Below is the list of all options in `MessageLayoutOptionsResolver` in the SDK:
+
+| **Name**                    | **Description**                                                                                                                                                                                                    |
+|-----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `flipped`                   | If set all the content will have trailing alignment (by default, the message sent by the current user is flipped)                                                                                                  |
+| `bubble`                    | If set the message content will be wrapped into a bubble                                                                                                                                                           |
+| `continuousBubble`          | If set the message bubble will not have a `tail` (rendered by default as a non rounded corner)                                                                                                                     |
+| `avatarSizePadding`         | If set the message content will have an offset (from the `trailing` edge if `flipped` is set otherwise from `leading`) equal to the avatar size                                                                    |
+| `avatar`                    | If set the message author avatar will be shown                                                                                                                                                                     |
+| `authorName`                | If set the message author name will be shown                                                                                                                                                                       |
+| `text`                      | If set the message text content will be shown                                                                                                                                                                      |
+| `quotedMessage`             | If set the message quoted by the current message will be shown                                                                                                                                                     |
+| `threadInfo`                | If set the message thread replies information will be shown                                                                                                                                                        |
+| `reactions`                 | If set the reactions of this message will be shown                                                                                                                                                                 |
+| `timestamp`                 | If set the message timestamp will be shown                                                                                                                                                                         |
+| `errorIndicator`            | If set the error indicator will be shown                                                                                                                                                                           |
+| `onlyVisibleToYouIndicator` | If set, the indicator saying that the message is visible to the current user only will be shown                                                                                                                    |
+| `deliveryStatusIndicator`   | If set the delivery status will be shown                                                                                                                                                                           |
+| `centered`                  | If set all the content will have centered alignment (`flipped` and `centered` are mutually exclusive. Only one of these two should be used at a time. If both are set in the options, `centered` is prioritized. ) |
+
+**3. Message Cell Header and Footer View**
+
+You can also modify the view above and below message using `MessageCellHeaderFooterView`. To provide a `MessageCellHeaderFooterView`, implement the `MessageListViewControllerDelegate`.
+
+```swift
+    open func messageListVC(
+        _ vc: MessageListViewController,
+        headerViewForMessage message: ChatMessage,
+        at indexPath: IndexPath
+    ) -> MessageCellHeaderFooterView?
+
+    open func messageListVC(
+        _ vc: MessageListViewController,
+        footerViewForMessage message: ChatMessage,
+        at indexPath: IndexPath
+    ) -> MessageCellHeaderFooterView?
+```
+
+**4. Avatar**
+
+To customize the avatar view, subclass `AvartarView` then configure it to `Components`:
+
+```swift
+class CustomAvatarView: AvatarView {
+    ...
+}
+
+Components.default.avatarView = CustomAvatarView.self
+```
+
+**5. Message Delivery Status**
+
+When a user sends new message, there can be 4 status of the message:
+
+| **Delivery status** | **Description**                                           |
+|---------------------|-----------------------------------------------------------|
+| Pending send        | The message is queued to be sent                          |
+| Sending failed      | The message sending has failed                            |
+| Sent                | The message is sent, but not yet seen by channel members. |
+| Read                | The message is seen by at least 1 channel member.         |
+
+To customize the delivery status UI, subclass `MessageDeliveryStatusView`, then configure it to `Components`:
+
+```swift
+class CustomMessageDeliveryStatusView: MessageDeliveryStatusView {
+    ...
+}
+
+Components.default.messageDeliveryStatusView = CustomMessageDeliveryStatusView.self
+```
+
+**6. Message Actions**
+
+`MessageActionsViewController` is the view controller that manages the display of the actions show when a user holds on a message. Here is the list of all avalable actions in the SDK:
+
+- Edit message
+- Delete message
+- Resend message
+- Mute
+- Unmute
+- Inline reply
+- Thread reply
+- Copy
+
+To customize this list, create a new subclass of `MessageActionsViewController` and ovveride the variable  `messageActions`:
+
+```swift
+class CustomMessageActionsViewController: MessageActionsViewController {
+    override var messageActions: [ChatMessageActionItem] {
+        ....
+    }
+}
+```
+
+### 6. Composer
+
+The SDK provides all the UI necessary for writing and sending messages. It supports sending text, attachments and handling suggestions autocompletion.
+
+#### 6.1 Composer View
+
+To customize the composer view, subclass `ComposerView` then configure it to `Components`:
+
+```swift
+class CustomComposer: ComposerView {
+    ...
+}
+
+Components.default.messageComposerView = CustomComposer.self
+```
+
+#### 6.2 Typing Suggestion
+
+When a user types, the SDK will automatically present a suggestion view when they type "@". If you don't want to use suggestions, you can do following code:
+
+```swift
+class CustomComposerViewController: ComposerViewController {
+        override func typingMention(in textView: UITextView) -> (String, NSRange)? {
+        return nil
+    }
+
+    override func typingCommand(in textView: UITextView) -> String? {
+        return nil
+    }
+}
+```
+
+If you want to customize UI, subclass `SuggestionViewsViewController` then configure it to `Components`:
+
+```swift
+class CustomSuggestionsViewController: SuggestionsViewController {
+    ...
+}
+
+Components.default.suggestionsVC = CustomSuggestionsViewController.self
+```
+
+Yon can also customize UI of each cell:
+
+```swift
+class CustomMentionSuggestionView: MentionSuggestionView {
+    ...
+}
+
+Components.default.suggestionsMentionView = CustomMentionSuggestionView.self
+```
+
+## Component list
+
+Below is the list of available components:
+
+**Message list**
+
+| **Name**                                | **Type**                                           | **Description**                                                                                                                             |
+|-----------------------------------------|----------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
+| messageListVC                           | `MessageListViewController`                        | The view controller responsible for rendering a list of messages                                                                            |
+| messageListView                         | `MessageListView`                                  | The view for the message list view controller                                                                                               |
+| messageListScrollOverlayView            | `MessageListScrollOverlayView`                     | The view that is displayed as top overlay when message list is scrolling                                                                    |
+| messageListDateSeparatorView            | `MessageListDateSeparatorView`                     | The date separator view that groups messages from the same day                                                                              |
+| messageActionsVC                        | `MessageActionsViewController`                     | The view controller used to perform message actions                                                                                         |
+| messagePopupVC                          | `MessagePopupViewController`                       | The view controller that is presented when long-pressing in a message                                                                       |
+| filePreviewVC                           | `MessageAttachmentPreviewViewController`           | The view controller used for showing preview of a message attachment                                                                        |
+| galleryVC                               | `GalleryViewController`                            | A view controller to showcase and slide through multiple attachments                                                                        |
+| videoPlaybackControlView                | `VideoPlaybackControlView`                         | The view used to control the player for currently visible vide attachment                                                                   |
+| messageContentView                      | `MessageContentView`                               | The view used to display content of the message                                                                                             |
+| messageBubbleView                       | `MessageBubbleView`                                | The view used to display a bubble around a message                                                                                          |
+| attachmentViewCatalog                   | `AttachmentViewCatalog`                            | The class responsible for returning the correct attachment view injector from a message                                                     |
+| filesAttachmentInjector                 | `AttachmentViewInjector`                           | The injector used for injecting file attachment views                                                                                       |
+| galleryAttachmentInjector               | `AttachmentViewInjector`                           | The injector used to inject gallery attachment views                                                                                        |
+| giphyAttachmentInjector                 | `AttachmentViewInjector`                           | The injector used for injecting giphy attachment views                                                                                      |
+| mixedAttachmentInjector                 | `MixedAttachmentViewInjector`                      | The injector used to combine multiple types of attachment views                                                                             |
+| linkAttachmentInjector                  | `AttachmentViewInjector`                           | The injector used to inject link attachment views                                                                                           |
+| unsupportedAttachmentInjector           | `AttachmentViewInjector`                           | The injector used for injecting unsupported attachment views                                                                                |
+| voiceRecordingAttachmentInjector        | `AttachmentViewInjector`                           | The injector used for injecting voice recording attachment views                                                                            |
+| attachmentActionButton                  | `AttachmentActionButton`                           | The button for taking an action on attachment being uploaded                                                                                |
+| messageErrorIndicator                   | `MessageErrorIndicator`                            | The view that shows error indicator in `messageContentView`                                                                                 |
+| fileAttachmentView                      | `MessageFileAttachmentListView`                    | The view that shows a single file attachment                                                                                                |
+| fileAttachmentView                      | `MessageFileAttachmentListView.ItemView`           | The view that shows a single file attachment                                                                                                |
+| voiceRecordingAttachmentListView        | `MessageVoiceRecordingAttachmentListView`          | The view that shows message's voiceRecording attachments                                                                                    |
+| voiceRecordingAttachmentView            | `MessageVoiceRecordingAttachmentListView.ItemView` | The view that shows a single voiceRecording attachment                                                                                      |
+| linkPreviewView                         | `MessageLinkPreviewView`                           | The view that shows a link preview in message cell                                                                                          |
+| galleryView                             | `MessageGalleryView`                               | The view that shows message's image and video attachments                                                                                   |
+| imageAttachmentGalleryPreview           | `MessageGalleryView.ImagePreview`                  | The view that shows an image attachment preview inside message cell                                                                         |
+| gifImageAttachmentGalleryPreview        | `MessageGalleryView.GifImagePreview`               | The view that shows a gif image attachment preview inside message cell                                                                      |
+| imageAttachmentGalleryCell              | `ImageAttachmentGalleryCell`                       | The view that shows an image attachment in full-screen gallery                                                                              |
+| videoAttachmentGalleryCell              | `VideoAttachmentGalleryCell`                       | The view that shows a video attachment in full-screen gallery                                                                               |
+| videoAttachmentGalleryPreview           | `VideoAttachmentGalleryPreview`                    | The view that shows a video attachment preview inside a message                                                                             |
+| voiceRecordingAttachmentComposerPreview | `VoiceRecordingAttachmentComposerPreview`          | The view that displays the voice recording attachment preview in composer                                                                   |
+| voiceRecordingAttachmentQuotedPreview   | `VoiceRecordingAttachmentQuotedPreview`            | The view that displays the voice recording attachment as a quoted preview in composer                                                       |
+| uploadingOverlayView                    | `UploadingOverlayView`                             | The view that shows an overlay with uploading progress for image attachment that is being uploaded                                          |
+| giphyAttachmentView                     | `MessageInteractiveAttachmentView`                 | The view that shows giphy attachment with actions                                                                                           |
+| giphyActionButton                       | `MessageInteractiveAttachmentView.ActionButton`    | The button that shows the attachment action                                                                                                 |
+| giphyView                               | `MessageGiphyView`                                 | The view that shows a content for `.giphy` attachment                                                                                       |
+| giphyBadgeView                          | `MessageGiphyView.GiphyBadge`                      | The view that shows a badge on `giphyAttachmentView`                                                                                        |
+| messageDeliveryStatusView               | `MessageDeliveryStatusView`                        | The view that shows messages delivery status                                                                                                |
+| messageDeliveryStatusCheckmarkView      | `MessageDeliveryStatusCheckmarkView`               | The view that shows messages delivery status checkmark                                                                                      |
+| unreadMessagesCounterDecorationView     | `UnreadMessagesCountDecorationView`                | The view that displays the number of unread messages                                                                                        |
+| scrollToBottomButton                    | `ScrollToBottomButton`                             | The button that indicates unread messages at the bottom of the message list and scroll to the bottom on tap                                 |
+| jumpToUnreadMessagesButton              | `JumpToUnreadMessagesButton`                       | The button that shows when there are unread messages outside the bounds of the screen. Can be tapped to scroll to them, or can be discarded |
+| messageListUnreadCountView              | `MessageListUnreadCountView`                       | The view that shows a number of unread messages on the Scroll-To-Latest-Message button in the Message List                                  |
+| messageHeaderDecorationView             | `ChannelMessageHeaderDecoratorView`                | The view that displays the number of unread messages in the chat                                                                            |
+| messageActionsTransitionController      | `MessageActionsTransitionController`               | The controller that handles `MessageListViewController <-> MessagePopUp` transition                                                         |
+
+**Reactions**
+
+| **Name**                       | **Type**                               | **Description**                                                                                         |
+|--------------------------------|----------------------------------------|---------------------------------------------------------------------------------------------------------|
+| messageReactionsBubbleView     | `ReactionBubbleBaseView`               | The view that shows reactions of a message. This is used by the message component                       |
+| messageReactionsView           | `MessageReactionsView`                 | The view that shows the list of reactions attached to the message                                       |
+| messageReactionItemView        | `MessageReactionItemView`              | The view that renders a single reaction attached to the message                                         |
+| reactionPickerVC               | `MessageReactionsPickerViewController` | The Reaction picker View controller                                                                     |
+| reactionPickerBubbleView       | `ReactionPickerBubbleView`             | The view that shows reactions bubble                                                                    |
+| reactionPickerReactionsView    | `MessageReactionsView`                 | The view that shows the list of reaction toggles/buttons                                                |
+| reactionPickerReactionItemView | `MessageReactionItemView`              | The view that renders a single reaction view button                                                     |
+| reactionAuthorsVC              | `MessageReactionAuthorsViewController` | The view controller that renders the reaction and it's author avatar for all the reactions of a message |
+| reactionAuthorCell             | `MessageReactionAuthorViewCell`        | The view cell that displays an individual reaction author of a message                                  |
+
+**Thread components**
+
+| **Name**                           | **Type**                           | **Description**                                                    |
+|------------------------------------|------------------------------------|--------------------------------------------------------------------|
+| threadVC                           | `ThreadViewController`             | The view controller used to display the detail of a message thread |
+| threadHeaderView                   | `ThreadHeaderView`                 | The view that displays channel information on the thread header    |
+| threadRepliesCounterDecorationView | `ThreadRepliesCountDecorationView` | The view that displays the number of replies in the current thread |
+
+**Channel coponents**
+
+| **Name**                          | **Type**                                | **Description**                                                                     |
+|-----------------------------------|-----------------------------------------|-------------------------------------------------------------------------------------|
+| channelVC                         | `ChannelViewController`                 | The view controller that contains the channel messages and represents the chat view |
+| channelHeaderView                 | `ChannelHeaderView`                     | The view that displays channel information on the channel header                    |
+| channelInvitingView               | `ChannelInvitingView`                   | The view that displays notice message when direct user is not joined channel yet    |
+| channelAcceptInvitationView       | `ChannelAcceptInvitationView`           | The view that display invitation action to join or reject in invited room           |
+| channelListLayout                 | `UICollectionViewLayout`                | The collection view layout of the channel list                                      |
+| channelCell                       | `ChannelListCollectionViewCell`         | The cell of channel list that show channel informations                             |
+| channelCellSeparator              | `UICollectionReusableView`              | The cell separator in the channel list                                              |
+| channelActionsView                | `SwipeableView`                         | The view in the channel cell that shows channel actions on swipe                    |
+| channelContentView                | `ChannelListItemView`                   | The view that shows channel information                                             |
+| invitedChannelContentView         | `InvitedChannelListItemView`            | The view that shows invited channel information                                     |
+| invitedChannelCell                | `InvitedChannelCollectionViewCell`      | The cell that shows invited channel information                                     |
+| channelAvatarView                 | `ChannelAvatarView`                     | The view that shows the channel avatar (include an indicator of the user presence)  |
+| channelUnreadCountView            | `ChannelUnreadCountView`                | The view that shows a number of unread messages in channel                          |
+| channelListEmptyView              | `ChannelListEmptyView`                  | The view that is displayed when channel list is empty                               |
+| invitedChannelListEmptyView       | `InvitedChannelListEmptyView`           | The view that is displayed when invited channel list is empty                       |
+| channelListErrorView              | `ChannelListErrorView`                  | The view that shows when some error occurred on ChannelList                         |
+| channelListLoadingView            | `ChannelListLoadingView`                | The view that shows when loading the Channel list                                   |
+| channelListLoadingViewCell        | `ChannelListLoadingViewCell`            | The cell display skeleton loading                                                   |
+| channelListLoadingContentViewCell | `ChannelListLoadingViewCellContentView` | The content view inside the cell responsible to display a skeleton loading view     |
+
+**Composer components**
+
+| **Name**                          | **Type**                           | **Description**                                                                    |
+|-----------------------------------|------------------------------------|------------------------------------------------------------------------------------|
+| messageComposerVC                 | `ComposerViewController`           | The view controller used to compose a message                                      |
+| messageComposerView               | `ComposerView`                     | The view that shows the message when it's being composed                           |
+| messageComposerBannedView         | `UIView`                           | The view that shows banned message when user is banned                             |
+| messageComposerAttachmentsVC      | `AttachmentsPreviewViewController` | The view controller that handles the attachments                                   |
+| messageComposerAttachmentCell     | `AttachmentPreviewContainer`       | The view that holds the attachment views and provide extra functionality over them |
+| messageComposerFileAttachmentView | `FileAttachmentView`               | The view that displays the document attachment                                     |
+| imageAttachmentComposerPreview    | `ImageAttachmentComposerPreview`   | The view that displays image attachment preview in composer                        |
+| videoAttachmentComposerPreview    | `VideoAttachmentComposerPreview`   | The view that displays the video attachment preview in composer                    |
+
+**Suggestion components**
+
+| **Name**                             | **Type**                              | **Description**                                                                 |
+|--------------------------------------|---------------------------------------|---------------------------------------------------------------------------------|
+| suggestionsVC                        | `SuggestionsViewController`           | The view controller that shows suggestions of commands or mentions              |
+| suggestionsCollectionView            | `SuggestionsCollectionView`           | The collection view of the suggestions view controller                          |
+| suggestionsMentionCollectionViewCell | `MentionSuggestionCollectionViewCell` | The view cell that displays the the suggested mention                           |
+| suggestionsCommandCollectionViewCell | `CommandSuggestionCollectionViewCell` | The view cell that displays the suggested command                               |
+| suggestionsMentionView               | `MentionSuggestionView`               | A type for view embed in cell while tagging users with @ symbol in composer     |
+| suggestionsCommandView               | `CommandSuggestionView`               | The view that displays the command name, image and arguments                    |
+| suggestionsCollectionViewLayout      | `UICollectionViewLayout`              | The collection view layout of the suggestions collection view                   |
+| suggestionsHeaderReusableView        | `UICollectionReusableView`            | The header reusable view of the suggestion collection view                      |
+| suggestionsHeaderView                | `SuggestionsHeaderView`               | The header view of the suggestion collection view                               |
+| userAvatarView                       | `UserAvatarView`                      | The view that shows a user avatar (including an indicator of the user presence) |
+
+**Voice recording components**
+
+| **Name**                         | **Type**                           | **Description**                                                                                                                                    |
+|----------------------------------|------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
+| voiceRecordingViewController     | `VoiceRecordingViewController`     | The View controller that handles the recording flow                                                                                                |
+| audioPlayer                      | `AudioPlaying`                     | The AudioPlayer that will be used for the voiceRecording playback                                                                                  |
+| audioRecorder                    | `AudioRecording`                   | The AudioRecorder that will be used to record new voiceRecordings                                                                                  |
+| audioSessionFeedbackGenerator    | `AudioSessionFeedbackGenerator`    | The feedbackGenerator that will be used to provide haptic feedback during the recording flow                                                       |
+| audioQueuePlayerNextItemProvider | `AudioQueuePlayerNextItemProvider` | If the AudioPlayer supports queuing, this object will be asked to provide the VoiceRecording to play automatically, once the current one completes |
+
+**Navigation components**
+
+| **Name**          | **Type**                   | **Description**                                              |
+|-------------------|----------------------------|--------------------------------------------------------------|
+| navigationVC      | `NavigationViewController` | The navigation controller                                    |
+| channelListRouter | `ChannelListRouter`        | The router responsible for navigation on channel list screen |
+| messageListRouter | `MessageListRouter`        | The router responsible for navigation on message list screen |
+| alertsRouter      | `AlertsRouter`             | The router responsible for presenting alerts                 |
+
+--------------------------------------------------------------------
+
+| **Name**                         | **Type**                       | **Description**                                                                                                         |
+|----------------------------------|--------------------------------|-------------------------------------------------------------------------------------------------------------------------|
+| avatarView                       | `AvatarView`                   | The view that displays the avatar image                                                                                 |
+| currentUserAvatarView            | `CurrentUserAvatarView`        | The view that shows current user avatar                                                                                 |
+| presenceAvatarView               | `PresenceAvatarView`           | An avatar view with an online indicator                                                                                 |
+| onlineIndicatorView              | `UIView & MaskProviding`       | The view used as an online activity indicator                                                                           |
+| cooldownView                     | `CooldownView`                 | The view for showing a cooldown when Slow Mode is active                                                                |
+| inputTextView                    | `InputTextView`                | The view for editing text with placeholder support                                                                      |
+| inputMessageView                 | `InputMessageView`             | The view to input content of a message                                                                                  |
+| quotedMessageView                | `QuotedMessageView`            | The view that displays a quoted message                                                                                 |
+| titleContainerView               | `TitleContainerView`           | The view that displays a title label and subtitle in a container stack view                                             |
+| typingIndicatorView              | `TypingIndicatorView`          | The `UIView` subclass which serves as container for `typingIndicator`  and `UILabel` describing who is currently typing |
+| typingAnimationView              | `TypingAnimationView`          | The `UIView` subclass with animated 3 dots for indicating that user is typing                                           |
+| composerLinkPreviewView          | `ComposerLinkPreviewView`      | The view that displays the link in the composer                                                                         |
+| attachmentButton                 | `UIButton`                     | The button for choosing attachments                                                                                     |
+| commandsButton                   | `CommandButton`                | The button for opening command list                                                                                     |
+| shrinkInputButton                | `UIButton`                     | The button for shrinking the input view to allow more space                                                             |
+| sendButton                       | `UIButton`                     | The button used for sending a message                                                                                   |
+| recordButton                     | `RecordButton`                 | The button used for recording a voice message                                                                           |
+| closeButton                      | `UIButton`                     | The button for closing, dismissing or clearing information                                                              |
+| confirmButton                    | `UIButton`                     | The button for confirming actions                                                                                       |
+| shareButton                      | `UIButton`                     | The button for sharing an information                                                                                   |
+| attachmentPreviewViewPlaceholder | `UIView`                       | The view used as a fallback preview view for attachments                                                                |
+| playerView                       | `PlayerView`                   | The view that shows a playing video                                                                                     |
+| checkmarkControl                 | `CheckboxControl`              | The view to check/uncheck an option                                                                                     |
+| gradientView                     | `GradientView`                 | The view that shows a gradient                                                                                          |
+| loadingIndicator                 | `LoadingIndicator`             | The view that shows a loading indicator                                                                                 |
+| imageLoader                      | `ImageLoading`                 | The object which is responsible for loading images                                                                      |
+| imageProcessor                   | `ImageProcessor`               | The object responsible for providing resizing operations for `UIImage`                                                  |
+| videoLoader                      | `VideoLoading`                 | The object responsible for loading video attachments                                                                    |
+| imageCDN                         | `ImageCDN`                     | The object with set of function for handling images from CDN                                                            |
+| messagesCountDecorationView      | `MessagesCountDecorationView`  | The view that displays a banner to show the count of messages                                                           |
+| messageLayoutOptionsResolver     | `MessageLayoutOptionsResolver` | The object responsible for message layout options calculations                                                          |

@@ -32,7 +32,8 @@
     {
       "group": "IOS",
       "pages": [
-        "ios/doc"
+        "ios/doc",
+        "ios/doc-ui"
       ]
     },
     {
