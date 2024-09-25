@@ -674,7 +674,14 @@
         ],
         "summary": "Mark Read",
         "requestBody": {
-          "content": {}
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": ""
+              }
+            }
+          }
         },
         "security": [
           {
@@ -1078,6 +1085,69 @@
         }
       }
     },
+    "/channels/{type}/{channel_id}/message": {
+      "post": {
+        "tags": [
+          "Bellboy"
+        ],
+        "summary": "Send Message",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": "{\n    \"message\": {\n        \"id\": \"{{$guid}}\",\n        // \"attachments\": [],\n        // \"mentioned_users\": [\"0x75c4ff25f1d81803675f687d52a4906855d61ad8\"],\n        // \"parent_id\": \"3d8688e3-1724-4c5b-80d5-84164cd08bcc\",\n        // \"pinned\": false,\n        // \"quoted_message_id\": \"3d8688e3-1724-4c5b-80d5-84164cd08bcc\",\n        \"text\": \"{{$randomWords}}\"\n    }\n}"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Content-Encoding",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "example": "zstd"
+          },
+          {
+            "name": "type",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "example": "{{channel_type}}"
+          },
+          {
+            "name": "channel_id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "example": "{{channel_id}}"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/messages/{type}/{channel_id}/{message_id}/reaction/{reaction_type}": {
       "post": {
         "tags": [
@@ -1221,69 +1291,6 @@
         }
       }
     },
-    "/channels/{type}/{channel_id}/message": {
-      "post": {
-        "tags": [
-          "Bellboy"
-        ],
-        "summary": "Send Message",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "example": "{\n    \"message\": {\n        \"id\": \"{{$guid}}\",\n        // \"attachments\": [],\n        // \"mentioned_users\": [\"0x75c4ff25f1d81803675f687d52a4906855d61ad8\"],\n        // \"parent_id\": \"3d8688e3-1724-4c5b-80d5-84164cd08bcc\",\n        // \"pinned\": false,\n        // \"quoted_message_id\": \"3d8688e3-1724-4c5b-80d5-84164cd08bcc\",\n        \"text\": \"{{$randomWords}}\"\n    }\n}"
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "Content-Encoding",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            },
-            "example": "zstd"
-          },
-          {
-            "name": "type",
-            "in": "path",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "example": "{{channel_type}}"
-          },
-          {
-            "name": "channel_id",
-            "in": "path",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "example": "{{channel_id}}"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/messages/{type}/{channel_id}/{message_id}": {
       "post": {
         "tags": [
@@ -1402,6 +1409,90 @@
             },
             "required": true,
             "example": "dbf4fadb-224e-4b46-8e83-cfe40c0c7cd4"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/messages/{type}/{channel_id}/{message_id}/{action}": {
+      "post": {
+        "tags": [
+          "Bellboy"
+        ],
+        "summary": "Pin | Unpin Message",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "text": "wtf message"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Content-Encoding",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "example": "zstd"
+          },
+          {
+            "name": "type",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "example": "{{channel_type}}"
+          },
+          {
+            "name": "channel_id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "example": "{{channel_id}}"
+          },
+          {
+            "name": "message_id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "example": "03e34d14-3c50-48ab-87a3-f6b2543d5bc3"
+          },
+          {
+            "name": "action",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "pin | unpin",
+            "example": "pin"
           }
         ],
         "responses": {
@@ -1584,7 +1675,7 @@
         }
       }
     },
-    "/invites/{channel_type}/{channel_id}/{type}": {
+    "/invites/{channel_type}/{channel_id}/{action}": {
       "post": {
         "tags": [
           "Bellboy"
@@ -1626,7 +1717,7 @@
             "example": "{{channel_id}}"
           },
           {
-            "name": "type",
+            "name": "action",
             "in": "path",
             "schema": {
               "type": "string"
@@ -1771,7 +1862,7 @@
                 "type": "object",
                 "example": {
                   "cid": "{{cid}}",
-                  "search_term": "input",
+                  "search_term": "Usability",
                   "limit": 25,
                   "offset": 0
                 }
@@ -1871,12 +1962,57 @@
         }
       }
     },
+    "/channels/overview": {
+      "post": {
+        "tags": [
+          "Bellboy"
+        ],
+        "summary": "Overview Channels",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Content-Encoding",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "example": "zstd"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/channels": {
       "post": {
         "tags": [
           "Bellboy"
         ],
-        "summary": "Get Channel",
+        "summary": "Get Channels",
         "requestBody": {
           "content": {
             "application/json": {

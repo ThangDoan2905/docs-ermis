@@ -1,0 +1,1936 @@
+---
+title: 'Chat UI SDK for Android'
+---
+
+## [Ermis](https://ermis.network) home page
+
+## Table of contents
+
+1.  [Introduction](#introduction)
+1.  [Requirements](#requirements)
+1.  [Getting Started](#getting-started)
+1.  [Channel List Screen](#channel-list-screen)
+1.  [Message List Screen](#message-list-screen)
+1.  [ChannelListView](#channellistview)
+1.  [MessageListView](#messagelistview)
+1.  [Message Composer](#message-composer)
+1.  [Theming](#theming)
+1.  [Customizing Components](#customizing-components)
+
+## Introduction
+The ErmisChatUI SDK for Android enables developers to seamlessly integrate chat functionality into their applications. With pre-built, customizable UI components, the SDK offers a quick and efficient way to create a modern, responsive chat interface tailored to your app's design and user experience needs.
+
+## Requirements
+The minimum requirements for the ErmisChat UI SDK for Android are:
+
+- Android 6.0 (API level 23) or higher
+- Android Gradle plugin 3.4.2 or higher
+- Firebase Cloud Messaging 19.0.1 or higher
+
+## Getting started
+The UI Components library includes pre-built Android Views that simplify loading and displaying data from the Ermis Chat API. This library builds on the offline library and provides `ViewModels` for most Views, allowing for easy data population and input event handling.
+
+## Installation
+All Ermis Android libraries are available from MavenCentral, with some transitive dependencies hosted on Jitpack.
+
+Before adding Ermis dependencies, update your repositories in the settings.gradle file to include these two repositories:
+```gradle
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        maven { url "https://jitpack.io" }
+    }
+}
+```
+Or if you're using an older project setup, add them in your project level build.gradle file:
+```gradle
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url "https://jitpack.io" }
+    }
+}
+```
+To use the `UI Components` in your application, add the following dependency:
+```gradle
+dependencies {
+    implementation "com.github.ermisnetwork.ermis-android-sdk:ermis-chat-ui-components:$ermis_version"
+}
+```
+
+## Channel List Screen
+
+The easiest way to set up a screen that displays the active user's channels and allows them to search for a specific channel is to use one of the following components:
+
+* `ChannelListFragment`: A Fragment that represents a self-contained channel list screen.
+* `ChannelListActivity`: An Activity that is just a thin wrapper around `ChannelListFragment`.
+
+The `ChannelListFragment` contains four inner components:
+
+* [`ChannelListHeaderView`](channel-list-header.mdx): Displays information about the current user and the connection state.
+* [`ChannelListView`](channel-list.mdx): Displays a list of channel items in a paginated list.
+* `SearchInputView`: An input field to search for messages that contain specific text.
+* `SearchResultListView`: Displays a list of search result items.
+
+Fragments and Activities that represent self-contained screens are easy to use, enabling you to explore the SDK’s features effortlessly; however, they offer limited customization.
+
+### 1. Usage
+
+To use the channel list screen, simply start `ChannelListActivity` from the SDK:
+
+```kotlin
+context.startActivity(ChannelListActivity.createIntent(context))
+```
+This single line of code will create a fully functional solution, as shown in the image below:
+
+|![The Channel List Screen Component](../../assets/channel_list_screen.png)|
+|---|
+
+Alternatively, you can achieve the same result by adding `ChannelListFragment` from the SDK to your Fragment or Activity:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />
+```
+
+```kotlin
+class MyChannelListActivity : AppCompatActivity(R.layout.fragment_container) {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.container, ChannelListFragment.newInstance())
+                .commit()
+        }
+    }
+}
+```
+Next, let's explore how to handle actions on the screen.
+
+### 2. Handling Actions
+
+To manage actions supported by `ChannelListFragment`, you need to implement the corresponding click listeners in the parent Fragment or Activity:
+
+```kotlin
+class MyChannelListActivity : AppCompatActivity(R.layout.fragment_container),
+    ChannelListFragment.HeaderActionButtonClickListener,
+    ChannelListFragment.HeaderUserAvatarClickListener,
+    ChannelListFragment.ChannelListItemClickListener,
+    ChannelListFragment.SearchResultClickListener {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        // Add ChannelListFragment to the layout
+    }
+
+    override fun onUserAvatarClick() {
+        // Handle header avatar click
+    }
+
+    override fun onActionButtonClick() {
+        // Handle header action button click
+    }
+
+    override fun onChannelClick(channel: Channel) {
+        // Handle channel click
+    }
+
+    override fun onSearchResultClick(message: Message) {
+        // Handle search result click
+    }
+}
+```
+
+These are the main click listeners you can use with the `ChannelListFragment`:
+
+* `HeaderActionButtonClickListener`: Click listener for the right button in the header. Not implemented by default.
+* `HeaderUserAvatarClickListener`: Click listener for the left button in the header, represented by the avatar of the current user. Not implemented by default.
+* `ChannelListItemClickListener`: Click listener for channel item clicks, which navigates to `MessageListActivity` by default.
+* `SearchResultClickListener`: Click listener for search result items, which navigates to `MessageListActivity` by default.
+
+### 3. Customization
+
+The channel list screen component offers limited customization. The `ChannelListFragment` exposes a builder with the following methods: 
+
+* `setFragment`: Sets a custom channel list Fragment, which must be a subclass of `ChannelListFragment`.
+* `customTheme`: Custom theme for the screen.
+* `showHeader`: Determines whether the header is shown or hidden. 
+* `showSearch`: Determines whether the search input is shown or hidden.
+* `headerTitle`: Header title, defaulting to `Ermis Chat`
+
+
+## Message List Screen
+
+You can set up a self-contained chat screen that displays a list of messages and allows users to send messages by using one of the following components:
+
+* `MessageListFragment`: A Fragment that represents a self-contained chat screen.
+* `MessageListActivity`: An Activity that is just a thin wrapper around `MessageListFragment`.
+
+The `MessageListFragment` contains three inner components:
+
+* `MessageListHeaderView`: Displays a navigation icon, the name of the channel or thread and the channel avatar.
+* [`MessageListView`](message-list.mdx): Shows a list of paginated messages, with threads, replies, reactions and deleted messages.
+* [`MessageComposerView`](message-composer.mdx): Allows users to participate in the chat by sending messages and attachments.
+
+Fragments and Activities that represent self-contained screens are easy to use, enables you to explore the features of our SDK effortlessly; however, they offer limited customization.
+
+### 1. Usage
+
+To use the message list screen, you can simply start `MessageListActivity` from the SDK:
+
+```kotlin
+context.startActivity(MessageListActivity.createIntent(context, cid = "messaging:123:abc"))
+```
+
+This single line of code will create a fully functional solution, as shown in the image below:
+
+|![The Message List Screen Component](../../assets/message_list_screen.png)|
+|---|
+
+Alternatively, you can achieve the same result by adding `MessageListFragment` from the SDK to your Fragment or Activity:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />
+```
+
+```kotlin
+class MyMessageListActivity : AppCompatActivity(R.layout.fragment_container) {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (savedInstanceState == null) {
+            val fragment = MessageListFragment.newInstance(cid = "messaging:123:abc") {
+                showHeader(true)
+            }
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.container, fragment)
+                .commit()
+        }
+    }
+}
+```
+
+Next, let's see how to handle actions on the screen.
+
+### 2. Handling Actions
+
+To handle actions supported by `MessageListFragment` you have to implement corresponding click listeners in the parent Fragment or Activity:
+
+
+```kotlin
+class MyMessageListActivity : AppCompatActivity(R.layout.fragment_container), MessageListFragment.BackPressListener {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        // Add MessageListFragment to the layout
+    }
+
+    override fun onBackPress() {
+        // Handle back press
+    }
+}
+```
+
+Currently, there's only one click listener you can use with the `MessageListFragment`:
+
+* `BackPressListener`: Click listener for the navigation button in the header, which finishes Activity by default.
+
+### 3. Customization
+
+The message list screen component offers limited customization. The `MessageListFragment` exposes a builder with the following methods:
+
+* `setFragment`: Sets a custom message list Fragment, which must be a subclass of `MessageListFragment`.
+* `customTheme`: Custom theme for the screen.
+* `showHeader`: Determines whether the header is shown or hidden.
+* `messageId`: The ID of the message to highlight.
+
+In addition to these options, you can use inheritance for further customization, as shown in the example below:
+
+
+```kotlin
+class CustomMessageListFragment : MessageListFragment() {
+
+    override fun setupMessageListHeader(messageListHeaderView: MessageListHeaderView) {
+        super.setupMessageListHeader(messageListHeaderView)
+        // Customize message list header view
+
+        // For example, set a custom listener for the back button
+        messageListHeaderView.setBackButtonClickListener {
+            // Handle back press
+        }
+    }
+
+    override fun setupMessageList(messageListView: MessageListView) {
+        super.setupMessageList(messageListView)
+        // Customize message list view
+    }
+
+    override fun setupMessageComposer(messageComposerView: MessageComposerView) {
+        super.setupMessageComposer(messageComposerView)
+        // Customize message composer view
+    }
+}
+
+class CustomMessageListActivity : MessageListActivity() {
+
+    override fun createMessageListFragment(cid: String, messageId: String?): MessageListFragment {
+        return MessageListFragment.newInstance(cid) {
+            setFragment(CustomMessageListFragment())
+            customTheme(R.style.ermisUiTheme)
+            showHeader(true)
+            messageId(messageId)
+        }
+    }
+}
+```
+Then you need to add `CustomMessageListActivity` to your `AndroidManifest.xml`, create an Intent for it using the `MessageListActivity.createIntent()` method, and finally start the Activity:
+
+```kotlin
+context.startActivity(
+    MessageListActivity.createIntent(
+        context = context,
+        cid = "messaging:123:abc",
+        activityClass = CustomMessageListActivity::class.java
+    )
+)
+```
+
+## ChannelListView
+
+`ChannelListView` is a component that displays a list of channels available to the user. For users with a slower connection or those who don't belong to any channels yet, `ChannelListView` also supports loading and empty states.
+
+| Light Mode | Dark Mode |
+| --- | --- |
+|![Light_mode](../../assets/channel_list_view_component_swipe_actions.png)| ![Dark_mode](../../assets/channel_list_view_component_swipe_actions_dark.png) |
+
+By default, a single channel item displays the following information:
+
+* Channel name
+* User's read state
+* Latest message
+* Timestamp of the latest message
+
+In additonally, it supports swipe actions,allows users to handle different channel interactions.
+
+### 1. Usage
+
+To use `ChannelListView`, include it in your XML layout as shown below:
+
+```xml
+<network.ermis.ui.view.ChannelListView
+    android:id="@+id/channelListView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />
+```
+
+We recommend fetching data from Ermis API using `ChanneListViewModel`, and then rendering it inside `ChannelListView`.
+
+The basic setup of the ViewModel and its connecting to the View is done as follows:
+
+
+```kotlin
+// Instantiate the ViewModel
+val viewModel: ChannelListViewModel by viewModels {
+    ChannelListViewModelFactory(
+        filter = Filters.joindChannels(
+            memberId = userId,
+        ),
+        sort = QuerySortByField.descByName("last_updated"),
+        limit = 30,
+    )
+}
+// Bind the ViewModel with ChannelListView
+viewModel.bindView(channelListView, viewLifecycleOwner)
+```
+
+All the logic for subscribing to data emitted by the ViewModel is handled by the `bindView` function. In addition to loading channel data, the ViewModel also manages actions such as deleting a channel and leaving a group conversation by default.
+
+### 2. Handling Actions
+
+`ChannelListView` includes a set of channel actions that can be accessed via swipe. With these actions, you can:
+
+* Delete the channel if you have sufficient permissions
+* View channel members
+* Leave the channel if it's a group channel
+
+| Light Mode | Dark Mode |
+| --- | --- |
+|![Light_mode](../../assets/channel_action_light.png)|![Dark_mode](../../assets/channel_action_dark.png)|
+
+The following actions are not implemented by default, so you should add your own listeners if you want to handle them:
+
+
+```kotlin
+channelListView.setChannelItemClickListener { channel ->
+    // Handle channel click
+}
+channelListView.setChannelInfoClickListener { channel ->
+    // Handle channel info click
+}
+channelListView.setChannelLongClickListener { channel ->
+    // Handle channel long click
+}
+channelListView.setChannelListUpdateListener { channels ->
+    // Handle channel list updates
+}
+channelListView.setUserClickListener { user ->
+    // Handle member click
+}
+```
+
+A full list of available listeners is provided [here](https://github.com/.../-channel-list-view/).
+
+### 3. Customization
+
+There are two ways to customize the appearance of `ChannelListView`:
+
+* Using XML attributes
+* Using the `TransformStyle` API at runtime to customize the style of all `ChannelListView` instances
+
+#### 3.1. Using XML Attributes
+
+There are many XML attributes available to customize the appearance of the channel list. The most useful ones include:
+
+* `ermisUiChannelDeleteEnabled`:Determines whether the delete icon should be displayed.
+* `ermisUiChannelDeleteIcon`: Drawable reference for the channel delete icon.
+* `ermisUiChannelTitleTextColor`: Color of the channel title text.
+* `ermisUiChannelTitleTextSize`: Size of the channel title text.
+* `ermisUiLastMessageTextSize`: Size of the last message text.
+* `ermisUiLastMessageTextColor`: Color of the last message text.
+* `ermisUiForegroundLayoutColor`: Foreground color of the channel list item.
+* `ermisUiBackgroundLayoutColor`: Background color of the channel list item, visible when swiping the list item.
+
+A full list of available XML attributes can be found under `ChannelListView` styleable, [here](https://github.com/.../attrs_channel_list_view.xml).
+
+#### 3.2. Using Style Transformations
+
+The following example demonstrates how to modify the style of all `ChannelListView` instances globally to:
+
+* Disable the default options
+* Change the foreground color
+* Change the read indicator icon
+* Change the title text style
+* Change the background color for unread messages
+
+To make these changes, you need to define a custom `TransformStyle.channelListStyleTransformer`:
+
+```kotlin
+TransformStyle.channelListStyleTransformer = StyleTransformer { defaultStyle ->
+    defaultStyle.copy(
+        optionsEnabled = false,
+        foregroundLayoutColor = Color.LTGRAY,
+        indicatorReadIcon = ContextCompat.getDrawable(context, R.drawable.ic_flag)!!,
+        channelTitleText = defaultStyle.channelTitleText.copy(
+            color = Color.BLUE,
+            size = context.resources.getDimensionPixelSize(R.dimen.ui_text_large),
+        ),
+        unreadMessageCounterBackgroundColor = Color.BLUE,
+    )
+}
+```
+These changes should have the following results:
+
+| Before | After |
+| --- | --- |
+|![before](../../assets/channel_list_view_style_before.png)|![after](../../assets/channel_list_view_style_after.png)|
+
+:::note
+The transformer should be set before the View is rendered to make sure that the new style was applied.
+:::
+
+### 4. Customizing Swipe Actions
+
+By default, `ChannelListView` supports **two** swipe actions: 
+* `More Options` - available for every channel.
+* `Delete` - available for the channels where `Channel.ownCapbilities` contains `"delete-channel"`
+
+Here is the **default** implementation:
+
+| Swipe Actions                                             |
+|-----------------------------------------------------------|
+| ![before](../../assets/xml_customizing_swipe_actions.png) |
+
+You can customize the swipe actions as shown below.
+
+#### 4.1. Customizing Icons
+
+```kotlin
+channelsView.setMoreOptionsIconProvider { channel ->
+    // You can generate the icon Drawable based on the channel object
+    ContextCompat.getDrawable(context, R.drawable.custom_action_icon_more)
+}
+channelsView.setDeleteOptionIconProvider { channel ->
+    // You can generate the icon Drawable based on the channel object
+    ContextCompat.getDrawable(context, R.drawable.custom_action_icon_delete)
+}
+```
+
+#### 4.2. Customizing Visibility
+
+```kotlin
+channelsView.setIsMoreOptionsVisible { channel ->
+    // You can determine visibility based on the channel object.
+    true
+}
+channelsView.setIsDeleteOptionVisible { channel ->
+    // You can determine visibility based on the channel object.
+    // Here is the default implementation:
+    channel.ownCapabilities.contains("delete-channel")
+}
+```
+
+### 5. Creating a Custom ViewHolder Factory
+
+`ChannelListView` allows you to completely change the default ViewHolders and add different types of views. All you need to do is to provide your own `ChannelListItemViewHolderFactory`. Let's look an example that displays the channel's photo, name, and member count.
+
+1. Create the `custom_channel_list_item.xml` layout:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="64dp">
+
+    <network.ermis.ui.widgets.avatar.ChannelAvatarView
+        android:id="@+id/channelAvatarView"
+        style="@style/ermisUi.ChannelList.Item.Avatar"
+        android:layout_marginVertical="12dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/channelNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textAppearance="@style/ermisUiTextAppearance.BodyBold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/membersCountTextView"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toEndOf="@+id/channelAvatarView"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/membersCountTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:textAllCaps="false"
+        android:textColor="#7A7A7A"
+        android:textSize="14sp"
+        android:textStyle="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/channelNameTextView"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+```
+
+2. Add this _plurals_ entry to `strings.xml`:
+
+```xml
+<plurals name="members_count">
+    <item quantity="one">%1d Member</item>
+    <item quantity="other">%1d Members</item>
+</plurals>
+```
+
+3. Create a custom ViewHolder and ViewHolder factory:
+
+```kotlin
+class CustomChannelListItemViewHolderFactory : ChannelListItemViewHolderFactory() {
+    override fun createChannelViewHolder(parentView: ViewGroup): BaseChannelListItemViewHolder {
+        return CustomChannelViewHolder(parentView, listenerContainer.channelClickListener)
+    }
+}
+
+class CustomChannelViewHolder(
+    parent: ViewGroup,
+    private val channelClickListener: ChannelListView.ChannelClickListener,
+    private val binding: CustomChannelListItemBinding = CustomChannelListItemBinding.inflate(
+        LayoutInflater.from(parent.context),
+        parent,
+        false
+    ),
+) : BaseChannelListItemViewHolder(binding.root) {
+
+    private lateinit var channel: Channel
+
+    init {
+        binding.root.setOnClickListener { channelClickListener.onClick(channel) }
+    }
+
+    override fun bind(channel: Channel, diff: ChannelListPayloadDiff) {
+        this.channel = channel
+
+        binding.channelAvatarView.setChannel(channel)
+        binding.channelNameTextView.text = ChatUI.channelNameFormatter.formatChannelName(
+            channel = channel,
+            currentUser = ChatClient.instance().getCurrentUser()
+        )
+        binding.membersCountTextView.text = itemView.context.resources.getQuantityString(
+            R.plurals.members_count,
+            channel.members.size,
+            channel.members.size
+        )
+    }
+}
+```
+
+4. Set the custom ViewHolder factory on the `ChannelListView`:
+
+
+```kotlin
+// Create custom view holder factory
+val customFactory = CustomChannelListItemViewHolderFactory()
+
+// Set custom view holder factory
+channelListView.setViewHolderFactory(customFactory)
+```
+
+These changes should have the following results:
+
+|![Custom ViewHolder](../../assets/custom_view_holder.png)|
+|---|
+
+### 6. Creating a Custom Loading View
+
+A custom loading view can be set using the `setLoadingView` method. Assuming that we have a setup similar to the previous steps, we can create a loading view with a shimmer effect by taking the following actions:
+
+1. Add the Shimmer dependency in your `build.gradle` file's dependencies block:
+
+```groovy
+implementation "com.facebook.shimmer:shimmer:0.5.0"
+```
+
+2. Add `shape_shimmer.xml` into _drawable_ folder:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="#CCCCCC" />
+    <corners android:radius="20dp" />
+</shape>
+```
+
+3. Add a single row layout - `item_loading_view.xml` into _layout_ folder:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="64dp">
+
+    <View
+        android:id="@+id/avatarPlaceholder"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/shape_shimmer"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/titlePlaceholder"
+        android:layout_width="80dp"
+        android:layout_height="16dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/shape_shimmer"
+        app:layout_constraintStart_toEndOf="@id/avatarPlaceholder"
+        app:layout_constraintTop_toTopOf="@id/avatarPlaceholder" />
+
+    <View
+        android:id="@+id/subtitlePlaceholder"
+        android:layout_width="0dp"
+        android:layout_height="16dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/shape_shimmer"
+        app:layout_constraintBottom_toBottomOf="@id/avatarPlaceholder"
+        app:layout_constraintEnd_toStartOf="@+id/datePlaceholder"
+        app:layout_constraintStart_toEndOf="@id/avatarPlaceholder" />
+
+    <View
+        android:id="@+id/datePlaceholder"
+        android:layout_width="40dp"
+        android:layout_height="16dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/shape_shimmer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/subtitlePlaceholder"
+        app:layout_constraintTop_toTopOf="@id/subtitlePlaceholder" />
+
+    <View
+        android:id="@+id/separator"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_gravity="center"
+        android:background="@drawable/shape_shimmer"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+```
+
+4. Create the final loading view with shimmer effect. Let's call it `channel_list_loading_view`:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<com.facebook.shimmer.ShimmerFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/loadingViewContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="64dp"
+    app:shimmer_auto_start="true"
+    app:shimmer_base_color="#CCCCCC"
+    app:shimmer_colored="true"
+    app:shimmer_highlight_color="#FFFFFF">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/item_loading_view" />
+
+        <include layout="@layout/item_loading_view" />
+
+        <include layout="@layout/item_loading_view" />
+
+        <include layout="@layout/item_loading_view" />
+
+        <include layout="@layout/item_loading_view" />
+
+        <include layout="@layout/item_loading_view" />
+
+    </LinearLayout>
+
+</com.facebook.shimmer.ShimmerFrameLayout>
+```
+
+5. Change `ChannelListView`'s loading view:
+
+
+```kotlin
+// Inflate loading view
+val loadingView = LayoutInflater.from(context).inflate(R.layout.channel_list_loading_view, null)
+// Set loading view
+channelListView.setLoadingView(loadingView, FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT))
+```
+
+These changes should have the following results:
+
+|![Custom Loading View](../../assets/channel_list_shimmer.png)|
+|---|
+
+## MessageListView
+
+`MessageListView` is one of our core UI components, which displays a list of messages for a given channel. It includes the following types of items:
+
+- Plain text message
+- Text message with attachments (media or file)
+- Deleted message (depending on the set `DeletedMessageVisibility` value)
+- Error message (for example inappropriate messages blocked by moderation)
+- System message (for example when a user joins the channel)
+- Giphy preview
+- Date separator
+- Loading more indicator
+- Thread separator (for thread mode only)
+- Typing indicator
+
+You can customize the appearance of this component using custom attributes and method calls at runtime. `MessageListView` also contains a set of overridable action/option handlers and event listeners. By default, this component has the following appearance:
+
+| Light Mode | Dark Mode |
+| --- | --- |
+|![Message list overview in light mode](../../assets/message_list_view_overview_light.png)|![Message list overview in dark mode](../../assets/message_list_view_overview_dark.png)|
+
+### 1. Usage
+
+If you want to maintain the default design and behavior of this component, getting started is very simple:
+
+1. Add the component to your XML layout hierarchy.
+2. Bind it to a `MessageListViewModel`.
+
+Adding `MessageListView` to your layout is as easy as inserting the following lines into your layout hierarchy:
+
+```xml
+<network.ermis.ui.view.MessageListView
+    android:id="@+id/messageListView"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent" />
+``` 
+
+The UI components library includes a `ViewModel` for `MessageListView`.
+Binding it to the `View` can be easily accomplished using an extension function called `bindView`:
+
+```kotlin
+// 1. Init ViewModel
+val viewModel: MessageListViewModel by viewModels {
+    MessageListViewModelFactory(cid = "messaging:123:abc")
+}
+
+// 2. Bind View and ViewModel
+viewModel.bindView(messageListView, lifecycleOwner)
+```
+
+### 2. Handling Actions
+
+`MessageListView` contains a set of actions which are activated by long-pressing a message:
+
+* Adding reactions
+* Replying
+* Replying in a thread
+* Copying the message
+* Editing the message
+* Deleting the message
+
+
+| Light Mode | Dark Mode |
+| --- | --- |
+|![Message options in light mode](../../assets/message_options_light.png)|![Message options in dark mode](../../assets/message_options_dark.png)|
+
+Default action handlers are established when binding the ViewModel to the View.
+You can customize the default behavior by overriding each of the following handlers:
+
+```kotlin
+messageListView.setLastMessageReadHandler {
+    // Handle when last message got read
+}
+messageListView.setEndRegionReachedHandler {
+    // Handle when end region reached
+}
+messageListView.setMessageDeleteHandler { message: Message ->
+    // Handle when message is going to be deleted
+}
+messageListView.setThreadStartHandler { message: Message ->
+    // Handle when new thread for message is started
+}
+messageListView.setMessageFlagHandler { message: Message ->
+   // Handle when message is going to be flagged
+}
+messageListView.setMessagePinHandler { message: Message ->
+    // Handle when message is going to be pinned
+}
+messageListView.setMessageUnpinHandler { message: Message ->
+    // Handle when message is going to be unpinned
+}
+messageListView.setGiphySendHandler { giphyAction: GiphyAction ->
+    // Handle when some giphyAction is going to be performed
+}
+messageListView.setMessageRetryHandler { message: Message ->
+    // Handle when some failed message is going to be retried
+}
+messageListView.setMessageReactionHandler { message: Message, reactionType: String ->
+    // Handle when some reaction for message is going to be send
+}
+messageListView.setMessageReplyHandler { cid: String, message: Message ->
+    // Handle when message is going to be replied in the channel with cid
+}
+messageListView.setAttachmentDownloadHandler {
+    // Handle when attachment is going to be downloaded
+}
+```
+
+Handlers must be set before passing any data to `MessageListView`. If you're not using the default binding provided by `bindView`, ensure that you set up all the handlers yourself.
+
+This section lists only some of the more important handlers, many more are available within [`MessageListView`](https://github.com/.../MessageListView.kt).
+
+#### 2.1. Listeners
+
+In addition to the required handlers, `MessageListView` also provides optional listeners. They are also set by default if you use `bindView`.
+
+You can override these listeners to receive events when specific actions occur:
+
+
+```kotlin
+messageListView.setOnMessageClickListener { message: Message ->
+    // Handle message being clicked
+}
+messageListView.setOnEnterThreadListener { message: Message ->
+    // Handle thread being entered
+}
+messageListView.setOnAttachmentDownloadClickListener { attachment: Attachment ->
+    // Handle clicks on the download attachment button
+}
+messageListView.setOnUserReactionClickListener { message: Message, user: User, reaction: Reaction ->
+    // Handle clicks on a reaction left by a user
+}
+messageListView.setOnMessageLongClickListener { message ->
+    // Handle message being long clicked
+}
+messageListView.setOnAttachmentClickListener { message, attachment ->
+    // Handle attachment being clicked
+}
+messageListView.setOnUserClickListener { user ->
+    // Handle user avatar being clicked
+}
+```
+
+Other available listeners for `MessageListView` can be found [here](https://github.com/.../-message-list-listener-container/).
+
+### 3. Previewing Attachments
+
+Out-of-the box previews are provided for the following attachment types: uploading, link, Giphy, image, video and file.
+
+#### 3.1.  Image and Video
+
+Image and video attachments are previewed as thumbnails, which can be displayed as a single tile or multiple tiles depending on the number of attachments within a specific message.
+
+In practice, they appear as follows:
+
+| Video Thumbnails Enabled (Light Mode) | Video Thumbnails Enabled (Dark Mode) |
+|---|---|
+| ![Default Image and Video Attachment Previews Light Mode](../../assets/message_list_video_thumbs_enabled.png) | ![Default Image and Video Attachment Previews Dark Mode](../../assets/message_list_video_thumbs_enabled_dark.png) |
+
+### 4. Customization
+
+You can change the appearance of this component to fit your app's design requirements. These changes can be made either at compile-time using XML attributes or at runtime through style transformations.
+
+#### 4.1. Using XML Attributes
+
+`MessageListView` offers a large set of XML attributes for customization. The complete list is available [here](https://github.com/.../attrs_message_list_view.xml).
+
+Let's consider an example where we want to change the style of messages sent by the current user.
+
+| Light Mode | Dark Mode |
+| --- | --- |
+|![light](../../assets/message_style_xml_light.png)|![dark](../../assets/message_style_xml_dark.png)|
+
+To achieve this, we need to add additional attributes to `MessageListView`:
+
+```xml
+<network.ermis.ui.view.MessageListView
+    android:clipToPadding="false"
+    android:id="@+id/messageListView"
+    android:layout_height="0dp"
+    android:layout_marginHorizontal="0dp"
+    android:layout_width="0dp"
+    app:ermisUiMessageBackgroundColorMine="#70AF74"
+    app:ermisUiMessageBackgroundColorTheirs="#FFFFFF"
+    app:ermisUiMessageTextColorMine="#FFFFFF"
+    app:ermisUiMessageTextColorTheirs="#000000" />
+```
+
+#### 4.2.Using Style Transformations
+
+Both `MessageListView` and its ViewHolders can be configured programmatically, and a list of supported customizations can be found here:
+```kotlin
+public data class MessageListViewStyle(
+    public val scrollButtonViewStyle: ScrollButtonViewStyle,
+    public val scrollButtonBehaviour: MessageListView.NewMessagesBehaviour,
+    public val itemStyle: MessageListItemStyle,
+    public val giphyViewHolderStyle: GiphyViewHolderStyle,
+    public val audioRecordPlayerViewStyle: MessageViewStyle<AudioRecordPlayerViewStyle>,
+    public val replyMessageStyle: MessageReplyStyle,
+    public val reactionsEnabled: Boolean,
+    @ColorInt public val backgroundColor: Int,
+    val replyIcon: Int,
+    val replyEnabled: Boolean,
+    val threadReplyIcon: Int,
+    val threadsEnabled: Boolean,
+    val retryIcon: Int,
+    val copyIcon: Int,
+    val markAsUnreadIcon: Int,
+    val editMessageEnabled: Boolean,
+    val editIcon: Int,
+    val flagIcon: Int,
+    val flagEnabled: Boolean,
+    val pinIcon: Int,
+    val unpinIcon: Int,
+    val pinMessageEnabled: Boolean,
+    val deleteIcon: Int,
+    val deleteMessageEnabled: Boolean,
+    val copyTextEnabled: Boolean,
+    val markAsUnreadEnabled: Boolean,
+    val retryMessageEnabled: Boolean,
+    val deleteConfirmationEnabled: Boolean,
+    val flagMessageConfirmationEnabled: Boolean,
+    val messageOptionsText: TextStyle,
+    val warningMessageOptionsText: TextStyle,
+    @ColorInt val messageOptionsBackgroundColor: Int,
+    @ColorInt val userReactionsBackgroundColor: Int,
+    val userReactionsTitleText: TextStyle,
+    @ColorInt val optionsOverlayDimColor: Int,
+    val emptyViewTextStyle: TextStyle,
+    @LayoutRes public val loadingView: Int,
+    public val messagesStart: Int,
+    public val threadMessagesStart: Int,
+    public val messageOptionsUserReactionAlignment: Int,
+    public val scrollButtonBottomMargin: Int,
+    public val scrollButtonEndMargin: Int,
+    public val disableScrollWhenShowingDialog: Boolean,
+    public val optionsOverlayEditReactionsMarginTop: Int,
+    public val optionsOverlayEditReactionsMarginBottom: Int,
+    public val optionsOverlayEditReactionsMarginStart: Int,
+    public val optionsOverlayEditReactionsMarginEnd: Int,
+    public val optionsOverlayUserReactionsMarginTop: Int,
+    public val optionsOverlayUserReactionsMarginBottom: Int,
+    public val optionsOverlayUserReactionsMarginStart: Int,
+    public val optionsOverlayUserReactionsMarginEnd: Int,
+    public val optionsOverlayMessageOptionsMarginTop: Int,
+    public val optionsOverlayMessageOptionsMarginBottom: Int,
+    public val optionsOverlayMessageOptionsMarginStart: Int,
+    public val optionsOverlayMessageOptionsMarginEnd: Int,
+    public val showReactionsForUnsentMessages: Boolean,
+    public val readCountEnabled: Boolean,
+)
+```
+ and here:
+ ```kotlin
+ public data class MessageListItemStyle(
+    @ColorInt public val messageBackgroundColorMine: Int?,
+    @ColorInt public val messageBackgroundColorTheirs: Int?,
+    @ColorInt public val messageLinkTextColorMine: Int?,
+    @ColorInt public val messageLinkTextColorTheirs: Int?,
+    @ColorInt public val messageLinkBackgroundColorMine: Int,
+    @ColorInt public val messageLinkBackgroundColorTheirs: Int,
+    public val linkDescriptionMaxLines: Int,
+    public val textStyleMine: TextStyle,
+    public val textStyleTheirs: TextStyle,
+    public val textStyleUserName: TextStyle,
+    public val textStyleMessageDate: TextStyle,
+    public val textStyleMessageLanguage: TextStyle,
+    public val textStyleThreadCounter: TextStyle,
+    public val textStyleReadCounter: TextStyle,
+    public val threadSeparatorTextStyle: TextStyle,
+    public val textStyleLinkLabel: TextStyle,
+    public val textStyleLinkTitle: TextStyle,
+    public val textStyleLinkDescription: TextStyle,
+    @ColorInt public val dateSeparatorBackgroundColor: Int,
+    public val textStyleDateSeparator: TextStyle,
+    public val reactionsViewStyle: ViewReactionsViewStyle,
+    public val editReactionsViewStyle: EditReactionsViewStyle,
+    public val iconIndicatorSent: Drawable,
+    public val iconIndicatorRead: Drawable,
+    public val iconIndicatorPendingSync: Drawable,
+    public val iconOnlyVisibleToYou: Drawable,
+    public val textStyleMessageDeleted: TextStyle,
+    @ColorInt public val messageDeletedBackground: Int,
+    public val textStyleMessageDeletedMine: TextStyle?,
+    @ColorInt public val messageDeletedBackgroundMine: Int?,
+    public val textStyleMessageDeletedTheirs: TextStyle?,
+    @ColorInt public val messageDeletedBackgroundTheirs: Int?,
+    @ColorInt public val messageStrokeColorMine: Int,
+    @Px public val messageStrokeWidthMine: Float,
+    @ColorInt public val messageStrokeColorTheirs: Int,
+    @Px public val messageStrokeWidthTheirs: Float,
+    public val textStyleSystemMessage: TextStyle,
+    public val textStyleErrorMessage: TextStyle,
+    public val pinnedMessageIndicatorTextStyle: TextStyle,
+    public val pinnedMessageIndicatorIcon: Drawable,
+    @ColorInt public val pinnedMessageBackgroundColor: Int,
+    @Px public val messageStartMargin: Int,
+    @Px public val messageEndMargin: Int,
+    public val messageMaxWidthFactorMine: Float,
+    public val messageMaxWidthFactorTheirs: Float,
+    public val showMessageDeliveryStatusIndicator: Boolean,
+    public val iconFailedMessage: Drawable,
+    public val iconBannedMessage: Drawable,
+    public val systemMessageAlignment: Int,
+    @LayoutRes public val loadingMoreView: Int,
+    @ColorInt public val unreadSeparatorBackgroundColor: Int,
+    public val unreadSeparatorTextStyle: TextStyle,
+) : ViewStyle
+ ```
+
+As an example, let's apply the green style from the previous section programmatically:
+
+| Before | After |
+| --- | --- |
+|![message style before](../../assets/message_style_programmatically_message_before.png)|![message style after](../../assets/message_style_programmatically_message_after.png)|
+
+We will use a custom `TransformStyle.messageListItemStyleTransformer`:
+
+
+```kotlin
+TransformStyle.messageListItemStyleTransformer = StyleTransformer { defaultViewStyle ->
+    defaultViewStyle.copy(
+        messageBackgroundColorMine = Color.parseColor("#70AF74"),
+        messageBackgroundColorTheirs = Color.WHITE,
+        textStyleMine = defaultViewStyle.textStyleMine.copy(color = Color.WHITE),
+        textStyleTheirs = defaultViewStyle.textStyleTheirs.copy(color = Color.BLACK),
+    )
+}
+```
+
+The transformers should be set before the views are rendered to ensure that the new style is applied.
+
+In addition, let's modify the default view to allow scrolling to the bottom when a new message arrives:
+
+| Before | After |
+| --- | --- |
+|![message style programmatically before](../../assets/message_style_programmatically_fab_before.png)|![message style programmatically after](../../assets/message_style_programmatically_fab_after.png)|
+
+To achieve this effect, we need to provide a custom `TransformStyle.messageListStyleTransformer`:
+
+```kotlin
+TransformStyle.messageListStyleTransformer = StyleTransformer { defaultViewStyle ->
+    defaultViewStyle.copy(
+        scrollButtonViewStyle = defaultViewStyle.scrollButtonViewStyle.copy(
+            scrollButtonColor = Color.RED,
+            scrollButtonUnreadEnabled = false,
+            scrollButtonIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_clock)!!,
+        ),
+    )
+}
+```
+
+### 5. Channel Feature Flags
+
+Certain XML attributes allow you to enable or disable features in `MessageListView`.
+- `ermisUiScrollButtonEnabled` - Show/hide the scroll-to-bottom button.
+- `ermisUiScrollButtonUnreadEnabled` - Show/hide the unread count badge on the scroll-to-bottom button.
+- `ermisUiReactionsEnabled` - Enable/disable user reactions to messages.
+- `ermisUiReplyEnabled` - Enable/disable message replies.
+- `ermisUiCopyMessageActionEnabled` - Enable/disable the option to copy messages.
+- `ermisUiRetryMessageEnabled` - Enable/disable the ability to retry failed messages.
+- `ermisUiEditMessageEnabled` - Enable/disable message editing.
+- `ermisUiDeleteMessageEnabled` - Enable/disable message deletion.
+- `ermisUiDeleteConfirmationEnabled` - Show/hide the confirmation dialog when deleting messages.
+- `ermisUiThreadsEnabled` - Enable/disable thread replies.
+- `ermisUiPinMessageEnabled` - Enable/disable message pinning.
+
+These attributes allow you to configure channel features. For example, if a channel's configuration supports message replies, but you disable it via XML attributes, members of that channel won't see the reply option.
+
+Additionally, `MessageListView` provides the ability to enable or disable these channel features at runtime as well:
+
+```kotlin
+messageListView.setRepliesEnabled(false)
+messageListView.setDeleteMessageEnabled(false)
+messageListView.setEditMessageEnabled(false)
+```
+
+| Before | After |
+| --- | --- |
+|![message list options before](../../assets/message_list_options_before.png)|![message list options after](../../assets/message_list_options_after.png)|
+
+### 6. Messages Start Position
+You can configure the messages to start at the top or the bottom **(default)** of the view using `ermisUiMessagesStart` and `ermisUiThreadMessagesStart` attributes.
+
+| Bottom | Top |
+| --- | --- |
+|![messages at the bottom](../../assets/messages_at_the_top.png)|![messages at the top](../../assets/messages_at_the_bottom.png)|
+
+The start position does not affect the orientation, which defaults to bottom-to-top. If you want to change this orientation, use the method `setCustomLinearLayoutManager` and set a `LinearLayoutManager` with your desired orientation.
+
+
+### 7. Filtering Messages
+
+You can filter out certain messages if you don't want to display them in the `MessageListView`.
+For example, if you want to hide all messages that contains the word 'secret', you can achieve this with the following code:
+
+
+```kotlin
+val forbiddenWord = "secret"
+val predicate = MessageListView.MessageListItemPredicate { item ->
+    !(item is MessageListItem.MessageItem && item.message.text.contains(forbiddenWord))
+}
+messageListView.setMessageListItemPredicate(predicate)
+```
+
+The predicate must return `true` for the items you _do_ want to display in the list.
+
+### 8. Custom Message Views
+
+`MessageListView` provides an API for creating custom ViewHolders. To use your own ViewHolder, follow these steps: 
+1. Extend `MessageListItemViewHolderFactory`.
+2. Write your own logic for creating ViewHolders. 
+3. Create a new factory instance and set it on `MessageListView`.
+
+Let's consider an example where you want to create a custom ViewHolder for messages sent by other users within the last 24 hours. The result should look like this:
+
+1. Add a new layout called `today_message_list_item.xml`.
+
+2. Create a new `TodayViewHolder` class that inflates this layout and populates it with data.
+
+3. Implement a new `CustomMessageViewHolderFactory` class that evaluates each message, and uses the custom ViewHolder when necessary.
+4. Finally, set an instance of the custom factory on `MessageListView`:
+
+
+```kotlin
+messageListView.setMessageViewHolderFactory(CustomMessageViewHolderFactory())
+```
+
+### 9. Custom Empty State
+
+`MessageListView` manages loading and empty states out of the box. If you want to customize these states, you can do so at runtime.
+
+Let's consider an example where you want to set a custom empty state:
+
+
+```kotlin
+val textView = TextView(context).apply {
+    text = "There are no messages yet"
+    setTextColor(Color.RED)
+}
+messageListView.setEmptyStateView(
+    view = textView,
+    layoutParams = FrameLayout.LayoutParams(
+        FrameLayout.LayoutParams.WRAP_CONTENT,
+        FrameLayout.LayoutParams.WRAP_CONTENT,
+        Gravity.CENTER
+    )
+)
+```
+### 10. Configure When the User Avatar Appears
+By default, user avatars will appear next to messages that are either the last message in a group or the only message within it.
+
+You can configure when the user avatar will appear by setting your own predicate using `MessageListView.setShowAvatarPredicate()`.
+For instance, the following code will make the user avatar appear next to all messages sent by other users, regardless of their position.
+
+
+```kotlin
+messageListView.setShowAvatarPredicate { messageItem ->
+    messageItem.isTheirs
+}
+```
+
+To avoid overlap between the avatar and the message bubble, remember to use `ermisUiMessageStartMargin` and `ermisUiMessageEndMargin` to create space for the message avatar.
+
+If you set a predicate that shows avatars for your own messages as well, use the following value:
+
+```xml
+ermisUiMessageEndMargin="@dimen/ermis_ui_message_viewholder_avatar_missing_margin"
+```
+
+If your predicate doesn't show avatars for your own messages (the default behavior), simply remove the end margin:
+
+```xml
+ermisUiMessageEndMargin="0dp"
+```
+#### 10.1. Giphy Sizing Modes
+
+We offer two sizing modes for Giphy containers:
+
+* `adaptive`: The container automatically resizes itself to maintain the aspect ratio of the Giphy it hosts.
+* `fixed_size`: The container retains a fixed size, regardless of the aspect ratio of the Giphy it hosts.
+
+If you choose adaptive sizing, you're all set. However, if you opt for fixed sizing, you also need to set the container dimensions.
+
+You have the following attributes available for this purpose:
+
+* `ermisUiGiphyMediaAttachmentWidth`: Sets the width of the Giphy container.
+* `ermisUiGiphyMediaAttachmentHeight`: Sets the height of the Giphy container.
+* `ermisUiGiphyMediaAttachmentDimensionRatio`: Sets the dimension ratio of the Giphy container.
+
+To apply these attributes, include them in your app's theme. You can find more information about theming on the [Theming documentation page](../general-customization/theming.mdx).
+
+#### 10.2. Giphy Types
+
+The following quality modes are available:
+
+* `original`: The highest quality Giphy.
+* `fixedHeight`: Typically results in slightly lower quality than the original but enhances performance.
+* `fixedHeightDownsampled`: Offers lower visual fidelity than the original, along with a reduced frames per second (FPS) count.
+
+## Message Composer
+
+`MessageComposerView` is a UI component for sending messages and attachments to channels.
+
+| Light Mode                                       | Dark Mode                                            |
+ |--------------------------------------------------|------------------------------------------------------|
+| ![Light_mode](../../assets/message_composer.png) | ![Dark_mode](../../assets/message_composer_dark.png) |
+
+It supports the following features:
+
+* Attachments
+* Typing events
+* Editing messages
+* Threads
+* Mentions
+* Replies
+
+Let's see how to integrate the new `MessageComposerView` in your UI.
+
+### 1. Usage
+
+To use `MessageComposerView`, include it in your XML layout.
+
+```xml
+<network.ermis.ui.view.messages.composer.MessageComposerView
+    android:id="@+id/messageComposerView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />
+```
+
+The recommended way to set up `MessageComposerView` is by binding it to the `MessageComposerViewModel`. This ensures full functionality by establishing any necessary listeners and data handling.
+
+
+```kotlin
+// Create MessageComposerViewModel for a given channel
+val factory = MessageListViewModelFactory(cid = "messaging:123:abc")
+val messageComposerViewModel: MessageComposerViewModel by viewModels { factory }
+
+// Bind MessageComposerViewModel with MessageComposerView
+messageComposerViewModel.bindView(
+    // Required
+    messageComposerView, 
+    viewLifecycleOwner,
+    // Optional (you can set your custom listeners here)
+    sendMessageButtonClickListener = {
+        // Handle send button click
+    },
+    textInputChangeListener = { text ->
+        // Handle input text change
+    },
+    //... 
+    // other listeners
+)
+```
+
+Since the `MessageComposerView` is not intended to be used as a standalone component, it should be integrated with the `MessageListView`:
+
+```xml
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <network.ermis.ui.view.MessageListView
+        android:id="@+id/messageListView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/messageComposerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <network.ermis.ui.view.messages.composer.MessageComposerView
+        android:id="@+id/messageComposerView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+```
+
+```kotlin
+// Create ViewModels for MessageComposerView and MessageListView
+val factory = MessageListViewModelFactory(cid = "messaging:123:abc")
+val messageComposerViewModel: MessageComposerViewModel by viewModels { factory }
+val messageListViewModel: MessageListViewModel by viewModels { factory }
+
+// Bind MessageComposerViewModel with MessageComposerView
+messageComposerViewModel.bindView(messageComposerView, viewLifecycleOwner)
+
+// Bind MessageListViewModel with MessageListView
+messageListViewModel.bindView(messageListView, viewLifecycleOwner)
+
+// Integrate MessageComposerView with MessageListView
+messageListViewModel.mode.observe(viewLifecycleOwner) { mode ->
+    when (mode) {
+        is MessageMode.MessageThread -> {
+            messageComposerViewModel.setMessageMode(MessageMode.MessageThread(mode.parentMessage))
+        }
+        is MessageMode.Normal -> {
+            messageComposerViewModel.leaveThread()
+        }
+    }
+}
+messageListView.setMessageReplyHandler { _, message ->
+    messageComposerViewModel.performMessageAction(Reply(message))
+}
+messageListView.setMessageEditHandler { message ->
+    messageComposerViewModel.performMessageAction(Edit(message))
+}
+```
+
+In the snippet above, you initialize the message composer and connect it to the `MessageListView` by passing actions from the message list to the composer.
+
+This set will create a fully functional solution, as illustrated in the image below.
+
+| ![Whole Screen](../../assets/message_composer_whole_screen.png) |
+|-----------------------------------------------------------------|
+
+### 2. Handling Actions
+
+To manage actions supported by `MessageComposerView` you can set the corresponding listeners:
+
+```kotlin
+messageComposerView.sendMessageButtonClickListener = {
+    // Handle send button click
+}
+messageComposerView.textInputChangeListener = { text ->
+    // Handle input text change
+}
+messageComposerView.attachmentSelectionListener = { attachments ->
+    // Handle attachment selection
+}
+messageComposerView.attachmentRemovalListener = { attachment ->
+    // Handle attachment removal
+}
+messageComposerView.mentionSelectionListener = { user ->
+    // Handle mention selection
+}
+messageComposerView.alsoSendToChannelSelectionListener = { checked ->
+    // Handle "also send to channel" checkbox selection
+}
+messageComposerView.dismissActionClickListener = {
+    // Handle dismiss action button click
+}
+messageComposerView.dismissSuggestionsListener = {
+    // Handle when suggestions popup is dismissed
+}
+messageComposerView.audioRecordButtonLockListener = {
+    // Handle audio record button lock
+}
+
+messageComposerView.audioRecordButtonHoldListener = {
+    // Handle audio record button hold
+}
+
+messageComposerView.audioRecordButtonCancelListener = {
+    // Handle audio record button cancel
+}
+
+messageComposerView.audioRecordButtonReleaseListener = {
+    // Handle audio record button release
+}
+
+messageComposerView.audioDeleteButtonClickListener = {
+    // Handle audio delete button click
+}
+
+messageComposerView.audioStopButtonClickListener = {
+    // Handle audio stop button click
+}
+
+messageComposerView.audioPlaybackButtonClickListener = {
+    // Handle audio playback button click
+}
+
+messageComposerView.audioCompleteButtonClickListener = {
+    // Handle audio complete button click
+}
+
+messageComposerView.audioSliderDragStartListener = { progress ->
+    // Handle audio slider drag start
+}
+
+messageComposerView.audioSliderDragStopListener = { progress ->
+    // Handle audio slider drag stop
+}
+messageComposerView.attachmentsButtonClickListener = {
+    // Handle attachments button click
+}
+```
+
+If you don't define custom listeners, the default listeners from the `MessageComposerViewModel::bindView` method will be used:
+
+
+```kotlin
+messageComposerView.sendMessageButtonClickListener = {
+    messageComposerViewModel.sendMessage()
+}
+messageComposerView.textInputChangeListener = { text ->
+    messageComposerViewModel.setMessageInput(text)
+}
+messageComposerView.attachmentSelectionListener = { attachments ->
+    messageComposerViewModel.addSelectedAttachments(attachments)
+}
+messageComposerView.attachmentRemovalListener = { attachment ->
+    messageComposerViewModel.removeSelectedAttachment(attachment)
+}
+messageComposerView.mentionSelectionListener = { user ->
+    messageComposerViewModel.selectMention(user)
+}
+messageComposerView.alsoSendToChannelSelectionListener = { checked ->
+    messageComposerViewModel.setAlsoSendToChannel(checked)
+}
+messageComposerView.dismissActionClickListener = {
+    messageComposerViewModel.dismissMessageActions()
+}
+messageComposerView.dismissSuggestionsListener = {
+    messageComposerViewModel.dismissSuggestionsPopup()
+}
+messageComposerView.attachmentsButtonClickListener = {
+    // Handle attachments button click
+}
+```
+
+Now let's explore how to customize the view.
+
+### 3. Customization
+
+`MessageComposerView` can be customized:
+
+- Using XML Attributes
+- Using style Transformations
+- By overriding content Views
+
+#### 3.1. Using XML Attributes
+
+The styling of the View can be configured by styled attributes. You can change the message input colors, the fonts, visibility of various components and so on. A full list of available attributes can be found [here](https://github.com/.../attrs_message_composer_view.xml).
+
+Here's an example of setting a custom attribute:
+
+```xml
+ <network.ermis.ui.view.messages.composer.MessageComposerView
+    android:id="@+id/messageComposerView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:ermisUiMessageComposerMessageInputTextColor="#005AFF" />
+```
+
+This produces the following styling:
+
+| ![Custom Attribute](../../assets/message_composer_custom_attribute.png) |
+|-------------------------------------------------------------------------|
+
+Different configurations can be used to achieve the desired appearance of `MessageComposerView`. If you don't need to change the View's appearance at runtime, using styled attributes should suffice. However, for runtime customization, you can use `MessageComposerViewStyle` as described in the next section.
+
+#### 3.2. Using Style Transformations
+
+You can use [TransformStyle](https://github.com/.../TransformStyle.kt) to apply global style transformations to all `MessageComposerView` instances. For example, you can create a `messageComposerStyleTransformer` to change the input text colo r:
+
+
+```kotlin
+TransformStyle.messageComposerStyleTransformer = StyleTransformer { viewStyle ->
+    viewStyle.copy(
+        messageInputTextStyle = viewStyle.messageInputTextStyle.copy(
+            color = ContextCompat.getColor(context, R.color.ui_accent_red)
+        )
+    )
+}
+```
+
+The transformer should be set before the View is rendered to make sure that the new style was applied.
+
+### 4. Overriding Content Views
+
+With the new `MessageComposerView`, you can customize several layout parts to enhance the user experience:
+
+* **Leading content**: Represents the left part with integration buttons.
+* **Center content**: Represents the center part with the text input.
+* **Trailing content**: Represents the right part with the send button.
+* **Header content**: Represents the top part with the action mode title.
+* **Footer content**: Represents the bottom part with the "also send to channel" checkbox.
+* **Command suggestions content**: Represents the content inside the command suggestions popup.
+* **Mention suggestions content**: Represents the content inside the mention suggestions popup.
+
+The available methods with the default content view implementations are listed below:
+
+
+```kotlin
+messageComposerView.setLeadingContent(
+    DefaultMessageComposerLeadingContent(context).also {
+        it.attachmentsButtonClickListener = { messageComposerView.attachmentsButtonClickListener() }
+    }
+)
+messageComposerView.setCenterContent(
+    DefaultMessageComposerCenterContent(context).also {
+        it.textInputChangeListener = { text -> messageComposerView.textInputChangeListener(text) }
+        it.attachmentRemovalListener = { attachment -> messageComposerView.attachmentRemovalListener(attachment) }
+    }
+)
+messageComposerView.setTrailingContent(
+    DefaultMessageComposerTrailingContent(context).also {
+        it.sendMessageButtonClickListener = { messageComposerView.sendMessageButtonClickListener() }
+    }
+)
+messageComposerView.setHeaderContent(
+    DefaultMessageComposerHeaderContent(context).also {
+        it.dismissActionClickListener = { messageComposerView.dismissActionClickListener() }
+    }
+)
+messageComposerView.setFooterContent(
+    DefaultMessageComposerFooterContent(context).also {
+        it.alsoSendToChannelSelectionListener = { checked -> messageComposerView.alsoSendToChannelSelectionListener(checked) }
+    }
+)
+messageComposerView.setMentionSuggestionsContent(
+    DefaultMessageComposerMentionSuggestionsContent(context).also {
+        it.mentionSelectionListener = { user -> messageComposerView.mentionSelectionListener(user) }
+    }
+)
+```
+
+
+To create a custom content view, you need to create an Android View that implements the `MessageComposerContent` interface:
+
+
+```kotlin
+class CustomMessageComposerLeadingContent : FrameLayout, MessageComposerContent {
+
+    constructor(context: Context) : this(context, null)
+
+    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
+
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
+        context,
+        attrs,
+        defStyleAttr
+    )
+
+    override fun attachContext(messageComposerContext: MessageComposerContext) {
+        // Access the style if necessary
+        val style = messageComposerContext.style
+    }
+
+    override fun renderState(state: MessageComposerState) {
+        // Render the state of the component
+    }
+}
+```
+
+Notice that you need to implement 2 methods from the `MessageComposerContent` interface:
+
+- `attachContext()` Called only once when the View has been attached to the hierarchy.
+- `renderState()` Invoked when the state has changed and the UI needs to be updated accordingly.
+
+Finally, you need to pass the created content view to the `MessageComposerView`:
+
+```kotlin
+messageComposerView.setLeadingContent(CustomMessageComposerLeadingContent(context))
+```
+
+```kotlin
+class CustomMessageComposerLeadingContent : FrameLayout, MessageComposerContent {
+
+    private lateinit var binding: CustomMessageComposerLeadingContentBinding
+
+    var datePickerButtonClickListener: () -> Unit = {}
+
+    constructor(context: Context) : this(context, null)
+
+    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
+
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
+        context,
+        attrs,
+        defStyleAttr
+    ) {
+        binding = CustomMessageComposerLeadingContentBinding.inflate(LayoutInflater.from(context), this, true)
+        binding.datePickerButton.setOnClickListener { datePickerButtonClickListener() }
+    }
+
+    override fun attachContext(messageComposerContext: MessageComposerContext) {
+        // Access the style if necessary
+        val style = messageComposerContext.style
+    }
+
+    override fun renderState(state: MessageComposerState) {
+        // Render the state of the component
+    }
+}
+```
+
+```kotlin
+val leadingContent =  CustomMessageComposerLeadingContent(context).also {
+    it.datePickerButtonClickListener = {
+        // Create an instance of a date picker dialog
+        val datePickerDialog = MaterialDatePicker.Builder
+            .datePicker()
+            .build()
+
+        datePickerDialog.addOnPositiveButtonClickListener {
+            // Handle date selection
+        }
+
+        // Show the date picker dialog
+        datePickerDialog.show(supportFragmentManager, null)
+    }
+}
+
+messageComposerView.setLeadingContent(leadingContent)
+```
+
+In the example above, we inflated a simple layout containing a single date picker button and defined a listener to handle clicks on that button.
+
+| ![Message Composer](../../assets/message_composer_custom_slot_1.png) | ![Message Composer](../../assets/message_composer_custom_slot_2.png) |
+|----------------------------------------------------------------------|----------------------------------------------------------------------|
+
+### 5. Changing Mention Search
+It is possible to modify the search method in the mention list.
+The `UserLookupHandler` is responsible for searching users when the user types `@` in the message input.
+The default class, `DefaultUserLookupHandler`, removes diacritics and uses the `levenstein` distance to include similar words in the results.
+
+
+```kotlin
+val cid = "messaging:123:abc"
+val chatClient = ChatClient.instance()
+val defaultUserLookupHandler = DefaultUserLookupHandler(chatClient, cid)
+
+val factory = MessageListViewModelFactory(
+    context = appContext, cid = cid, userLookupHandler = defaultUserLookupHandler
+)
+val messageComposerViewModel: MessageComposerViewModel by viewModels { factory }
+```
+
+#### 5.1. Custom User Lookup Handler
+You can create your own implementation of `UserLookupHandler` to change the search method.
+
+```kotlin
+val cid = "messaging:123:abc"
+// Implement your custom user lookup
+val customUserLookupHandler = UserLookupHandler { query ->
+    queryMembers(query)
+}
+
+// Create MessageComposerViewModel for a given channel
+val factory = MessageListViewModelFactory(
+    context = requireContext(),
+    cid = cid,
+    userLookupHandler = customUserLookupHandler
+)
+val viewModel: MessageComposerViewModel by viewModels { factory }
+
+// Bind MessageComposerViewModel with MessageComposerView
+viewModel.bindView(messageComposerView, viewLifecycleOwner)
+```
+
+## Theming
+Many aspects of the UI components can be changed and customized. For example, you can modify:
+- Font family
+- Text color
+- Background of views
+- Item views in lists
+- Enable and disable features
+- Text style (italic, bold, normal)
+- Drawable of icons
+- Stroke widths
+- Divider color
+
+These customizations can be applied in several ways, ranging from the simplest to the most complex:
+- Adding attributes to the View in the XML layout where it's created.
+- Using the `TransformStyle` object to apply transformations to all style objects of a given type.
+- Using themes to style all Views globally.
+
+### 1. XML Attributes
+The simplest way to customize Views is by setting attributes directly in the XML layout. For example, here are some custom values you can apply to `MessageListView`.
+```xml
+<network.ermis.ui.view.MessageListView
+    android:id="@+id/messageListView"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    app:ermisUiMessageBackgroundColorMine="@color/color_primary"
+    app:ermisUiMessageBackgroundColorTheirs="@color/color_onSurfaceVariant"
+    app:ermisUiMessageTextColorDate="@color/color_onSurfaceHigh"
+    app:ermisUiPinMessageEnabled="true"
+    app:ermisUiMessagesStart="top"
+    />
+```
+
+### 2. Style Transformations
+Styles can be configured programmatically by overriding the corresponding `StyleTransformer` from the `TransformStyle` object. These transformations will be applied to all UI Components of the specified type.
+You have to set up any custom `StyleTransformer` instances before the View instances are initialized, otherwise they won't take effect.
+```kotlin
+TransformStyle.messageListItemStyleTransformer = StyleTransformer { defaultViewStyle ->
+    defaultViewStyle.copy(
+        messageBackgroundColorMine = Color.parseColor("#0277BD"),
+        messageBackgroundColorTheirs = Color.parseColor("#2E7D32"),
+        textStyleMine = defaultViewStyle.textStyleMine.copy(color = Color.WHITE),
+        textStyleTheirs = defaultViewStyle.textStyleTheirs.copy(color = Color.WHITE),
+    )
+}
+```
+This is the same as the XML customization shown above, but applied to all `MessageListView` instances in the app, and configured programmatically.
+
+### 3. Themes
+You can also use Android themes to set attributes for the UI Components. To do this, set a `ermisUiTheme` attribute within your app's theme, in the `themes.xml` file:
+```xml
+<style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <!-- Other items... -->
+    <item name="ermisUiTheme">@style/CustomErmisUiTheme</item>
+</style>
+```
+The theme you provide as the `ermisUiTheme` can define a style for each type of UI Component, allowing you to set attribute values.
+
+For example, you can achieve the same styling as shown in the previous example by overriding the `ermisUiMessageListStyle` attribute:
+```xml
+<style name="CustomErmisUiTheme" parent="@style/ermisUiTheme">
+    <item name="ermisUiMessageListStyle">@style/CustomMessageListStyle</item>
+</style>
+<style name="CustomMessageListStyle" parent="ermisUi.MessageList">
+    <item name="ermisUiMessageBackgroundColorMine">#0277BD</item>
+    <item name="ermisUiMessageBackgroundColorTheirs">#2E7D32</item>
+    <item name="ermisUiMessageTextColorMine">@android:color/white</item>
+    <item name="ermisUiMessageTextColorTheirs">@android:color/white</item>
+</style>
+```
+The list of available styles you can define here can be found in our [attrs_file](https://github.com/.../ermis-chat-ui-components/src/main/res/values).
+
+### 4. Themes for Activities
+The SDKincludes the following activities: `AttachmentMediaActivity`, `AttachmentActivity` and `AttachmentGalleryActivity`. You can customize them by overriding the activity with a custom theme in your manifest.
+
+Let's see how to change the color of the title on the gallery screen:
+
+AndroidManifest.xml
+```xml
+<activity
+    android:name="network.ermis.ui.view.gallery.AttachmentGalleryActivity"
+    android:theme="@style/CustomAttachmentGalleryTheme"
+    tools:replace="android:theme" />
+```
+
+themes.xml
+```xml
+<style name="CustomAttachmentGalleryTheme" parent="ermisUi.AttachmentGallery">
+    <item name="ermisUiTheme">@style/CustomErmisUiTheme</item>
+</style>
+
+<style name="CustomErmisUiTheme" parent="@style/ermisUiTheme">
+    <item name="ermisUiAttachmentGalleryTitleStyle">@style/CustomAttachmentGalleryTitleStyle</item>
+</style>
+
+<style name="CustomAttachmentGalleryTitleStyle">
+    <item name="android:textAppearance">@style/CustomAttachmentGalleryTitleTextAppearance</item>
+</style>
+
+<style name="CustomAttachmentGalleryTitleTextAppearance" parent="ermisUiTextAppearance.HeadlineBold">
+    <item name="android:textColor">#FF0000</item>
+</style>
+```
+
+### 5. Choose Light/Dark Theme
+Our SDK already provides a DayNight theme. If you want to force Dark or Light mode, you should follow the default Android mechanism for doing so:
+```kotlin
+// Force Dark theme
+AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+
+// Force Light theme
+AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+```
+
+## Customizing Components
+The SDK provides an API for general configuration of the UI Component library's behavior and appearance, which is accessible through the `ChatUI` object.
+
+`ChatUI` allows you to override the default implementations of commonly used parts of the SDK such as:
+- Available message reactions
+- The UI used for rendering attachments
+- MIME type icons for attachments
+- Default font used across the UI components
+- Attachments URLs
+- Text transformations
+
+The full list of `ChatUI` properties you can override includes:
+- `style`: Allows overriding the global, default style of UI components, such as defaultTextStyle.
+- `navigator`: Allows intercepting and modifying default navigation between SDK components (for example: navigating from `MessageListView` to `AttachmentGalleryActivity`).
+- `imageHeadersProvider`: Allows adding extra headers to image loading requests.
+- `fonts`: The default font for TextViews displayed by UI Components.
+- `messageTextTransformer`: Used to transform the way text is rendered on screen, for example: create clickable link text or implement markdown support. You can override it with `MarkdownTextTransformer` if you want to use Ermis ready-made markdown support.
+- `supportedReactions`: The set of supported message reactions.
+- mimeTypeIconProvider: The icons used for different mime types.
+- channelNameFormatter: Allows customizing the way channel names are formatted.
+- messagePreviewFormatter: Allows you to generate a preview text for the given message.
+- dateFormatter: Allows changing the way dates are formatted.
+- attachmentFactoryManager: Allows changing the way attachments are displayed in the message list. Includes adding UI for custom attachments.
+- attachmentPreviewFactoryManager: Allows changing the way attachments are displayed in the message composer. Includes adding UI for custom attachments.
+- quotedAttachmentFactoryManager: Allows changing the way attachments are displayed in quoted messages both in the message list and the message composer. Includes adding UI for custom attachments.
+- currentUserProvider: provides the currently logged in user.
+- videoThumbnailsEnabled: Changes whether video thumbnails are displayed or not. Video thumbnails are a paid feature, You can find the pricing here.
+
+`ChatUI` is initialized out-of-the-box with default implementations, so no initialization is required on app startup.
+
+### Example
+#### 1. Custom MIME Type Icons
+When possible, the SDK displays thumbnails for image and video files. If thumbnails are unavailable or when other types of files are in question, mime type icons are displayed in `MessageListView`, `MessageComposer` and attachment picker.
+
+By default, the SDK provides built-in MIME type icons for the most popular file types and displays a generic file icon for others.
+
+To customize these icons, you need to override `ChatUI.mimeTypeIconProvider` as follows:
+```kotlin
+ChatUI.mimeTypeIconProvider = MimeTypeIconProvider { mimeType ->
+    when {
+        // Generic icon for missing MIME type
+        mimeType == null -> R.drawable.ic_file
+        // Special icon for XLS files
+        mimeType == "application/vnd.ms-excel" -> R.drawable.ic_file_xls
+        // Generic icon for audio files
+        mimeType.contains("audio") -> R.drawable.ic_file_mp3
+        // Generic icon for video files
+        mimeType.contains("video") -> R.drawable.ic_file_mov
+        // Generic icon for other files
+        else -> R.drawable.ic_file
+    }
+}
+```
+
+#### 2. Changing the Default Font
+
+You can customize the default fonts used by all of the UI components. To change the fonts, implement the `ChatFont` interface and set the new implementation on `ChatUI`:
+```kotlin
+ChatUI.fonts = object : ChatFonts {
+    // Fetch the font you want to use
+    val font = ResourcesCompat.getFont(context, R.font.roboto_regular)
+    override fun setFont(textStyle: TextStyle, textView: TextView) {
+        textView.setTypeface(font, Typeface.BOLD)
+    }
+    override fun setFont(textStyle: TextStyle, textView: TextView, defaultTypeface: Typeface) {
+        textView.setTypeface(font, Typeface.BOLD)
+    }
+    override fun getFont(textStyle: TextStyle): Typeface? = font
+}
+```
+
+#### 3. Transforming Message Text
+
+You can easily provide a transformer to transform and apply the message text to a given `TextView`. To do this,  override `ChatUI.messageTextTransformer` with an an instance of a `ChatMessageTextTransformers` implementation.
+```kotlin
+ChatUI.messageTextTransformer = ChatMessageTextTransformer { textView: TextView, messageItem: MessageItem ->
+    // Transform messages to upper case.
+    textView.text = messageItem.message.text.uppercase()
+}
+```
+Ermis UI TextView components don't have the android:autoLink property set because it conflicts with Markdown plugins.
+You can use `AutoLinkableTextTransformer` if you want to apply custom transformation while keeping links clickable.
+
+
+#### 4. Customizing ChannelNameFormatter
+
+You can customize the formatting of channel names by overriding the default `ChannelNameFormatter`:
+```kotlin
+ChatUI.channelNameFormatter = ChannelNameFormatter { channel, currentUser ->
+    channel.name
+}
+```
+
+
+#### 5. Customizing DateFormatter
+
+Overriding the DateFormatter allows you to customize how dates are formatted in the application:
+```kotlin
+ChatUI.dateFormatter = object: DateFormatter {
+    private val dateFormat: DateFormat = SimpleDateFormat("dd/MM/yyyy")
+    private val timeFormat: DateFormat = SimpleDateFormat("HH:mm")
+
+    override fun formatDate(date: Date?): String {
+        date ?: return ""
+        return dateFormat.format(date)
+    }
+
+    override fun formatTime(date: Date?): String {
+        date ?: return ""
+        return timeFormat.format(date)
+    }
+}
+```

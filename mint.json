@@ -30,7 +30,7 @@
       ]
     },
     {
-      "group": "IOS",
+      "group": "iOS",
       "pages": [
         "ios/doc",
         "ios/doc-ui"
@@ -39,7 +39,8 @@
     {
       "group": "Android",
       "pages": [
-        "android/doc"
+        "android/doc",
+        "android/doc-ui"
       ]
     },
     {
@@ -70,11 +71,12 @@
         "api-reference/bellboy/update-notification",
         "api-reference/bellboy/remove-device",
         "api-reference/bellboy/send-event",
+        "api-reference/bellboy/send-message",
         "api-reference/bellboy/send-reaction",
         "api-reference/bellboy/delete-reaction",
-        "api-reference/bellboy/send-message",
         "api-reference/bellboy/update-message",
         "api-reference/bellboy/delete-message",
+        "api-reference/bellboy/pin-unpin-message",
         "api-reference/bellboy/update-channel-member-capa",
         "api-reference/bellboy/delete-channel",
         "api-reference/bellboy/truncate-channel",
@@ -83,7 +85,8 @@
         "api-reference/bellboy/get-channel-meber-capa",
         "api-reference/bellboy/search-channel-messages",
         "api-reference/bellboy/query-channel-detail",
-        "api-reference/bellboy/get-channel",
+        "api-reference/bellboy/overview-channels",
+        "api-reference/bellboy/get-channels",
         "api-reference/bellboy/get-contact"
       ]
     }

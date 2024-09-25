@@ -3,7 +3,7 @@ services:
     # build:
     #   context: .
     #   dockerfile: Dockerfile
-    image: registry.ermis.network/ermis/docs-ermis:v1.2.4
+    image: registry.ermis.network/ermis/docs-ermis:v1.2.5
     container_name: docs-ermis
     ports:
       - "3333:3334"
