@@ -32,7 +32,7 @@ title: 'Chat UI SDK for iOS'
 1.  [Introduction](#introduction)
 1.  [Requirements](#requirements)
 1.  [Getting Started](#getting-started)
-1.  [Appearance](#appearance)
+1.  [Theme](#theme)
 1.  [Views](#views)
 1.  [Component list](#component-list)
 
@@ -55,9 +55,9 @@ This section shows you the prerequisites you needed to use the ErmisChatUI SDK f
 
 See installation, and setup from [ErmisChat SDK](https://docs.ermis.network/ios/doc) documentations.
 
-## Appearance
+## Theme
 
-ErmisChatUI SDK provide you an easy way to customize the appearance of your application by modifying `Apppearance.default`. It's recommended to make these changes as early as possible, such as in `Appdelegate` or `SceneDelegate` when the application launches.
+ErmisChatUI SDK provide you an easy way to customize the theme of your application by modifying `Theme.default`. It's recommended to make these changes as early as possible, such as in `Appdelegate` or `SceneDelegate` when the application launches.
 
 ### 1. Colors
 
@@ -67,10 +67,10 @@ To change the brand color, simply set the `tintColor` of `UIWindow`:
 window.tintColor = .red
 ```
 
-To modify other colors, assign value of `colors` in `Appearance`:
+To modify other colors, assign value of `colors` in `Theme`:
 
 ```swift
-Appearance.default.colors.text = .black
+Theme.default.colors.text = .black
 ```
 
 Below is the list of available colors:
@@ -128,10 +128,10 @@ Below is the list of available colors:
 
 ### 2. Change fonts
 
-To change fonts, set value of `fonts` in `Appearance`
+To change fonts, set value of `fonts` in `Theme`
 
 ```swift
-Appearance.default.fonts.body = .systemFont(ofSize: 20)
+Theme.default.fonts.body = .systemFont(ofSize: 20)
 ```
 Below is the list of available fonts:
 
@@ -152,10 +152,10 @@ Below is the list of available fonts:
 
 ### 3. Icons
 
-To change images, set value of `images` in `Appearance`
+To change images, set value of `images` in `Theme`
 
 ```swift
-Appearance.default.images.close = UIImage(named: "ic_close")
+Theme.default.images.close = UIImage(named: "ic_close")
 ```
 
 Below is the list of available images:
@@ -272,10 +272,10 @@ Below is the list of available images:
 
 ### 4. Change formatter
 
-To change formatter, set value in `Appearance.formatters`
+To change formatter, set value in `Formatters.default`
 
 ```swift
-Appearance.default.formatters.systemMessage = CustomeSystemMessageFormatter()
+Formatters.default.systemMessage = CustomeSystemMessageFormatter()
 ```
 
 Below is the table of available formatters:
@@ -330,11 +330,11 @@ public protocol BaseViewProtocol {
     /// **It's called zero or one time(s) during the view's lifetime.** Calling super implementation is required.
     func setUp()
 
-    /// Main point of customization for the view appearance.
+    /// Main point of customization for the view theme.
     ///
     /// **It's called multiple times during the view's lifetime.** The default implementation of this method is empty
     /// so calling `super` is usually not needed.
-    func setUpAppearance()
+    func setUpTheme()
 
     /// Main point of customization for the view layout.
     ///
@@ -524,9 +524,9 @@ class CustomMessageLayoutOptionsResolver: MessageLayoutOptionsResolver {
         at indexPath: IndexPath,
         in channel: Channel,
         with messages: AnyRandomAccessCollection<ChatMessage>,
-        appearance: Appearance
+        theme: Theme
     ) -> MessageLayoutOptions { 
-        var options = super.optionsForMessage(at: indexPath, in: channel, with: messages, appearance: appearance)
+        var options = super.optionsForMessage(at: indexPath, in: channel, with: messages, theme: theme)
         // Add or remove options for modify UI
         // Remove avatar, all cell will don't show user avatar
         options.remove([.avatar])
