@@ -116,11 +116,11 @@
           "Ermis user"
         ],
         "summary": "Get token",
-        "description": "Get token",
+        "description": "To use this endpoint, you need to pass two parameters in the query. The first is the apikey provided by Ermis, and the second is the address (either a wallet address or a user ID, ensuring that this value is unique among users in your app).",
         "operationId": "getToken",
         "parameters": [
           {
-            "name": "api_key",
+            "name": "apikey",
             "in": "query",
             "schema": {
               "type": "string",
