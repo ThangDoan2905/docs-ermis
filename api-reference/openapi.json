@@ -1096,7 +1096,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "example": "{\n    \"message\": {\n        \"id\": \"{{$guid}}\",\n        // \"attachments\": [],\n        // \"mentioned_users\": [\"0x75c4ff25f1d81803675f687d52a4906855d61ad8\"],\n        // \"parent_id\": \"3d8688e3-1724-4c5b-80d5-84164cd08bcc\",\n        // \"pinned\": false,\n        // \"quoted_message_id\": \"3d8688e3-1724-4c5b-80d5-84164cd08bcc\",\n        \"text\": \"{{$randomWords}}\"\n    }\n}"
+                "example": "{\n    \"message\": {\n        \"id\": \"{{$guid}}\",\n        // \"attachments\": [],\n        // \"mentioned_all\": true,\n        // \"mentioned_users\": [\"0x75c4ff25f1d81803675f687d52a4906855d61ad8\"],\n        // \"parent_id\": \"3d8688e3-1724-4c5b-80d5-84164cd08bcc\",\n        // \"pinned\": false,\n        // \"quoted_message_id\": \"3d8688e3-1724-4c5b-80d5-84164cd08bcc\",\n        \"text\": \"{{$randomWords}}\"\n    }\n}"
               }
             }
           }
@@ -1302,9 +1302,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "example": {
-                  "text": "wtf message"
-                }
+                "example": "{\n    \"message\": {\n        // \"mentioned_all\": true,\n        // \"mentioned_users\": [\"0x75c4ff25f1d81803675f687d52a4906855d61ad8\"],\n        \"text\": \"updated message text\"\n    }\n}"
               }
             }
           }
@@ -1565,20 +1563,13 @@
         "tags": [
           "Bellboy"
         ],
-        "summary": "Update Channel Member Capa",
+        "summary": "Block | Unblock Channel",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "example": {
-                  "remove_capabilities": [
-                    "delete-own-message"
-                  ],
-                  "add_capabilities": [
-                    "delete-own-message"
-                  ]
-                }
+                "example": "{\n    \"action\": \"block\" // \"block\" | \"unblock\"\n}"
               }
             }
           }
@@ -1936,7 +1927,7 @@
               "type": "string"
             },
             "required": true,
-            "example": "team"
+            "example": "{{channel_type}}"
           },
           {
             "name": "channel_id",
@@ -1945,7 +1936,7 @@
               "type": "string"
             },
             "required": true,
-            "example": "b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room"
+            "example": "{{channel_id}}"
           }
         ],
         "responses": {

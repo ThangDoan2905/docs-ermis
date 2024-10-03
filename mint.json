@@ -77,7 +77,7 @@
         "api-reference/bellboy/update-message",
         "api-reference/bellboy/delete-message",
         "api-reference/bellboy/pin-unpin-message",
-        "api-reference/bellboy/update-channel-member-capa",
+        "api-reference/bellboy/block-unblock-channel",
         "api-reference/bellboy/delete-channel",
         "api-reference/bellboy/truncate-channel",
         "api-reference/bellboy/invite-accept-reject",
