@@ -10,7 +10,7 @@
       "url": "https://{https_host}",
       "variables": {
         "https_host": {
-          "default": "api-staging.ermis.network",
+          "default": "api-default.ermis.network",
           "description": "The HTTPs API host"
         }
       }
@@ -19,38 +19,27 @@
       "url": "http://{http_host}",
       "variables": {
         "http_host": {
-          "default": "127.0.0.1",
+          "default": "localhost.ermis.network",
           "description": "The HTTP API host"
         }
       }
     }
   ],
   "paths": {
-    "/uss/v1/wallets/auth/start": {
+    "/uss/v1/wallets/register": {
       "post": {
         "tags": [
           "Ermis user"
         ],
-        "summary": "Auth start",
-        "description": "Auth start",
-        "operationId": "authStart",
+        "summary": "Register with email",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "properties": {
-                  "address": {
-                    "type": "string",
-                    "example": "0x61197c6800f990454903290736aFe5D4fc7a2DD1"
-                  }
-                }
-              },
-              "examples": {
-                "auth_start": {
-                  "value": {
-                    "address": "0x61197c6800f990454903290736aFe5D4fc7a2DD1"
-                  }
+                "example": {
+                  "email": "hoangbim@gmail.com",
+                  "password": "123456"
                 }
               }
             }
@@ -58,7 +47,113 @@
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/uss/v1/wallets/email_login": {
+      "post": {
+        "tags": [
+          "Ermis user"
+        ],
+        "summary": "Login with email and password",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "email": "hoangbim1@gmail.com",
+                  "password": "123456",
+                  "apikey": "kUCqqbfEQxkZge7HHDFcIxfoHzqSZUam"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/uss/v1/wallets/google_login": {
+      "post": {
+        "tags": [
+          "Ermis user"
+        ],
+        "summary": "Google login",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjI4YTQyMWNhZmJlM2RkODg5MjcxZGY5MDBmNGJiZjE2ZGI1YzI0ZDQiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIxODkwODUxMjU3ODMtYzAzODEyM2hiZXVtNDJzNnRzdmQyMjJrcW1vaXRlMTMuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiIxODkwODUxMjU3ODMtYzAzODEyM2hiZXVtNDJzNnRzdmQyMjJrcW1vaXRlMTMuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMTc3MTc1OTc4MjQ3NTg2NzA5OTkiLCJlbWFpbCI6Im52aG9hbmd3cnVAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5iZiI6MTcyNzk0NjEzNiwibmFtZSI6Ik5ndXnhu4VuIEhvw6BuZyIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NMcXpRZTk2WUVhcnNlZTFOTWVrOHRvVFhjOWFMYVo1THBvTWxQVU5NeXNoWV9qNUF5MD1zOTYtYyIsImdpdmVuX25hbWUiOiJOZ3V54buFbiIsImZhbWlseV9uYW1lIjoiSG_DoG5nIiwiaWF0IjoxNzI3OTQ2NDM2LCJleHAiOjE3Mjc5NTAwMzYsImp0aSI6ImJkZWI2ZTI1MTMzYWExMTUxMTQzOWUwNjY4NjYxY2E5NTU2MzZmNDUifQ.ZeRmo5MdHxNhqfRvBRogzrVLo6xxj2acbY45g89sZUuoJ9zdqsBIMfq33kP_G7W-JMY4pk7aY84xvb5B94IztEF2Pp_WYVMqy-PJnxsMPg-_2wa6tO-7M4BKOO1qKUfT4Uf0BjKlMu2ypqyxOMUF0Xlv5lnTPu1Jvwmkgq40SMYUeqOUQNQ-Ji8iZJLFhdAwkJFacdZp2-irqPLnhcF-gtuBs7t5W0LhoNSV8WhSLnb3dExmXjFYz0lR1Epx8ycBrDt7tybbTZ3TgP-X8OtaYtDcpishmmPq_qjRhqPawUy9jM2jzrXs7hvsdH-t7nWtPIbY2FBU3RrFElFsVDouNw",
+                  "apikey": "kUCqqbfEQxkZge7HHDFcIxfoHzqSZUam"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/uss/v1/wallets/auth/start": {
+      "post": {
+        "tags": [
+          "Ermis user"
+        ],
+        "summary": "Auth start",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "address": "0x61197c6800f990454903290736aFe5D4fc7a2DD1"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       }
@@ -69,35 +164,15 @@
           "Ermis user"
         ],
         "summary": "Auth",
-        "description": "Auth",
-        "operationId": "auth",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "properties": {
-                  "address": {
-                    "type": "string",
-                    "example": "0x61197c6800f990454903290736aFe5D4fc7a2DD1"
-                  },
-                  "nonce": {
-                    "type": "string",
-                    "example": "7hjN8N4MgGVgnqHUMlUn"
-                  },
-                  "signature": {
-                    "type": "string",
-                    "example": "0xb23c456c9fbc23241ffc9e5052d156052b7c55b211822da32e6562e2ae1600647113ebac12fc78e8dfb4468b4f58f3d7aa9cc4eed9b92b1d083d5e8569f3ea401c"
-                  }
-                }
-              },
-              "examples": {
-                "auth": {
-                  "value": {
-                    "address": "0x61197c6800f990454903290736aFe5D4fc7a2DD1",
-                    "nonce": "7hjN8N4MgGVgnqHUMlUn",
-                    "signature": "0xb23c456c9fbc23241ffc9e5052d156052b7c55b211822da32e6562e2ae1600647113ebac12fc78e8dfb4468b4f58f3d7aa9cc4eed9b92b1d083d5e8569f3ea401c"
-                  }
+                "example": {
+                  "address": "0x61197c6800f990454903290736aFe5D4fc7a2DD1",
+                  "signature": "0xb23c456c9fbc23241ffc9e5052d156052b7c55b211822da32e6562e2ae1600647113ebac12fc78e8dfb4468b4f58f3d7aa9cc4eed9b92b1d083d5e8569f3ea401c",
+                  "nonce": "7hjN8N4MgGVgnqHUMlUn"
                 }
               }
             }
@@ -105,7 +180,14 @@
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       }
@@ -117,28 +199,34 @@
         ],
         "summary": "Get token",
         "description": "To use this endpoint, you need to pass two parameters in the query. The first is the apikey provided by Ermis, and the second is the address (either a wallet address or a user ID, ensuring that this value is unique among users in your app).",
-        "operationId": "getToken",
         "parameters": [
           {
             "name": "apikey",
             "in": "query",
             "schema": {
-              "type": "string",
-              "example": "sXhcPu0JneUbQ6TG2tXePK8MC2tBAHn9"
-            }
+              "type": "string"
+            },
+            "example": "kUCqqbfEQxkZge7HHDFcIxfoHzqSZUam"
           },
           {
             "name": "address",
             "in": "query",
             "schema": {
-              "type": "string",
-              "example": "0xfd44c17aea0bbb4fd371cf21d569ec00a16b1172"
-            }
+              "type": "string"
+            },
+            "example": "0xfd44c17aea0bbb4fd371cf21d569ec00a16b1172"
           }
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       }
@@ -149,58 +237,47 @@
           "Ermis user"
         ],
         "summary": "Get user batch",
-        "description": "Get user batch",
-        "operationId": "getUserBatch",
-        "parameters": [
-          {
-            "name": "project_id",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "example": "ae3bfaa5-2d8a-49af-aad1-3f1457337d93"
-            }
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "properties": {
-                  "users": {
-                    "type": "array",
-                    "items": {
-                      "type": "string",
-                      "example": "0x1e16149b8f6af2d238ecb6d8e51d9554c1ecfaac1"
-                    },
-                    "example": [
-                      "0x1e16149b8f6af2d238ecb6d8e51d9554c1ecfaac1"
-                    ]
-                  }
-                }
-              },
-              "examples": {
-                "get user batch": {
-                  "value": {
-                    "users": [
-                      "0x1e16149b8f6af2d238ecb6d8e51d9554c1ecfaac1"
-                    ]
-                  }
+                "example": {
+                  "users": [
+                    "0x1e16149b8f6af2d238ecb6d8e51d9554c1ecfaac1"
+                  ]
                 }
               }
             }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": ""
           }
         },
         "security": [
           {
             "bearerAuth": []
           }
-        ]
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ae3bfaa5-2d8a-49af-aad1-3f1457337d93"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/uss/v1/users/update": {
@@ -209,25 +286,13 @@
           "Ermis user"
         ],
         "summary": "Update user info",
-        "description": "Update user info",
-        "operationId": "updateUserInfo",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string",
-                    "example": "hoangbim"
-                  }
-                }
-              },
-              "examples": {
-                "Update user info": {
-                  "value": {
-                    "name": "hoangbim"
-                  }
+                "example": {
+                  "name": "hoangbim"
                 }
               }
             }
@@ -235,7 +300,14 @@
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       }
@@ -246,8 +318,6 @@
           "Ermis user"
         ],
         "summary": "Upload user image",
-        "description": "Upload user image",
-        "operationId": "uploadUserImage",
         "requestBody": {
           "content": {
             "multipart/form-data": {
@@ -263,16 +333,23 @@
             }
           }
         },
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
         "security": [
           {
             "bearerAuth": []
           }
-        ]
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/uss/v1/users/search": {
@@ -281,59 +358,54 @@
           "Ermis user"
         ],
         "summary": "Search",
-        "description": "Search",
-        "operationId": "search",
-        "parameters": [
-          {
-            "name": "name",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "example": "ho"
-            }
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "example": "100"
-            }
-          },
-          {
-            "name": "project_id",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "example": "ae3bfaa5-2d8a-49af-aad1-3f1457337d93"
-            }
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string",
-                    "example": "ho"
-                  }
-                }
-              },
-              "examples": {
-                "Search": {
-                  "value": {
-                    "name": "ho"
-                  }
+                "example": {
+                  "name": "ho"
                 }
               }
             }
           }
         },
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ho"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "example": "100"
+          },
+          {
+            "name": "project_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ae3bfaa5-2d8a-49af-aad1-3f1457337d93"
+          }
+        ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       }
@@ -344,21 +416,26 @@
           "Ermis user"
         ],
         "summary": "Get user list",
-        "description": "Get user list",
-        "operationId": "getUserList",
         "parameters": [
           {
             "name": "project_id",
             "in": "query",
             "schema": {
-              "type": "string",
-              "example": "ae3bfaa5-2d8a-49af-aad1-3f1457337d93"
-            }
+              "type": "string"
+            },
+            "example": "ae3bfaa5-2d8a-49af-aad1-3f1457337d93"
           }
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       }
@@ -368,19 +445,24 @@
         "tags": [
           "Ermis user"
         ],
-        "summary": "Connect sse",
-        "description": "Connect sse",
-        "operationId": "connectSse",
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
+        "summary": "Connect SSE",
         "security": [
           {
             "bearerAuth": []
           }
-        ]
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/uss/v1/users/chains": {
@@ -389,18 +471,23 @@
           "Ermis user"
         ],
         "summary": "Get chains",
-        "description": "Get chains",
-        "operationId": "getChains",
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
         "security": [
           {
             "bearerAuth": []
           }
-        ]
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/uss/v1/users/join": {
@@ -409,67 +496,50 @@
           "Ermis user"
         ],
         "summary": "Join project",
-        "description": "Join project",
-        "operationId": "joinProject",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "properties": {
-                  "project_id": {
-                    "type": "string",
-                    "example": "ec964975-ae84-4a8e-91a1-222ca3aeeef8"
-                  }
-                }
-              },
-              "examples": {
-                "Join project": {
-                  "value": {
-                    "project_id": "ec964975-ae84-4a8e-91a1-222ca3aeeef8"
-                  }
+                "example": {
+                  "project_id": "ec964975-ae84-4a8e-91a1-222ca3aeeef8"
                 }
               }
             }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": ""
           }
         },
         "security": [
           {
             "bearerAuth": []
           }
-        ]
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
       }
     },
-    "/uss/v1/get_token/refresh": {
+    "/uss/v1/refresh_token": {
       "post": {
         "tags": [
           "Ermis user"
         ],
         "summary": "Refresh token",
-        "description": "Refresh token",
-        "operationId": "refreshToken",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "properties": {
-                  "refresh_token": {
-                    "type": "string",
-                    "example": "f0ihDEpQSFDyITK8xz3bDRjK"
-                  }
-                }
-              },
-              "examples": {
-                "Refresh token": {
-                  "value": {
-                    "refresh_token": "f0ihDEpQSFDyITK8xz3bDRjK"
-                  }
+                "example": {
+                  "refresh_token": "f0ihDEpQSFDyITK8xz3bDRjK"
                 }
               }
             }
@@ -477,7 +547,14 @@
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       }

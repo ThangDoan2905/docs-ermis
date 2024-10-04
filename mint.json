@@ -46,6 +46,9 @@
     {
       "group": "Ermis user",
       "pages": [
+        "api-reference/ermis-user/register-with-email",
+        "api-reference/ermis-user/login-with-email-and-password",
+        "api-reference/ermis-user/google-login",
         "api-reference/ermis-user/auth-start",
         "api-reference/ermis-user/auth",
         "api-reference/ermis-user/get-token",
