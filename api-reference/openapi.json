@@ -315,8 +315,7 @@
               }
             }
           }
-        },
-        "security": []
+        }
       }
     },
     "/uss/v1/users/upload": {
@@ -414,8 +413,7 @@
               }
             }
           }
-        },
-        "security": []
+        }
       }
     },
     "/uss/v1/users": {
@@ -445,8 +443,7 @@
               }
             }
           }
-        },
-        "security": []
+        }
       }
     },
     "/uss/v1/sse/subscribe": {
