@@ -56,7 +56,8 @@
               }
             }
           }
-        }
+        },
+        "security": []
       }
     },
     "/uss/v1/wallets/email_login": {
@@ -90,7 +91,8 @@
               }
             }
           }
-        }
+        },
+        "security": []
       }
     },
     "/uss/v1/wallets/google_login": {
@@ -123,7 +125,8 @@
               }
             }
           }
-        }
+        },
+        "security": []
       }
     },
     "/uss/v1/wallets/auth/start": {
@@ -155,7 +158,8 @@
               }
             }
           }
-        }
+        },
+        "security": []
       }
     },
     "/uss/v1/wallets/auth": {
@@ -189,7 +193,8 @@
               }
             }
           }
-        }
+        },
+        "security": []
       }
     },
     "/uss/v1/get_token": {
@@ -228,7 +233,8 @@
               }
             }
           }
-        }
+        },
+        "security": []
       }
     },
     "/uss/v1/users/batch": {
@@ -309,7 +315,8 @@
               }
             }
           }
-        }
+        },
+        "security": []
       }
     },
     "/uss/v1/users/upload": {
@@ -407,7 +414,8 @@
               }
             }
           }
-        }
+        },
+        "security": []
       }
     },
     "/uss/v1/users": {
@@ -437,7 +445,8 @@
               }
             }
           }
-        }
+        },
+        "security": []
       }
     },
     "/uss/v1/sse/subscribe": {
@@ -556,7 +565,8 @@
               }
             }
           }
-        }
+        },
+        "security": []
       }
     },
     "/signal": {
