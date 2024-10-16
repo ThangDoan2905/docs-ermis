@@ -60,7 +60,8 @@
         "api-reference/ermis-user/connect-sse",
         "api-reference/ermis-user/get-chains",
         "api-reference/ermis-user/join-project",
-        "api-reference/ermis-user/refresh-token"
+        "api-reference/ermis-user/refresh-token",
+        "api-reference/ermis-user/get_token_external_auth"
       ]
     },
     {
