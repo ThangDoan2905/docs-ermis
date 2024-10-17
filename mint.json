@@ -46,9 +46,6 @@
     {
       "group": "Ermis user",
       "pages": [
-        "api-reference/ermis-user/register-with-email",
-        "api-reference/ermis-user/login-with-email-and-password",
-        "api-reference/ermis-user/google-login",
         "api-reference/ermis-user/auth-start",
         "api-reference/ermis-user/auth",
         "api-reference/ermis-user/get-token",
@@ -59,7 +56,6 @@
         "api-reference/ermis-user/get-user-list",
         "api-reference/ermis-user/connect-sse",
         "api-reference/ermis-user/get-chains",
-        "api-reference/ermis-user/join-project",
         "api-reference/ermis-user/refresh-token",
         "api-reference/ermis-user/get-token-external-auth"
       ]
@@ -84,7 +80,6 @@
         "api-reference/bellboy/block-unblock-channel",
         "api-reference/bellboy/delete-channel",
         "api-reference/bellboy/truncate-channel",
-        "api-reference/bellboy/invite-accept-reject",
         "api-reference/bellboy/get-meber-capa",
         "api-reference/bellboy/get-channel-meber-capa",
         "api-reference/bellboy/search-channel-messages",
