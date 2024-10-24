@@ -1543,7 +1543,7 @@
               "type": "string"
             },
             "required": true,
-            "example": "dbf4fadb-224e-4b46-8e83-cfe40c0c7cd4"
+            "example": "10c85860-23ea-4a56-95e4-c84348fd619f"
           }
         ],
         "responses": {
@@ -1808,7 +1808,7 @@
         "tags": [
           "Bellboy"
         ],
-        "summary": "Invite Accept | Reject",
+        "summary": "Invite Accept | Reject | Join",
         "requestBody": {
           "content": {}
         },
@@ -1882,7 +1882,7 @@
                 "type": "object",
                 "example": {
                   "cid": "{{cid}}",
-                  "search_term": "Plastic",
+                  "search_term": "Customer",
                   "limit": 25,
                   "offset": 0
                 }
