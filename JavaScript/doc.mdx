@@ -249,7 +249,8 @@ await chatClient.connectUser(
   {
     api_key: API_KEY,
     id: user_id,
-    name: user_id,
+    name: user_name,      // optional, default_value: user_id
+    avatar: user_avatar   // optional
   },
   token,
   external_auth,
