@@ -27,6 +27,7 @@ title: 'Chat SDK for iOS'
 </span>
 
 ## [Ermis](https://ermis.network) home page
+
 ## Table of contents
 
 1.  [Introduction](#introduction)
@@ -46,13 +47,9 @@ The minimum requirements for ErmisChat SDK for iOS are:
 - iOS 14 or higher
 - Swift 5.0 or higher
 
-<br /> 
-
 ## Getting started
 
 This section shows you the prerequisites you needed to use the ErmisChat SDK for iOS. If you have any comments or questions regarding bugs and feature requests, please reach out to us.
-
-<br />
 
 ## Step-by-Step Guide:
 
@@ -99,10 +96,10 @@ First [install and setup](https://docs.walletconnect.com/appkit/ios/core/install
 After install and setup Web3Modal, connect your app to a wallet application.
 
 ```swift
-Web3Modal.present(from: self)
+Web3Modal.selectChain(from: self)
 ```
 
-Web3Modal will show list of wallet for user to choose and connect. After users connect their wallet, the `sessionSettlePublisher` will publish an event. After this event emit, Call `startAuth` to create a challenge message.
+Web3Modal will show list of chain for user. After user select a chain, the list of wallet will show for user to choose and connect. After users connect their wallet, the `sessionSettlePublisher` will publish an event. After this event emit, Call `startAuth` to create a challenge message.
 
 ```swift
 Web3Modal.instance.sessionSettlePublisher.receive(on: DispatchQueue.main).sink { [weak self] session in
@@ -205,7 +202,7 @@ Get the users in your project to create a direct message:
 ```
 
 Then you can get observer users list in `UserSearchControllerDelegate`:
-
+b
 ```swift
 protocol UserSearchControllerDelegate {
     func controller(
@@ -219,7 +216,7 @@ protocol UserSearchControllerDelegate {
 
 #### 6.2 Create a new channel
 
-Next step, we need to create new `ChannelController`. This object is a controller class which alows mutating and observing changes of a channel.
+Next step, we need to create new `ChannelController`. This object is a controller class which allows mutating and observing changes of a channel.
 We can create two type of channelController: `messaging` or `team`
 
 **1. Create a channel controller for a `messaging`**
@@ -227,9 +224,10 @@ We can create two type of channelController: `messaging` or `team`
 The `messaging` channel have only two members, and uniquely identified by its members.
 
 ```swift
-let channelController = try client.channelController(createDirectMessageChannelWith: [chatUser.id],
+let channelController = try client.channelController(createDirectMessageChannelWith: [userId],
                                                      name: nil,
-                                                     imageURL: nil)
+                                                     imageURL: nil,
+                                                     isPublic: false)
                                             
 // Call synchronize to create channel:
 
@@ -246,6 +244,7 @@ let channelController = try client.channelController(
                                projectId: projectId, // The projectId, you can get from ErmisClient.
                                id: String.randomId),
     name: name, // Name of the channel
+    isPublic: false, // Channel is public or not.
     members: memberIds // List memberIds, the member will receive invited to join this channel.
 )
 
@@ -305,6 +304,24 @@ To fetch/search user, we use `UserSearchController`. We create this intance from
 ```swift
 let userSearchController = client.userSearchController()
 ```
+
+There are to variable you can config to customize search results:
+
+- `shouldLoadFriendContacts`: Default value is true. If `true`, the friend contact list will be load before fetch users. And the `friendContacts` will have value.
+- `userFilterClosure`: The closure to filter user.
+
+```swift
+    searchController.shouldLoadFriendContacts = true
+
+    searchController.userFilterClosure = { [weak searchController] user in
+        guard let searchController else { return false }
+        if searchController.isFriendUser(user), !searchController.isBlockUser(user) {
+            return true
+        }
+        return false
+    }
+```
+
 Then call funtion `search` to search user
 
 ```swift
@@ -423,6 +440,26 @@ guard let invitedChannelController = chat.invitedChannelListController(query: in
 }
 ```
 
+**1.3. Messaging channels**
+
+```swift
+let contactListQuery = ChannelListQuery(filter: .directChannels(memberId: userInfo.id,
+                                                                projectId: projectId),
+                                        sort: [.init(key: .createdAt, isAscending: true)])
+guard let contactListController = chat.invitedChannelListController(query: contactListQuery) else {
+    return
+}
+```
+
+**1.4. Blocked channels** 
+
+```swift
+let blockedChannelQuery = ChannelListQuery(filter: .blockedChannels(memberId: currentUserId,
+                                                                    projectId: projectId),
+                                           sort: [.init(key: .createdAt, isAscending: true)])
+let blockedChannelController = client.channelListController(query: blockedChannelQuery)
+```
+
 After initialization, call the `synchronize` function to retrieve all channels match your query:
 
 ```swift
@@ -438,6 +475,7 @@ To handle changes when channels are updated, set `delegate` of `ChannelListContr
 ```swift
 let channelController = try client.channelController(createDirectMessageChannelWith: [chatUser.id],
                                                      name: nil,
+                                                     isPublic: isPublic,
                                                      imageURL: nil)
                                             
 // Call synchronize to create channel:
@@ -456,6 +494,7 @@ let channelController = try client.channelController(
                                projectId: projectId, // The projectId, you can get from ErmisClient.
                                id: String.randomId),
     name: name, // Name of the channel
+    isPublic: isPublic, // Channel is public or not.
     members: memberIds // List memberIds, the member will receive invited to join this channel.
 )
 
@@ -596,11 +635,16 @@ channelController.updateChannel(name: updatedName,
 ```
 **Parameters:**
 
-|   **Name**  |       **Type**      | **Required** | **Description**                                                                    |
-|:-----------:|:-------------------:|:------------:|------------------------------------------------------------------------------------|
-|     name    |       `String`      |     false    | The updated name of channel, if name doesn't changed, just send nil.               |
-| description |       `String`      |     false    | The updated description of channel, if description doesn't changed, just send nil. |
-|   imageUrl  |       `String`      |     false    | The updated avatar url of channel, if avatar dessn't changed, just send nil.       |
+|     **Name**     |       **Type**       | **Required** | **Description**                                                                                                                                            |
+|:----------------:|:--------------------:|:------------:|------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|       name       |       `String`       |     false    | The updated name of channel, if name doesn't changed, just send nil.                                                                                       |
+|    description   |       `String`       |     false    | The updated description of channel, if description doesn't changed, just send nil.                                                                         |
+|     imageURL     |         `URL`        |     false    | The updated avatar url of channel, if avatar doesn't changed, just send nil.                                                                               |
+|     isPublic     |        `Bool`        |     false    | The updated public state of channel, if doesn't changed, just send nil.                                                                                    |
+|      members     |     `Set<UserId>`    |     false    | The updated members. If doesn't changed, just send nil.                                                                                                    |
+| coolDownDuration |         `Int`        |     false    | The updated coolDownDuration of channel. If doesn't changed, just send nil.                                                                                |
+|    filterWords   |      `[String]`      |     false    | The updated filter words. If doesn't changed, just send nil.                                                                                               |
+|    completion    | `((Error?) -> Void)` |     false    | The completion. Will be called on a **callbackQueue** when the network request is finished. If request fails, the completion will be called with an error. |
 
 **Note**: To upload avatar, see [Upload file](#2-upload-files)
 
@@ -751,12 +795,10 @@ To send a message, call the `createNewMessage` function from the `ChannelControl
 func createNewMessage(
         messageId: MessageId? = nil,
         text: String,
-        isSilent: Bool = false,
         attachments: [AnyAttachmentPayload] = [],
         mentionedUserIds: [UserId] = [],
+        mentionedAll: Bool = false,
         quotedMessageId: MessageId? = nil,
-        skipPush: Bool = false,
-        skipEnrichUrl: Bool = false,
         completion: ((Result<MessageId, Error>) -> Void)? = nil
 ) 
 ```
@@ -767,12 +809,10 @@ func createNewMessage(
 |:----------------:|:------------------------------------:|:------------:|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 |     messageId    |              `MessageId`             |     false    | The id for the sent message. By default, it is automatically generated by Ermis.                                                                                            |
 |       text       |               `String`               |     true     | Text of the bmessage.                                                                                                                                                       |
-|     isSilent     |                `Bool`                |     false    | A flag indicating whether the message is a silent message. Silent messages are special messages that don't increase the unread messages count nor mark a channel as unread. |
 |    attachments   |       `[AnyAttachmentPayload]`       |     false    | An array of the attachments for the message. Note : can be built-in types, custom attachment types conforming to AttachmentEnvelope protocol.                               |
 | mentionedUserIds |              `[UserId]`              |     false    | List user id was mentioned.                                                                                                                                                 |
+|   mentionedAll   |          `Bool`          |     false    | A flag indicating whether the message contain mention all member.                                                                                                           |
 |  quotedMessageId |              `MessageId`             |     false    | An id of the message new message quotes. (inline reply).                                                                                                                    |
-|     skipPush     |                `Bool`                |     false    | If true, skips sending push notification to channel members.                                                                                                                |
-|   skipEnrichUrl  |                `Bool`                |     false    | If true, the url preview won't be attached to the message.                                                                                                                  |
 |    completion    | `(Result<MessageId, Error>) -> Void` |     false    | Called when saving the message to the local DB finishes. Called with `Error` if failed.                                                                                     |
 
 Then call `synchronize` to sync new message to backend.
@@ -845,7 +885,6 @@ To edit a message, you need to call `editMessage` function in `MessageController
 ```swift
 func editMessage(
         text: String,
-        skipEnrichUrl: Bool = false,
         attachments: [AnyAttachmentPayload] = [],
         completion: ((Error?) -> Void)? = nil
 )
@@ -854,7 +893,6 @@ func editMessage(
 |    **Name**   |                    **Type**                   | **Required** | **Description**                                                                                       |
 |:-------------:|:---------------------------------------------:|:------------:|-------------------------------------------------------------------------------------------------------|
 |      text     |                    `String`                   |     true     | The updated message text.                                                                             |
-| skipEnrichUrl |                     `Bool`                    |     false    | If true, the url preview won't be attached to the message.                                            |
 |  attachments  |            `[AnyAttachmentPayload]`           |     false    | An array of the attachments for the message.                                                          |
 |   completion  |               `(Error?) -> Void`              |     false    | Called when the API call is finished. Called with `Error` if failed.                                  |
 
@@ -864,14 +902,13 @@ func editMessage(
 To delete an existing message, you need to call `deleteMessage` function in `MessageController`:
 
 ```swift
-public func deleteMessage(hard: Bool = false, completion: ((Error?) -> Void)? = nil)
+public func deleteMessage(completion: ((Error?) -> Void)? = nil)
 ```
 
 **Parameters:**
 
 |  **Name**  |      **Type**      | **Required** | **Description**                                                                                                |
 |:----------:|:------------------:|:------------:|----------------------------------------------------------------------------------------------------------------|
-|    hard    |       `Bool`       |     false    | A Boolean value to determine if the message will be delete permanently on the backend. By default it is false. |
 | completion | `(Error?) -> Void` |     false    | Called when the API call is finished. Called with `Error` if failed.                                           |
 
 #### 5. Search messages
@@ -922,7 +959,7 @@ public func markRead(completion: ((Error?) -> Void)? = nil)
 #### 7. Reactions
 
 The Reaction feature allows users to send, manage reactions on messages, and remove reactions when necessary.
-
+`MessageController` support two funtions to add or remote reaction:
 
 ```swift
 //Add reaction
@@ -968,20 +1005,26 @@ To track users currently typing in a channel, use `typingUsersPublisher` in the 
 
 Below you can find the complete list of system message that are returned by messages from channel. You can define from syntax message by description.
 
-| Name                            | Syntax                   | Description                                       |
-| :------------------------------ | :----------------------- | :------------------------------------------------ |
-| UpdateChannelName               | `1 user_id channel_name` | Member X updated name of channel                  |
-| UpdateChannelImage              | `2 user_id`              | Member X updated image of channel                 |
-| UpdateChannelDescription        | `3 user_id`              | Member X updated description of channel           |
-| MemberRemoved                   | `4 user_id`              | Member X has been removed from this channel       |
-| MemberBanned                    | `5 user_id`              | Member X has been banned from interacting         |
-| MemberUnbanned                  | `6 user_id`              | Member X has been unbanned from interacting       |
-| MemberPromoted                  | `7 user_id`              | Member X has been assigned as the moderator       |
-| MemberDemoted                   | `8 user_id`              | Member X has been demoted to member               |
-| UpdateChannelMemberCapabilities | `9 user_id`              | Member X has updated member permission of channel |
-| InviteAccepted                  | `10 user_id`             | Member X has joined this channel                  |
-| InviteRejected                  | `11 user_id`             | Member X has rejected to join this channel        |
-| MemberLeave                     | `12 user_id`             | Member X has leaved this channel                  |
+| **Name**                        | **Syntax**               | **Description**                                    |
+|---------------------------------|--------------------------|----------------------------------------------------|
+| UpdateChannelName               | `1 user_id channel_name` | Member X updated name of channel                   |
+| UpdateChannelImage              | `2 user_id`              | Member X updated image of channel                  |
+| UpdateChannelDescription        | `3 user_id`              | Member X updated description of channel            |
+| MemberRemoved                   | `4 user_id`              | Member X has been removed from this channel        |
+| MemberBanned                    | `5 user_id`              | Member X has been banned from interacting          |
+| MemberUnbanned                  | `6 user_id`              | Member X has been unbanned from interacting        |
+| MemberPromoted                  | `7 user_id`              | Member X has been assigned as the moderator        |
+| MemberDemoted                   | `8 user_id`              | Member X has been demoted to member                |
+| UpdateChannelMemberCapabilities | `9 user_id`              | Member X has updated member permission of channel  |
+| InviteAccepted                  | `10 user_id`             | Member X has joined this channel                   |
+| InviteRejected                  | `11 user_id`             | Member X has rejected to join this channel         |
+| MemberLeave                     | `12 user_id`             | Member X has leaved this channel                   |
+| TruncateMessages                | `13 user_id`             | Member X has truncate all messages of this channel |
+| UpdatePublic                    | `14 user_id public`      | Member X has made this channel public/private      |
+| UpdateMemberMessageCooldown     | `15 user_id duration`    | Member X has update channel message cooldown       |
+| UpdateFilterWords               | `16 user_id`             | Member X has update channel filter words           |
+| MemberJoined                    | `17 user_id`             | Member X has been joined to this channel           |
+| OwnerPromoted                   | `18 old_id new_id`       | Member X has promoted Member Y to Owner            |
 
 ### Events
 
@@ -1032,20 +1075,27 @@ Below you can find the complete list of errors that are returned by the API toge
 
 #### 1. HTTP codes
 
-| Name                      | HTTP Status Code | HTTP Status           | Ermis code | Description                                               |
-| :------------------------ | :--------------- | :-------------------- | :--------- | --------------------------------------------------------- |
-| InternalServerError       | 500              | Internal Server Error | 0          | Triggered when something goes wrong in our system         |
-| ServiceUnavailable        | 503              | Service Unavailable   | 1          | Triggered when our system is unavailable to call          |
-| Unauthorized              | 401              | Unauthorized          | 2          | Invalid JWT token                                         |
-| NotFound                  | 404              | Not Found             | 3          | Resource not found                                        |
-| InputError                | 400              | Bad Request           | 4          | When wrong data/parameter is sent to the API              |
-| ChannelNotFound           | 400              | Bad Request           | 5          | Channel is not existed                                    |
-| NoPermissionInChannel     | 400              | Bad Request           | 6          | No permission for this action in the channel              |
-| NotAMemberOfChannel       | 400              | Bad Request           | 7          | Not a member of channel                                   |
-| BannedFromChannel         | 400              | Bad Request           | 8          | User is banned from this channel                          |
-| HaveToAcceptInviteFirst   | 400              | Bad Request           | 9          | User must accept the invite to gain permission            |
-| DisabledChannelMemberCapa | 400              | Bad Request           | 10         | This action is disable for channel member role            |
-| AlreadyAMemberOfChannel   | 400              | Bad Request           | 11         | User is already part of the channel and cannot join again |
+| Name                         | HTTP Status Code | HTTP Status           | Ermis code | Description                                                  |
+|------------------------------|------------------|-----------------------|------------|--------------------------------------------------------------|
+| InternalServerError          | 500              | Internal Server Error | 0          | Triggered when something goes wrong in our system            |
+| ServiceUnavailable           | 503              | Service Unavailable   | 1          | Triggered when our system is unavailable to call             |
+| Unauthorized                 | 401              | Unauthorized          | 2          | Invalid JWT token                                            |
+| NotFound                     | 404              | Not Found             | 3          | Resource not found                                           |
+| InputError                   | 400              | Bad Request           | 4          | When wrong data/parameter is sent to the API                 |
+| ChannelNotFound              | 400              | Bad Request           | 5          | Channel is not existed                                       |
+| NoPermissionInChannel        | 400              | Bad Request           | 6          | No permission for this action in the channel                 |
+| NotAMemberOfChannel          | 400              | Bad Request           | 7          | Not a member of channel                                      |
+| BannedFromChannel            | 400              | Bad Request           | 8          | User is banned from this channel                             |
+| HaveToAcceptInviteFirst      | 400              | Bad Request           | 9          | User must accept the invite to gain permission               |
+| DisabledChannelMemberCapa    | 400              | Bad Request           | 10         | This action is disable for channel member role               |
+| AlreadyAMemberOfChannel      | 400              | Bad Request           | 11         | User is already part of the channel and cannot join again    |
+| HaveToOnline                 | 400              | Bad Request           | 12         | User have to be online to perform this action.               |
+| HaveToWaitForMessageCooldown | 400              | Bad Request           | 13         | User have to wait for cooldown before sending a new message. |
+| HaveToUnblockFirst           | 400              | Bad Request           | 14         | User have to unblock to interact with server.                |
+| AlreadyBlocked               | 400              | Bad Request           | 15         | User already block channel, cannot block aymore.             |
+| AlreadyUnbocked              | 400              | Bad Request           | 16         | User already unblock channel, cannot unblock aymore.         |
+| MessageContainUnallowedWords | 400              | Bad Request           | 17         | User sended message contain unallowed words.                 |
+
 
 #### 2. Websocket codes
 

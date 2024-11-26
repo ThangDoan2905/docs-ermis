@@ -61,6 +61,8 @@ ErmisChatUI SDK provide you an easy way to customize the theme of your applicati
 
 ### 1. Colors
 
+SDK define colors folows the [Meterial 3](https://m3.material.io) design. It's google's open source design system.
+
 To change the brand color, simply set the `tintColor` of `UIWindow`:
 
 ```swift
@@ -70,33 +72,31 @@ window.tintColor = .red
 To modify other colors, assign value of `colors` in `Theme`:
 
 ```swift
-Theme.default.colors.text = .black
+Theme.default.colors.onSurface = .black
 ```
 
 Below is the list of available colors:
 
-**Text colors:**
+**Primary colors:**
 
-- `text`
-- `textInverted`
-- `textLowEmphasis`
-- `textLinkColor`
-- `staticColorText`
-- `staticBlackColorText`
-- `subtitleText`
-- `highlightedColorForColor`
-- `disabledColorForColor`
-- `unselectedColorForColor`
+- `primary`
+- `primaryContainer`
+- `onPrimary`
+- `onPrimaryContainer`
+- `primaryLight`
+- `primaryDark`
+- `primaryContainerLight`
+- `primaryContainerDark`
 
-**Background colors:**
+**Surface:**
 
-- `background`
-- `background1`
-- `background2`
-- `background3`
-- `background4`
-- `background5`
-- `background6`
+- `surface`
+- `surfaceBright`
+- `surfaceContainerHighest`
+- `surfaceContainerHigh`
+- `surfaceContainer`
+- `surfaceContainerLow`
+- `surfaceContainerLowest`
 - `background7`
 - `background8`
 - `overlayBackground`
@@ -126,6 +126,11 @@ Below is the list of available colors:
 - `accentPrimary`
 
 
+- `highlightedColorForColor`
+- `disabledColorForColor`
+- `unselectedColorForColor`
+
+
 ### 2. Change fonts
 
 To change fonts, set value of `fonts` in `Theme`
@@ -152,13 +157,13 @@ Below is the list of available fonts:
 
 ### 3. Icons
 
-To change images, set value of `images` in `Theme`
+To change icons, set value of `icons` in `Theme`
 
 ```swift
-Theme.default.images.close = UIImage(named: "ic_close")
+Theme.default.icons.close = UIImage(named: "ic_close")
 ```
 
-Below is the list of available images:
+Below is the list of available icons:
 
 **Common icons:**
 - `loadingIndicator`
@@ -282,7 +287,7 @@ Below is the table of available formatters:
 
 | **Name**                      | **Type**                        | **Description**                                                                                                                                                                                                 |
 |-------------------------------|---------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `MessageTimestampFormatter`   | `MessageTimestampFormatter`     | A formatter that converts the message to textual representation in the message list.                                                                                                                            |
+| `messageTimestamp`   | `MessageTimestampFormatter`     | A formatter that converts the message to textual representation in the message list.                                                                                                                            |
 | `channelListMessageTimestamp` | `MessageTimestampFormatter`     | A formatter that converts the message to textual representation in the channel list.                                                                                                                            |
 | `messageDateSeparator`        | `MessageDateSeparatorFormatter` | A formatter that converts the message date separator to textual representation. This formatter is used to display the message date between each group of messages and the top date overlay in the message list. |
 | `userLastActivity`            | `UserLastActivityFormatter`     | A formatter that converts the time a user was last active to textual representation.                                                                                                                            |

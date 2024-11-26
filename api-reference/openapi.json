@@ -631,8 +631,8 @@
               "schema": {
                 "type": "object",
                 "example": {
-                  "type": "signal.video.call",
                   "cid": "{{cid}}",
+                  "connection_id": "ed2fbb18-64c0-482c-8c6e-0df7640dfc31",
                   "action": "video",
                   "signal": {
                     "type": "offer",
@@ -656,23 +656,68 @@
               "type": "string"
             },
             "example": "zstd"
-          },
-          {
-            "name": "connection_id",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "example": "ed2fbb18-64c0-482c-8c6e-0df7640dfc31"
           }
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "OK",
+            "headers": {
+              "Server": {
+                "schema": {
+                  "type": "number",
+                  "example": "nginx/1.18.0 (Ubuntu)"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Thu, 21 Nov 2024 08:01:45 GMT"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "18"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "vary": {
+                "schema": {
+                  "type": "string",
+                  "example": "origin, access-control-request-method, access-control-request-headers"
+                }
+              },
+              "access-control-allow-origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "access-control-expose-headers": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              }
+            },
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object"
+                },
+                "example": {
+                  "duration": "1ms"
                 }
               }
             }
@@ -736,11 +781,71 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "OK",
+            "headers": {
+              "Server": {
+                "schema": {
+                  "type": "number",
+                  "example": "nginx/1.18.0 (Ubuntu)"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Thu, 21 Nov 2024 08:02:19 GMT"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json"
+                }
+              },
+              "Transfer-Encoding": {
+                "schema": {
+                  "type": "string",
+                  "example": "chunked"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "access-control-expose-headers": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "vary": {
+                "schema": {
+                  "type": "string",
+                  "example": "accept-encoding"
+                }
+              },
+              "access-control-allow-origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "content-encoding": {
+                "schema": {
+                  "type": "string",
+                  "example": "br"
+                }
+              }
+            },
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object"
+                },
+                "example": {
+                  "file": "https://hn.storage.weodata.vn/belochat/bellboy/test/team:b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room/d19a800d-df1d-4ad3-9033-54dab61033d1",
+                  "duration": "310ms"
                 }
               }
             }
@@ -792,11 +897,86 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "OK",
+            "headers": {
+              "Server": {
+                "schema": {
+                  "type": "number",
+                  "example": "nginx/1.18.0 (Ubuntu)"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Thu, 21 Nov 2024 08:06:22 GMT"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json"
+                }
+              },
+              "Transfer-Encoding": {
+                "schema": {
+                  "type": "string",
+                  "example": "chunked"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "access-control-expose-headers": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "vary": {
+                "schema": {
+                  "type": "string",
+                  "example": "accept-encoding"
+                }
+              },
+              "access-control-allow-origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "content-encoding": {
+                "schema": {
+                  "type": "string",
+                  "example": "br"
+                }
+              }
+            },
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object"
+                },
+                "example": {
+                  "attachments": [
+                    {
+                      "id": "d19a800d-df1d-4ad3-9033-54dab61033d1",
+                      "user_id": "0x360a45f70de193090a1b13da8393a02f9119aecd",
+                      "cid": "team:b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room",
+                      "url": "https://hn.storage.weodata.vn/belochat/bellboy/test/team:b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room/d19a800d-df1d-4ad3-9033-54dab61033d1",
+                      "thumb_url": "",
+                      "file_name": "MoonMath.pdf",
+                      "content_type": "application/pdf",
+                      "content_length": 2428405,
+                      "content_disposition": "inline; filename=\"MoonMath.pdf\"",
+                      "message_id": "5f975214-21fb-45ad-b786-9796a2750c3e",
+                      "created_at": "2024-11-21T08:02:19.572512Z",
+                      "updated_at": "2024-11-21T08:02:19.572512Z"
+                    }
+                  ],
+                  "duration": "1ms"
                 }
               }
             }
@@ -863,11 +1043,81 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "OK",
+            "headers": {
+              "Server": {
+                "schema": {
+                  "type": "number",
+                  "example": "nginx/1.18.0 (Ubuntu)"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Thu, 21 Nov 2024 08:06:27 GMT"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json"
+                }
+              },
+              "Transfer-Encoding": {
+                "schema": {
+                  "type": "string",
+                  "example": "chunked"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "access-control-expose-headers": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "vary": {
+                "schema": {
+                  "type": "string",
+                  "example": "accept-encoding"
+                }
+              },
+              "access-control-allow-origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "content-encoding": {
+                "schema": {
+                  "type": "string",
+                  "example": "br"
+                }
+              }
+            },
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object"
+                },
+                "example": {
+                  "event": {
+                    "type": "message.read",
+                    "cid": "team:b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room",
+                    "channel_id": "b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room",
+                    "channel_type": "team",
+                    "user": {
+                      "id": "0x75c4ff25f1d81803675f687d52a4906855d61ad8"
+                    },
+                    "created_at": "2024-11-21T08:05:18.860731054Z",
+                    "last_read_message_id": "5f975214-21fb-45ad-b786-9796a2750c3e"
+                  },
+                  "duration": "649μs"
                 }
               }
             }
@@ -951,11 +1201,64 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "OK",
+            "headers": {
+              "Server": {
+                "schema": {
+                  "type": "number",
+                  "example": "nginx/1.18.0 (Ubuntu)"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Thu, 21 Nov 2024 08:05:54 GMT"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "19"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "vary": {
+                "schema": {
+                  "type": "string",
+                  "example": "origin, access-control-request-method, access-control-request-headers"
+                }
+              },
+              "access-control-allow-origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "access-control-expose-headers": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              }
+            },
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object"
+                },
+                "example": {
+                  "duration": "16ms"
                 }
               }
             }
@@ -963,7 +1266,7 @@
         }
       }
     },
-    "/channels/{type}/{channel_id}/notification": {
+    "/channels/{type}/{channel_id}/muted": {
       "post": {
         "tags": [
           "Bellboy"
@@ -974,9 +1277,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "example": {
-                  "notification": true
-                }
+                "example": "{\n    \"mute\": false, // truyền false để bật lại thông báo | truyền true thì field duration mới sử dụng đến\n    \"duration\": 3600 // truyền null để tắt hẳn noti | truyền miliseconds để tắt đến khoảng\n}"
               }
             }
           }
@@ -1056,11 +1357,64 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "OK",
+            "headers": {
+              "Server": {
+                "schema": {
+                  "type": "number",
+                  "example": "nginx/1.18.0 (Ubuntu)"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Thu, 21 Nov 2024 08:06:19 GMT"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "18"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "vary": {
+                "schema": {
+                  "type": "string",
+                  "example": "origin, access-control-request-method, access-control-request-headers"
+                }
+              },
+              "access-control-allow-origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "access-control-expose-headers": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              }
+            },
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object"
+                },
+                "example": {
+                  "duration": "2ms"
                 }
               }
             }
@@ -1143,11 +1497,64 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "OK",
+            "headers": {
+              "Server": {
+                "schema": {
+                  "type": "number",
+                  "example": "nginx/1.18.0 (Ubuntu)"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Thu, 21 Nov 2024 08:06:05 GMT"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "18"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "vary": {
+                "schema": {
+                  "type": "string",
+                  "example": "origin, access-control-request-method, access-control-request-headers"
+                }
+              },
+              "access-control-allow-origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "access-control-expose-headers": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              }
+            },
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object"
+                },
+                "example": {
+                  "duration": "3ms"
                 }
               }
             }
@@ -1210,11 +1617,80 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "OK",
+            "headers": {
+              "Server": {
+                "schema": {
+                  "type": "number",
+                  "example": "nginx/1.18.0 (Ubuntu)"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Thu, 21 Nov 2024 08:05:45 GMT"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json"
+                }
+              },
+              "Transfer-Encoding": {
+                "schema": {
+                  "type": "string",
+                  "example": "chunked"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "access-control-expose-headers": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "vary": {
+                "schema": {
+                  "type": "string",
+                  "example": "accept-encoding"
+                }
+              },
+              "access-control-allow-origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "content-encoding": {
+                "schema": {
+                  "type": "string",
+                  "example": "br"
+                }
+              }
+            },
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object"
+                },
+                "example": {
+                  "event": {
+                    "type": "typing.stop",
+                    "cid": "team:b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room",
+                    "channel_id": "b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room",
+                    "channel_type": "team",
+                    "user": {
+                      "id": "0x360a45f70de193090a1b13da8393a02f9119aecd"
+                    },
+                    "created_at": "2024-11-21T08:05:45.931535981Z"
+                  },
+                  "duration": "144μs"
                 }
               }
             }
@@ -1273,11 +1749,89 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "OK",
+            "headers": {
+              "Server": {
+                "schema": {
+                  "type": "number",
+                  "example": "nginx/1.18.0 (Ubuntu)"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Thu, 21 Nov 2024 08:05:18 GMT"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json"
+                }
+              },
+              "Transfer-Encoding": {
+                "schema": {
+                  "type": "string",
+                  "example": "chunked"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "access-control-expose-headers": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "vary": {
+                "schema": {
+                  "type": "string",
+                  "example": "accept-encoding"
+                }
+              },
+              "access-control-allow-origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "content-encoding": {
+                "schema": {
+                  "type": "string",
+                  "example": "br"
+                }
+              }
+            },
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object"
+                },
+                "example": {
+                  "message": {
+                    "id": "5f975214-21fb-45ad-b786-9796a2750c3e",
+                    "text": "Man copy",
+                    "type": "regular",
+                    "cid": "team:b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room",
+                    "user": {
+                      "id": "0x360a45f70de193090a1b13da8393a02f9119aecd"
+                    },
+                    "created_at": "2024-11-21T08:05:18.860731054Z",
+                    "attachments": [
+                      {
+                        "type": "file",
+                        "title": "MoonMath.pdf",
+                        "file_size": 2428405,
+                        "mime_type": "application/pdf",
+                        "asset_url": "https://hn.storage.weodata.vn/belochat/bellboy/test/team:b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room/d19a800d-df1d-4ad3-9033-54dab61033d1"
+                      }
+                    ]
+                  },
+                  "duration": "3ms"
                 }
               }
             }
@@ -1333,7 +1887,7 @@
               "type": "string"
             },
             "required": true,
-            "example": "3d8688e3-1724-4c5b-80d5-84164cd08bcc"
+            "example": "5f975214-21fb-45ad-b786-9796a2750c3e"
           },
           {
             "name": "reaction_type",
@@ -1347,11 +1901,114 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "OK",
+            "headers": {
+              "Server": {
+                "schema": {
+                  "type": "number",
+                  "example": "nginx/1.18.0 (Ubuntu)"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Thu, 21 Nov 2024 08:06:46 GMT"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json"
+                }
+              },
+              "Transfer-Encoding": {
+                "schema": {
+                  "type": "string",
+                  "example": "chunked"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "access-control-expose-headers": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "vary": {
+                "schema": {
+                  "type": "string",
+                  "example": "accept-encoding"
+                }
+              },
+              "access-control-allow-origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "content-encoding": {
+                "schema": {
+                  "type": "string",
+                  "example": "br"
+                }
+              }
+            },
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object"
+                },
+                "example": {
+                  "message": {
+                    "id": "5f975214-21fb-45ad-b786-9796a2750c3e",
+                    "text": "Man copy",
+                    "type": "regular",
+                    "cid": "team:b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room",
+                    "user": {
+                      "id": "0x360a45f70de193090a1b13da8393a02f9119aecd"
+                    },
+                    "created_at": "2024-11-21T08:05:18.860731054Z",
+                    "attachments": [
+                      {
+                        "type": "file",
+                        "title": "MoonMath.pdf",
+                        "file_size": 2428405,
+                        "mime_type": "application/pdf",
+                        "asset_url": "https://hn.storage.weodata.vn/belochat/bellboy/test/team:b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room/d19a800d-df1d-4ad3-9033-54dab61033d1"
+                      }
+                    ],
+                    "latest_reactions": [
+                      {
+                        "message_id": "5f975214-21fb-45ad-b786-9796a2750c3e",
+                        "user_id": "0x360a45f70de193090a1b13da8393a02f9119aecd",
+                        "user": {
+                          "id": "0x360a45f70de193090a1b13da8393a02f9119aecd"
+                        },
+                        "type": "haha",
+                        "created_at": "2024-11-21T08:06:45.980093310Z",
+                        "updated_at": "2024-11-21T08:06:45.980093310Z"
+                      }
+                    ],
+                    "reaction_counts": {
+                      "haha": 1
+                    }
+                  },
+                  "reaction": {
+                    "message_id": "5f975214-21fb-45ad-b786-9796a2750c3e",
+                    "user_id": "0x360a45f70de193090a1b13da8393a02f9119aecd",
+                    "user": {
+                      "id": "0x360a45f70de193090a1b13da8393a02f9119aecd"
+                    },
+                    "type": "haha",
+                    "created_at": "2024-11-21T08:06:45.980093310Z",
+                    "updated_at": "2024-11-21T08:06:45.980093310Z"
+                  },
+                  "duration": "19ms"
                 }
               }
             }
@@ -1402,7 +2059,7 @@
               "type": "string"
             },
             "required": true,
-            "example": "3d8688e3-1724-4c5b-80d5-84164cd08bcc"
+            "example": "e1fb3b18-6f10-4413-95aa-c94c3ffa6019"
           },
           {
             "name": "reaction_type",
@@ -1416,11 +2073,91 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "OK",
+            "headers": {
+              "Server": {
+                "schema": {
+                  "type": "number",
+                  "example": "nginx/1.18.0 (Ubuntu)"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Thu, 21 Nov 2024 08:11:08 GMT"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json"
+                }
+              },
+              "Transfer-Encoding": {
+                "schema": {
+                  "type": "string",
+                  "example": "chunked"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "access-control-expose-headers": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "vary": {
+                "schema": {
+                  "type": "string",
+                  "example": "accept-encoding"
+                }
+              },
+              "access-control-allow-origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "content-encoding": {
+                "schema": {
+                  "type": "string",
+                  "example": "br"
+                }
+              }
+            },
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object"
+                },
+                "example": {
+                  "message": {
+                    "id": "e1fb3b18-6f10-4413-95aa-c94c3ffa6019",
+                    "text": "Syrian Grocery projection supply-chains",
+                    "type": "regular",
+                    "cid": "team:b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room",
+                    "user": {
+                      "id": "0x360a45f70de193090a1b13da8393a02f9119aecd"
+                    },
+                    "created_at": "2024-11-21T08:10:55.200991571Z",
+                    "reaction_counts": {}
+                  },
+                  "reaction": {
+                    "message_id": "e1fb3b18-6f10-4413-95aa-c94c3ffa6019",
+                    "user_id": "0x360a45f70de193090a1b13da8393a02f9119aecd",
+                    "user": {
+                      "id": "0x360a45f70de193090a1b13da8393a02f9119aecd"
+                    },
+                    "type": "haha",
+                    "created_at": "2024-11-21T08:11:03.112068157Z",
+                    "updated_at": "2024-11-21T08:11:03.112068157Z"
+                  },
+                  "duration": "19ms"
                 }
               }
             }
@@ -1483,16 +2220,116 @@
               "type": "string"
             },
             "required": true,
-            "example": "86d5abc1-421e-4444-a745-b263ef6cce60"
+            "example": "5f975214-21fb-45ad-b786-9796a2750c3e"
           }
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "OK",
+            "headers": {
+              "Server": {
+                "schema": {
+                  "type": "number",
+                  "example": "nginx/1.18.0 (Ubuntu)"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Thu, 21 Nov 2024 08:06:53 GMT"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json"
+                }
+              },
+              "Transfer-Encoding": {
+                "schema": {
+                  "type": "string",
+                  "example": "chunked"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "access-control-expose-headers": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "vary": {
+                "schema": {
+                  "type": "string",
+                  "example": "accept-encoding"
+                }
+              },
+              "access-control-allow-origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "content-encoding": {
+                "schema": {
+                  "type": "string",
+                  "example": "br"
+                }
+              }
+            },
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object"
+                },
+                "example": {
+                  "message": {
+                    "id": "5f975214-21fb-45ad-b786-9796a2750c3e",
+                    "text": "updated message text",
+                    "old_texts": [
+                      {
+                        "text": "Man copy",
+                        "created_at": "2024-11-21T08:05:18.860731054Z"
+                      }
+                    ],
+                    "type": "regular",
+                    "cid": "team:b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room",
+                    "user": {
+                      "id": "0x360a45f70de193090a1b13da8393a02f9119aecd"
+                    },
+                    "created_at": "2024-11-21T08:05:18.860731054Z",
+                    "attachments": [
+                      {
+                        "type": "file",
+                        "title": "MoonMath.pdf",
+                        "file_size": 2428405,
+                        "mime_type": "application/pdf",
+                        "asset_url": "https://hn.storage.weodata.vn/belochat/bellboy/test/team:b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room/d19a800d-df1d-4ad3-9033-54dab61033d1"
+                      }
+                    ],
+                    "latest_reactions": [
+                      {
+                        "message_id": "5f975214-21fb-45ad-b786-9796a2750c3e",
+                        "user_id": "0x360a45f70de193090a1b13da8393a02f9119aecd",
+                        "user": {
+                          "id": "0x360a45f70de193090a1b13da8393a02f9119aecd"
+                        },
+                        "type": "haha",
+                        "created_at": "2024-11-21T08:06:45.980093310Z",
+                        "updated_at": "2024-11-21T08:06:45.980093310Z"
+                      }
+                    ],
+                    "reaction_counts": {
+                      "haha": 1
+                    },
+                    "updated_at": "2024-11-21T08:06:53.576531112Z"
+                  },
+                  "duration": "19ms"
                 }
               }
             }
@@ -1543,16 +2380,116 @@
               "type": "string"
             },
             "required": true,
-            "example": "10c85860-23ea-4a56-95e4-c84348fd619f"
+            "example": "5f975214-21fb-45ad-b786-9796a2750c3e"
           }
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "OK",
+            "headers": {
+              "Server": {
+                "schema": {
+                  "type": "number",
+                  "example": "nginx/1.18.0 (Ubuntu)"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Thu, 21 Nov 2024 08:10:37 GMT"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json"
+                }
+              },
+              "Transfer-Encoding": {
+                "schema": {
+                  "type": "string",
+                  "example": "chunked"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "access-control-expose-headers": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "vary": {
+                "schema": {
+                  "type": "string",
+                  "example": "accept-encoding"
+                }
+              },
+              "access-control-allow-origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "content-encoding": {
+                "schema": {
+                  "type": "string",
+                  "example": "br"
+                }
+              }
+            },
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object"
+                },
+                "example": {
+                  "message": {
+                    "id": "5f975214-21fb-45ad-b786-9796a2750c3e",
+                    "text": "updated message text",
+                    "old_texts": [
+                      {
+                        "text": "Man copy",
+                        "created_at": "2024-11-21T08:05:18.860731054Z"
+                      }
+                    ],
+                    "type": "regular",
+                    "cid": "team:b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room",
+                    "user": {
+                      "id": "0x360a45f70de193090a1b13da8393a02f9119aecd"
+                    },
+                    "created_at": "2024-11-21T08:05:18.860731054Z",
+                    "attachments": [
+                      {
+                        "type": "file",
+                        "title": "MoonMath.pdf",
+                        "file_size": 2428405,
+                        "mime_type": "application/pdf",
+                        "asset_url": "https://hn.storage.weodata.vn/belochat/bellboy/test/team:b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room/d19a800d-df1d-4ad3-9033-54dab61033d1"
+                      }
+                    ],
+                    "latest_reactions": [
+                      {
+                        "message_id": "5f975214-21fb-45ad-b786-9796a2750c3e",
+                        "user_id": "0x360a45f70de193090a1b13da8393a02f9119aecd",
+                        "user": {
+                          "id": "0x360a45f70de193090a1b13da8393a02f9119aecd"
+                        },
+                        "type": "haha",
+                        "created_at": "2024-11-21T08:06:45.980093310Z",
+                        "updated_at": "2024-11-21T08:06:45.980093310Z"
+                      }
+                    ],
+                    "reaction_counts": {
+                      "haha": 1
+                    },
+                    "updated_at": "2024-11-21T08:06:53.576531112Z"
+                  },
+                  "duration": "134ms"
                 }
               }
             }
@@ -1617,7 +2554,7 @@
               "type": "string"
             },
             "required": true,
-            "example": "03e34d14-3c50-48ab-87a3-f6b2543d5bc3"
+            "example": "c904b517-9fdb-4d28-a89b-220f48d1f8dc"
           },
           {
             "name": "action",
@@ -1632,11 +2569,80 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "OK",
+            "headers": {
+              "Server": {
+                "schema": {
+                  "type": "number",
+                  "example": "nginx/1.18.0 (Ubuntu)"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Thu, 21 Nov 2024 08:10:17 GMT"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json"
+                }
+              },
+              "Transfer-Encoding": {
+                "schema": {
+                  "type": "string",
+                  "example": "chunked"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "access-control-expose-headers": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "vary": {
+                "schema": {
+                  "type": "string",
+                  "example": "accept-encoding"
+                }
+              },
+              "access-control-allow-origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "content-encoding": {
+                "schema": {
+                  "type": "string",
+                  "example": "br"
+                }
+              }
+            },
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object"
+                },
+                "example": {
+                  "message": {
+                    "id": "c904b517-9fdb-4d28-a89b-220f48d1f8dc",
+                    "text": "application Small aggregate",
+                    "type": "regular",
+                    "cid": "team:b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room",
+                    "user": {
+                      "id": "0x360a45f70de193090a1b13da8393a02f9119aecd"
+                    },
+                    "created_at": "2024-11-21T08:10:09.908145995Z"
+                  },
+                  "duration": "2ms"
                 }
               }
             }
@@ -1685,11 +2691,109 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "OK",
+            "headers": {
+              "Server": {
+                "schema": {
+                  "type": "number",
+                  "example": "nginx/1.18.0 (Ubuntu)"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Thu, 21 Nov 2024 08:23:31 GMT"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json"
+                }
+              },
+              "Transfer-Encoding": {
+                "schema": {
+                  "type": "string",
+                  "example": "chunked"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "access-control-expose-headers": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "vary": {
+                "schema": {
+                  "type": "string",
+                  "example": "accept-encoding"
+                }
+              },
+              "access-control-allow-origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "content-encoding": {
+                "schema": {
+                  "type": "string",
+                  "example": "br"
+                }
+              }
+            },
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object"
+                },
+                "example": {
+                  "channel": {
+                    "id": "b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room",
+                    "type": "team",
+                    "name": "Vinh-Thang-Room",
+                    "image": "https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp",
+                    "description": "long description for this channel",
+                    "public": false,
+                    "cid": "team:b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room",
+                    "created_by": {
+                      "id": "0x360a45f70de193090a1b13da8393a02f9119aecd"
+                    },
+                    "member_count": 0,
+                    "members": [],
+                    "member_capabilities": [
+                      "create-call",
+                      "join-call",
+                      "send-message",
+                      "send-links",
+                      "update-own-message",
+                      "delete-own-message",
+                      "quote-message",
+                      "send-reply",
+                      "search-messages",
+                      "send-reaction",
+                      "delete-own-reaction",
+                      "send-typing-events",
+                      "upload-file"
+                    ],
+                    "filter_words": [
+                      "ass",
+                      "bitch",
+                      "fuck",
+                      "shit"
+                    ],
+                    "last_message_at": "2024-11-21T08:23:30.862860118Z",
+                    "created_at": "2024-10-21T03:18:40.463468Z",
+                    "updated_at": "2024-11-21T08:16:02.771003Z",
+                    "truncated_at": "2024-11-05T05:11:08.099108Z"
+                  },
+                  "duration": "1013ms"
                 }
               }
             }
@@ -1706,7 +2810,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "example": "{\n    \"action\": \"block\" // \"block\" | \"unblock\"\n}"
+                "example": "{\n    \"action\": \"unblock\" // \"block\" | \"unblock\"\n}"
               }
             }
           }
@@ -1724,7 +2828,7 @@
               "type": "string"
             },
             "required": true,
-            "example": "{{channel_type}}"
+            "example": "{{direct_channel_type}}"
           },
           {
             "name": "channel_id",
@@ -1733,16 +2837,130 @@
               "type": "string"
             },
             "required": true,
-            "example": "{{channel_id}}"
+            "example": "{{direct_channel_id}}"
           }
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "OK",
+            "headers": {
+              "Server": {
+                "schema": {
+                  "type": "number",
+                  "example": "nginx/1.18.0 (Ubuntu)"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Thu, 21 Nov 2024 08:19:11 GMT"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json"
+                }
+              },
+              "Transfer-Encoding": {
+                "schema": {
+                  "type": "string",
+                  "example": "chunked"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "access-control-expose-headers": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "vary": {
+                "schema": {
+                  "type": "string",
+                  "example": "accept-encoding"
+                }
+              },
+              "access-control-allow-origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "content-encoding": {
+                "schema": {
+                  "type": "string",
+                  "example": "br"
+                }
+              }
+            },
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object"
+                },
+                "example": {
+                  "channel": {
+                    "id": "b44937e4-c0d4-4a73-847c-3730a923ce83:d4e1e4701ed3dbb58f7c708c1aa2ef0059fa",
+                    "type": "messaging",
+                    "name": "Vinh-Thang-Room",
+                    "image": "",
+                    "description": "",
+                    "public": false,
+                    "cid": "messaging:b44937e4-c0d4-4a73-847c-3730a923ce83:d4e1e4701ed3dbb58f7c708c1aa2ef0059fa",
+                    "created_by": {
+                      "id": "0x360a45f70de193090a1b13da8393a02f9119aecd"
+                    },
+                    "member_count": 2,
+                    "members": [
+                      {
+                        "user": {
+                          "id": "0x75c4ff25f1d81803675f687d52a4906855d61ad8"
+                        },
+                        "user_id": "0x75c4ff25f1d81803675f687d52a4906855d61ad8",
+                        "created_at": "2024-11-21T08:16:51.620938Z",
+                        "updated_at": "2024-11-21T08:16:51.620938Z",
+                        "channel_role": "pending",
+                        "banned": false,
+                        "blocked": false
+                      },
+                      {
+                        "user": {
+                          "id": "0x360a45f70de193090a1b13da8393a02f9119aecd"
+                        },
+                        "user_id": "0x360a45f70de193090a1b13da8393a02f9119aecd",
+                        "created_at": "2024-11-21T08:16:51.620938Z",
+                        "updated_at": "2024-11-21T08:19:11.383590Z",
+                        "channel_role": "owner",
+                        "banned": false,
+                        "blocked": true
+                      }
+                    ],
+                    "member_capabilities": [
+                      "create-call",
+                      "join-call",
+                      "send-message",
+                      "send-links",
+                      "update-own-message",
+                      "delete-own-message",
+                      "quote-message",
+                      "send-reply",
+                      "search-messages",
+                      "send-reaction",
+                      "delete-own-reaction",
+                      "send-typing-events",
+                      "upload-file"
+                    ],
+                    "last_message_at": "2024-11-21T08:19:11.383579736Z",
+                    "created_at": "2024-11-21T08:16:51.620938Z",
+                    "updated_at": "2024-11-21T08:16:51.620938Z"
+                  },
+                  "duration": "7ms"
                 }
               }
             }
@@ -1791,11 +3009,132 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "OK",
+            "headers": {
+              "Server": {
+                "schema": {
+                  "type": "number",
+                  "example": "nginx/1.18.0 (Ubuntu)"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Thu, 21 Nov 2024 08:23:25 GMT"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json"
+                }
+              },
+              "Transfer-Encoding": {
+                "schema": {
+                  "type": "string",
+                  "example": "chunked"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "access-control-expose-headers": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "vary": {
+                "schema": {
+                  "type": "string",
+                  "example": "accept-encoding"
+                }
+              },
+              "access-control-allow-origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "content-encoding": {
+                "schema": {
+                  "type": "string",
+                  "example": "br"
+                }
+              }
+            },
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object"
+                },
+                "example": {
+                  "channel": {
+                    "id": "b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room",
+                    "type": "team",
+                    "name": "Vinh-Thang-Room",
+                    "image": "https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp",
+                    "description": "long description for this channel",
+                    "public": false,
+                    "cid": "team:b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room",
+                    "created_by": {
+                      "id": "0x360a45f70de193090a1b13da8393a02f9119aecd"
+                    },
+                    "member_count": 2,
+                    "members": [
+                      {
+                        "user": {
+                          "id": "0x75c4ff25f1d81803675f687d52a4906855d61ad8"
+                        },
+                        "user_id": "0x75c4ff25f1d81803675f687d52a4906855d61ad8",
+                        "created_at": "2024-11-21T08:12:46.268518Z",
+                        "updated_at": "2024-11-21T08:22:19.020050Z",
+                        "channel_role": "member",
+                        "banned": false,
+                        "blocked": false
+                      },
+                      {
+                        "user": {
+                          "id": "0x360a45f70de193090a1b13da8393a02f9119aecd"
+                        },
+                        "user_id": "0x360a45f70de193090a1b13da8393a02f9119aecd",
+                        "created_at": "2024-11-05T05:04:07.947545Z",
+                        "updated_at": "2024-11-21T08:22:19.020939Z",
+                        "channel_role": "owner",
+                        "banned": false,
+                        "blocked": false
+                      }
+                    ],
+                    "member_capabilities": [
+                      "create-call",
+                      "join-call",
+                      "send-message",
+                      "send-links",
+                      "update-own-message",
+                      "delete-own-message",
+                      "quote-message",
+                      "send-reply",
+                      "search-messages",
+                      "send-reaction",
+                      "delete-own-reaction",
+                      "send-typing-events",
+                      "upload-file"
+                    ],
+                    "filter_words": [
+                      "ass",
+                      "bitch",
+                      "fuck",
+                      "shit"
+                    ],
+                    "last_message_at": "2024-11-21T08:23:24.348920749Z",
+                    "created_at": "2024-10-21T03:18:40.463468Z",
+                    "updated_at": "2024-11-21T08:16:02.771003Z",
+                    "truncated_at": "2024-11-21T08:23:24.348920749Z"
+                  },
+                  "duration": "1288ms"
                 }
               }
             }
@@ -1851,17 +3190,70 @@
               "type": "string"
             },
             "required": true,
-            "description": "accept | reject",
+            "description": "accept | reject | join",
             "example": "accept"
           }
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "OK",
+            "headers": {
+              "Server": {
+                "schema": {
+                  "type": "number",
+                  "example": "nginx/1.18.0 (Ubuntu)"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Thu, 21 Nov 2024 08:15:31 GMT"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "18"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "vary": {
+                "schema": {
+                  "type": "string",
+                  "example": "origin, access-control-request-method, access-control-request-headers"
+                }
+              },
+              "access-control-allow-origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "access-control-expose-headers": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              }
+            },
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object"
+                },
+                "example": {
+                  "duration": "3ms"
                 }
               }
             }
@@ -1882,7 +3274,7 @@
                 "type": "object",
                 "example": {
                   "cid": "{{cid}}",
-                  "search_term": "Customer",
+                  "search_term": "message",
                   "limit": 25,
                   "offset": 0
                 }
@@ -1907,11 +3299,83 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "OK",
+            "headers": {
+              "Server": {
+                "schema": {
+                  "type": "number",
+                  "example": "nginx/1.18.0 (Ubuntu)"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Thu, 21 Nov 2024 08:09:17 GMT"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json"
+                }
+              },
+              "Transfer-Encoding": {
+                "schema": {
+                  "type": "string",
+                  "example": "chunked"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "access-control-expose-headers": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "vary": {
+                "schema": {
+                  "type": "string",
+                  "example": "accept-encoding"
+                }
+              },
+              "access-control-allow-origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "content-encoding": {
+                "schema": {
+                  "type": "string",
+                  "example": "br"
+                }
+              }
+            },
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object"
+                },
+                "example": {
+                  "search_result": {
+                    "limit": 25,
+                    "offset": 0,
+                    "total": 1,
+                    "messages": [
+                      {
+                        "id": "5f975214-21fb-45ad-b786-9796a2750c3e",
+                        "text": "updated message text",
+                        "user_id": "0x360a45f70de193090a1b13da8393a02f9119aecd",
+                        "created_at": "2024-11-21T08:05:18.860731054Z"
+                      }
+                    ]
+                  },
+                  "duration": "17ms"
                 }
               }
             }
@@ -1957,11 +3421,175 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "OK",
+            "headers": {
+              "Server": {
+                "schema": {
+                  "type": "number",
+                  "example": "nginx/1.18.0 (Ubuntu)"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Thu, 21 Nov 2024 08:08:49 GMT"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json"
+                }
+              },
+              "Transfer-Encoding": {
+                "schema": {
+                  "type": "string",
+                  "example": "chunked"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "access-control-expose-headers": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "vary": {
+                "schema": {
+                  "type": "string",
+                  "example": "accept-encoding"
+                }
+              },
+              "access-control-allow-origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "content-encoding": {
+                "schema": {
+                  "type": "string",
+                  "example": "br"
+                }
+              }
+            },
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object"
+                },
+                "example": {
+                  "search_result": {
+                    "limit": 25,
+                    "offset": 0,
+                    "total": 1,
+                    "channels": [
+                      {
+                        "index": "vinh-thang-room",
+                        "cid": "team:b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room",
+                        "type": "team",
+                        "name": "Vinh-Thang-Room",
+                        "image": "https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp",
+                        "description": "long description for this channel",
+                        "created_at": "2024-10-21T03:18:40.463468Z",
+                        "created_by": "0x360a45f70de193090a1b13da8393a02f9119aecd"
+                      }
+                    ]
+                  },
+                  "duration": "18ms"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/delete": {
+      "delete": {
+        "tags": [
+          "default"
+        ],
+        "summary": "Delete User",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Content-Encoding",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "example": "zstd"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "Server": {
+                "schema": {
+                  "type": "number",
+                  "example": "nginx/1.18.0 (Ubuntu)"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Thu, 21 Nov 2024 08:08:32 GMT"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "21"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "vary": {
+                "schema": {
+                  "type": "string",
+                  "example": "origin, access-control-request-method, access-control-request-headers"
+                }
+              },
+              "access-control-allow-origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "access-control-expose-headers": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "duration": "1196ms"
                 }
               }
             }
@@ -1980,7 +3608,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "example": "{\n    \"data\": {// Use when create channel\n        \"name\": \"Vinh-Thang-Room\",\n        // \"image\": \"\",\n        // \"description\":\"Something\",\n        // \"public\": false, // mặc định không điền là false\n        \"members\": [\n            \"0x360a45f70de193090a1b13da8393a02f9119aecd\",\n            \"0x75c4ff25f1d81803675f687d52a4906855d61ad8\"\n        ]\n    },\n    \"project_id\": \"{{project_id}}\",\n    \"messages\": {\n        // \"id_lt\": \"6e4aa399-37fa-43eb-a994-9517266af148\",\n        // \"id_gt\": \"6e4aa399-37fa-43eb-a994-9517266af148\",\n        // \"id_around\": \"6e4aa399-37fa-43eb-a994-9517266af148\",\n        \"limit\": 25    \n    }\n}"
+                "example": "{\n    \"data\": {// Use when create channel\n        \"name\": \"Vinh-Thang-Room\",\n        // \"image\": \"\",\n        // \"description\":\"Something\",\n        // \"public\": false, // true hoặc false\n        \"members\": [\n            \"0x360a45f70de193090a1b13da8393a02f9119aecd\",\n            \"0x360a45f70de193090a1b13da8393a02f9119aecd\",\n            \"0x75c4ff25f1d81803675f687d52a4906855d61ad8\"\n        ]\n    },\n    \"project_id\": \"{{project_id}}\",\n    \"messages\": {\n        // \"id_lt\": \"6e4aa399-37fa-43eb-a994-9517266af148\",\n        // \"id_gt\": \"6e4aa399-37fa-43eb-a994-9517266af148\",\n        // \"id_around\": \"6e4aa399-37fa-43eb-a994-9517266af148\",\n        \"limit\": 25    \n    }\n}"
               }
             }
           }
@@ -2020,11 +3648,224 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "OK",
+            "headers": {
+              "Server": {
+                "schema": {
+                  "type": "number",
+                  "example": "nginx/1.18.0 (Ubuntu)"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Thu, 21 Nov 2024 08:07:41 GMT"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json"
+                }
+              },
+              "Transfer-Encoding": {
+                "schema": {
+                  "type": "string",
+                  "example": "chunked"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "access-control-expose-headers": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "vary": {
+                "schema": {
+                  "type": "string",
+                  "example": "accept-encoding"
+                }
+              },
+              "access-control-allow-origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "content-encoding": {
+                "schema": {
+                  "type": "string",
+                  "example": "br"
+                }
+              }
+            },
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object"
+                },
+                "example": {
+                  "channel": {
+                    "id": "b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room",
+                    "type": "team",
+                    "name": "Vinh-Thang-Room",
+                    "image": "https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp",
+                    "description": "long description for this channel",
+                    "public": true,
+                    "cid": "team:b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room",
+                    "created_by": {
+                      "id": "0x360a45f70de193090a1b13da8393a02f9119aecd"
+                    },
+                    "member_count": 2,
+                    "members": [
+                      {
+                        "user": {
+                          "id": "0x360a45f70de193090a1b13da8393a02f9119aecd"
+                        },
+                        "user_id": "0x360a45f70de193090a1b13da8393a02f9119aecd",
+                        "created_at": "2024-11-05T05:04:07.947545Z",
+                        "updated_at": "2024-11-21T08:06:19.165955Z",
+                        "channel_role": "member",
+                        "banned": false,
+                        "blocked": false
+                      },
+                      {
+                        "user": {
+                          "id": "0x75c4ff25f1d81803675f687d52a4906855d61ad8"
+                        },
+                        "user_id": "0x75c4ff25f1d81803675f687d52a4906855d61ad8",
+                        "created_at": "2024-10-22T06:28:21.901597Z",
+                        "updated_at": "2024-11-14T08:09:49.474353Z",
+                        "channel_role": "owner",
+                        "banned": false,
+                        "blocked": false
+                      }
+                    ],
+                    "member_capabilities": [
+                      "create-call",
+                      "join-call",
+                      "send-message",
+                      "send-links",
+                      "update-own-message",
+                      "delete-own-message",
+                      "quote-message",
+                      "send-reply",
+                      "search-messages",
+                      "send-reaction",
+                      "delete-own-reaction",
+                      "send-typing-events",
+                      "upload-file"
+                    ],
+                    "filter_words": [
+                      "ass",
+                      "bitch",
+                      "fuck",
+                      "shit"
+                    ],
+                    "last_message_at": "2024-11-21T08:05:18.860731054Z",
+                    "created_at": "2024-10-21T03:18:40.463468Z",
+                    "updated_at": "2024-10-21T07:50:39.984531Z",
+                    "truncated_at": "2024-11-05T05:11:08.099108Z"
+                  },
+                  "messages": [
+                    {
+                      "id": "2e2582d2-5aac-424d-9a03-6b0811e42fb4",
+                      "text": "13 0x75c4ff25f1d81803675f687d52a4906855d61ad8",
+                      "type": "system",
+                      "cid": "team:b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room",
+                      "user": {
+                        "id": "0x75c4ff25f1d81803675f687d52a4906855d61ad8"
+                      },
+                      "created_at": "2024-11-05T05:11:10.711853622Z"
+                    },
+                    {
+                      "id": "5f975214-21fb-45ad-b786-9796a2750c3e",
+                      "text": "updated message text",
+                      "old_texts": [
+                        {
+                          "text": "Man copy",
+                          "created_at": "2024-11-21T08:05:18.860731054Z"
+                        }
+                      ],
+                      "type": "regular",
+                      "cid": "team:b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room",
+                      "user": {
+                        "id": "0x360a45f70de193090a1b13da8393a02f9119aecd"
+                      },
+                      "created_at": "2024-11-21T08:05:18.860731054Z",
+                      "attachments": [
+                        {
+                          "type": "file",
+                          "title": "MoonMath.pdf",
+                          "file_size": 2428405,
+                          "mime_type": "application/pdf",
+                          "asset_url": "https://hn.storage.weodata.vn/belochat/bellboy/test/team:b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room/d19a800d-df1d-4ad3-9033-54dab61033d1"
+                        }
+                      ],
+                      "latest_reactions": [
+                        {
+                          "message_id": "5f975214-21fb-45ad-b786-9796a2750c3e",
+                          "user_id": "0x360a45f70de193090a1b13da8393a02f9119aecd",
+                          "user": {
+                            "id": "0x360a45f70de193090a1b13da8393a02f9119aecd"
+                          },
+                          "type": "haha",
+                          "created_at": "2024-11-21T08:06:45.980093310Z",
+                          "updated_at": "2024-11-21T08:06:45.980093310Z"
+                        }
+                      ],
+                      "reaction_counts": {
+                        "haha": 1
+                      },
+                      "updated_at": "2024-11-21T08:06:53.576531112Z"
+                    }
+                  ],
+                  "watchers": [
+                    {
+                      "id": "0x360a45f70de193090a1b13da8393a02f9119aecd"
+                    },
+                    {
+                      "id": "0x75c4ff25f1d81803675f687d52a4906855d61ad8"
+                    }
+                  ],
+                  "read": [
+                    {
+                      "user": {
+                        "id": "0x360a45f70de193090a1b13da8393a02f9119aecd"
+                      },
+                      "last_read": "2024-11-21T08:05:18.888025098Z",
+                      "last_read_message_id": "5f975214-21fb-45ad-b786-9796a2750c3e",
+                      "last_send": "2024-11-21T08:05:18.860731054Z",
+                      "unread_messages": 0
+                    },
+                    {
+                      "user": {
+                        "id": "0x75c4ff25f1d81803675f687d52a4906855d61ad8"
+                      },
+                      "last_read": "2024-11-21T08:06:27.467577875Z",
+                      "last_read_message_id": "5f975214-21fb-45ad-b786-9796a2750c3e",
+                      "last_send": "1970-01-01T00:00:00Z",
+                      "unread_messages": 0
+                    }
+                  ],
+                  "membership": {
+                    "user": {
+                      "id": "0x360a45f70de193090a1b13da8393a02f9119aecd"
+                    },
+                    "user_id": "0x360a45f70de193090a1b13da8393a02f9119aecd",
+                    "created_at": "2024-11-05T05:04:07.947545Z",
+                    "updated_at": "2024-11-21T08:06:19.165955Z",
+                    "channel_role": "member",
+                    "banned": false,
+                    "blocked": false
+                  },
+                  "duration": "3ms"
                 }
               }
             }
@@ -2039,14 +3880,7 @@
         ],
         "summary": "Overview Channels",
         "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "example": {}
-              }
-            }
-          }
+          "content": {}
         },
         "security": [
           {
@@ -2065,11 +3899,71 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "OK",
+            "headers": {
+              "Server": {
+                "schema": {
+                  "type": "number",
+                  "example": "nginx/1.18.0 (Ubuntu)"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Thu, 21 Nov 2024 08:07:27 GMT"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json"
+                }
+              },
+              "Transfer-Encoding": {
+                "schema": {
+                  "type": "string",
+                  "example": "chunked"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "access-control-expose-headers": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "vary": {
+                "schema": {
+                  "type": "string",
+                  "example": "accept-encoding"
+                }
+              },
+              "access-control-allow-origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "content-encoding": {
+                "schema": {
+                  "type": "string",
+                  "example": "br"
+                }
+              }
+            },
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object"
+                },
+                "example": {
+                  "channels_count": 161,
+                  "duration": "2ms"
                 }
               }
             }
@@ -2110,11 +4004,187 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "OK",
+            "headers": {
+              "Server": {
+                "schema": {
+                  "type": "number",
+                  "example": "nginx/1.18.0 (Ubuntu)"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Thu, 21 Nov 2024 08:00:57 GMT"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json"
+                }
+              },
+              "Transfer-Encoding": {
+                "schema": {
+                  "type": "string",
+                  "example": "chunked"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "access-control-expose-headers": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "vary": {
+                "schema": {
+                  "type": "string",
+                  "example": "accept-encoding"
+                }
+              },
+              "access-control-allow-origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "content-encoding": {
+                "schema": {
+                  "type": "string",
+                  "example": "br"
+                }
+              }
+            },
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object"
+                },
+                "example": {
+                  "channels": [
+                    {
+                      "channel": {
+                        "id": "b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room",
+                        "type": "team",
+                        "name": "Vinh-Thang-Room",
+                        "image": "https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp",
+                        "description": "long description for this channel",
+                        "public": true,
+                        "cid": "team:b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room",
+                        "created_by": {
+                          "id": "0x360a45f70de193090a1b13da8393a02f9119aecd"
+                        },
+                        "member_count": 2,
+                        "members": [
+                          {
+                            "user": {
+                              "id": "0x360a45f70de193090a1b13da8393a02f9119aecd"
+                            },
+                            "user_id": "0x360a45f70de193090a1b13da8393a02f9119aecd",
+                            "created_at": "2024-11-05T05:04:07.947545Z",
+                            "updated_at": "2024-11-06T07:41:38.789756Z",
+                            "channel_role": "member",
+                            "banned": false,
+                            "blocked": false
+                          },
+                          {
+                            "user": {
+                              "id": "0x75c4ff25f1d81803675f687d52a4906855d61ad8"
+                            },
+                            "user_id": "0x75c4ff25f1d81803675f687d52a4906855d61ad8",
+                            "created_at": "2024-10-22T06:28:21.901597Z",
+                            "updated_at": "2024-11-14T08:09:49.474353Z",
+                            "channel_role": "owner",
+                            "banned": false,
+                            "blocked": false
+                          }
+                        ],
+                        "member_capabilities": [
+                          "create-call",
+                          "join-call",
+                          "send-message",
+                          "send-links",
+                          "update-own-message",
+                          "delete-own-message",
+                          "quote-message",
+                          "send-reply",
+                          "search-messages",
+                          "send-reaction",
+                          "delete-own-reaction",
+                          "send-typing-events",
+                          "upload-file"
+                        ],
+                        "filter_words": [
+                          "ass",
+                          "bitch",
+                          "fuck",
+                          "shit"
+                        ],
+                        "last_message_at": "2024-11-05T05:11:10.711853622Z",
+                        "created_at": "2024-10-21T03:18:40.463468Z",
+                        "updated_at": "2024-10-21T07:50:39.984531Z",
+                        "truncated_at": "2024-11-05T05:11:08.099108Z"
+                      },
+                      "messages": [
+                        {
+                          "id": "2e2582d2-5aac-424d-9a03-6b0811e42fb4",
+                          "text": "13 0x75c4ff25f1d81803675f687d52a4906855d61ad8",
+                          "type": "system",
+                          "cid": "team:b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room",
+                          "user": {
+                            "id": "0x75c4ff25f1d81803675f687d52a4906855d61ad8"
+                          },
+                          "created_at": "2024-11-05T05:11:10.711853622Z"
+                        }
+                      ],
+                      "watchers": [
+                        {
+                          "id": "0x360a45f70de193090a1b13da8393a02f9119aecd"
+                        },
+                        {
+                          "id": "0x75c4ff25f1d81803675f687d52a4906855d61ad8"
+                        }
+                      ],
+                      "read": [
+                        {
+                          "user": {
+                            "id": "0x360a45f70de193090a1b13da8393a02f9119aecd"
+                          },
+                          "last_read": "2024-11-05T05:09:53.698986Z",
+                          "last_read_message_id": "254dbfda-502f-4498-84a0-6ee8d4fe975b",
+                          "last_send": "2024-11-05T05:09:53.681865Z",
+                          "unread_messages": 1
+                        },
+                        {
+                          "user": {
+                            "id": "0x75c4ff25f1d81803675f687d52a4906855d61ad8"
+                          },
+                          "last_read": "2024-11-14T08:09:35.116994Z",
+                          "last_read_message_id": "2e2582d2-5aac-424d-9a03-6b0811e42fb4",
+                          "last_send": "1970-01-01T00:00:00Z",
+                          "unread_messages": 0
+                        }
+                      ],
+                      "membership": {
+                        "user": {
+                          "id": "0x360a45f70de193090a1b13da8393a02f9119aecd"
+                        },
+                        "user_id": "0x360a45f70de193090a1b13da8393a02f9119aecd",
+                        "created_at": "2024-11-05T05:04:07.947545Z",
+                        "updated_at": "2024-11-06T07:41:38.789756Z",
+                        "channel_role": "member",
+                        "banned": false,
+                        "blocked": false
+                      }
+                    }
+                  ],
+                  "duration": "4ms"
                 }
               }
             }
@@ -2157,11 +4227,82 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "OK",
+            "headers": {
+              "Server": {
+                "schema": {
+                  "type": "number",
+                  "example": "nginx/1.18.0 (Ubuntu)"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Thu, 21 Nov 2024 08:19:39 GMT"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json"
+                }
+              },
+              "Transfer-Encoding": {
+                "schema": {
+                  "type": "string",
+                  "example": "chunked"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "access-control-expose-headers": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "vary": {
+                "schema": {
+                  "type": "string",
+                  "example": "accept-encoding"
+                }
+              },
+              "access-control-allow-origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "content-encoding": {
+                "schema": {
+                  "type": "string",
+                  "example": "br"
+                }
+              }
+            },
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object"
+                },
+                "example": {
+                  "project_id_user_ids": {
+                    "b44937e4-c0d4-4a73-847c-3730a923ce83": [
+                      {
+                        "user_id": "0x360a45f70de193090a1b13da8393a02f9119aecd",
+                        "other_id": "0x75c4ff25f1d81803675f687d52a4906855d61ad8",
+                        "project_id": "b44937e4-c0d4-4a73-847c-3730a923ce83",
+                        "relation_status": "normal",
+                        "created_at": "2024-11-21T08:19:11.387172Z",
+                        "updated_at": "2024-11-21T08:19:35.141765Z"
+                      }
+                    ]
+                  },
+                  "duration": "2ms"
                 }
               }
             }
