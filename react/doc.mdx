@@ -194,6 +194,7 @@ import 'ermis-chat-react-sdk/dist/css/v2/index.css';
 #### 2. Dark and Light Themes
 
 The default theme includes both dark and light variants. Here is how you can switch between the different themes:
+
 **Apply a Theme Globally:**
 
 ```javascript
@@ -264,7 +265,7 @@ You can find the **List of Components with Customizable Variables** as below:
 | `MessageList`      | [theme variables](https://github.com/ermisnetwork/ermis-chat-css/blob/main/src/v2/styles/MessageList/MessageList-theme.scss), [layout variables](https://github.com/ermisnetwork/ermis-chat-css/blob/main/src/v2/styles/MessageList/MessageList-layout.scss) |
 | `MessageReactions`      | [theme variables](https://github.com/ermisnetwork/ermis-chat-css/blob/main/src/v2/styles/MessageReactions/MessageReactions-theme.scss), [layout variables](https://github.com/ermisnetwork/ermis-chat-css/blob/main/src/v2/styles/MessageReactions/MessageReactions-layout.scss) |
 
-### Chat Component
+### Chat
 
 The `Chat` component is a React Context provider that wraps the entire Ermis Chat application. It provides the ChatContext to its children, which includes the `ErmisChat` client instance. All other components in the library must be nested as children of `Chat` to maintain proper functionality.
 
@@ -403,6 +404,7 @@ This eliminates the need for manual prop passing.
 ##### 1.2. Props
 
 - **channel**
+
   The active `ErmisChat` channel instance to be used in the `Channel` component and accessed by its children.
   ```javascript
   const channel_type = 'team'; // or 'messaging'
@@ -415,48 +417,56 @@ This eliminates the need for manual prop passing.
 
 
 - **acceptedFiles**
+
   A list of accepted file upload types.
   | Type      |
   | :-------- |
   | `string[]`    |
 
 - **Attachment**
+
   Custom UI component to display a message attachment.
   | Type      | Default |
   | :-------- | :-------- |
   | `component`    | [Attachment](https://github.com/ermisnetwork/ermis-chat-react-sdk/blob/master/src/components/Attachment/Attachment.tsx) |
 
 - **AttachmentPreviewList**
+
   Custom UI component to display an attachment previews in `MessageInput`.
   | Type      | Default |
   | :-------- | :-------- |
   | `component`    | [AttachmentPreviewList](https://github.com/ermisnetwork/ermis-chat-react-sdk/blob/master/src/components/MessageInput/AttachmentPreviewList/AttachmentPreviewList.tsx) |
 
 - **AttachmentSelectorInitiationButtonContents**
+
   Custom UI component for contents of attachment selector initiation button.
   | Type      |
   | :-------- |
   | `component`    |
 
 - **DateSeparator**
+
   Custom UI component for date separators.
   | Type      | Default |
   | :-------- | :-------- |
   | `component`    | [DateSeparator](https://github.com/ermisnetwork/ermis-chat-react-sdk/blob/master/src/components/DateSeparator/DateSeparator.tsx) |
 
 - **AudioRecorder**
+
   Custom UI component to display an attachment previews in `MessageInput`.
   | Type      | Default |
   | :-------- | :-------- |
   | `component`    | [AudioRecorder](https://github.com/ermisnetwork/ermis-chat-react-sdk/blob/master/src/components/MediaRecorder/AudioRecorder/AudioRecorder.tsx) |
 
 - **Avatar**
+
   Custom UI component to display a user’s avatar.
   | Type      | Default |
   | :-------- | :-------- |
   | `component`    | [Avatar](https://github.com/ermisnetwork/ermis-chat-react-sdk/blob/master/src/components/Avatar/Avatar.tsx) |
 
 - **channelQueryOptions**
+
 Optional parameters used for the initial channel query.
 For example, you can configure the number of messages retrieved in the first page of a channel query. The default is 100, but you can set it to 20 as shown below. Note: The channel prop must be passed along with channelQueryOptions.
 
@@ -486,84 +496,98 @@ For example, you can configure the number of messages retrieved in the first pag
   };
   ```
 - **dragAndDropWindow**
+
   If true, chat users will be able to drag and drop file uploads to the entire channel window.
   | Type      | Default |
   | :-------- | :-------- |
   | `boolean`    | `false` |
 
 - **EditMessageInput**
+
   Custom UI component to override default edit message input.
   | Type      | Default |
   | :-------- | :-------- |
   | `component`    | [EditMessageForm](https://github.com/ermisnetwork/ermis-chat-react-sdk/blob/master/src/components/MessageInput/EditMessageForm.tsx) |
 
 - **FileUploadIcon**
+
   Custom UI component for file upload icon.
   | Type      | Default |
   | :-------- | :-------- |
   | `component`    | [FileUploadIcon](https://github.com/ermisnetwork/ermis-chat-react-sdk/blob/master/src/components/MessageInput/icons.tsx) |
 
 - **Input**
+
   Custom UI component handling how the message input is rendered.
   | Type      | Default |
   | :-------- | :-------- |
   | `component`    | [MessageInputFlat](https://github.com/ermisnetwork/ermis-chat-react-sdk/blob/master/src/components/MessageInput/MessageInputFlat.tsx) |
 
 - **Message**
+
   Custom UI component to display a message in the standard `MessageList`.
   | Type      | Default |
   | :-------- | :-------- |
   | `component`    | [MessageSimple](https://github.com/ermisnetwork/ermis-chat-react-sdk/blob/master/src/components/Message/MessageSimple.tsx) |
 
 - **MessageDeleted**
+
   Custom UI component for a deleted message.
   | Type      | Default |
   | :-------- | :-------- |
   | `component`    | [MessageDeleted](https://github.com/ermisnetwork/ermis-chat-react-sdk/blob/master/src/components/Message/MessageDeleted.tsx) | 
 
 - **MessageRepliesCountButton**
+
   Custom UI component to display message replies.
   | Type      | Default |
   | :-------- | :-------- |
   | `component`    | [MessageRepliesCountButton](https://github.com/ermisnetwork/ermis-chat-react-sdk/blob/master/src/components/Message/MessageRepliesCountButton.tsx) |
 
 - **MessageSystem**
+
   Custom UI component to display system messages.
   | Type      | Default |
   | :-------- | :-------- |
   | `component`    | [EventComponent](https://github.com/ermisnetwork/ermis-chat-react-sdk/blob/master/src/components/EventComponent/EventComponent.tsx) |
 
 - **MessageTimestamp**
+
   Custom UI component for displaying a message timestamp. This does not include timestamps for edited messages.
   | Type      | Default |
   | :-------- | :-------- |
   | `component`    | [MessageTimestamp](https://github.com/ermisnetwork/ermis-chat-react-sdk/blob/master/src/components/Message/MessageTimestamp.tsx) | 
 
 - **Timestamp**
+
   Custom UI component for displaying dates in timestamps. This is used internally by the default MessageTimestamp component and for showing timestamps of edited messages.
   | Type      | Default |
   | :-------- | :-------- |
   | `component`    | [Timestamp](https://github.com/ermisnetwork/ermis-chat-react-sdk/blob/master/src/components/Message/Timestamp.tsx) |
 
 - **TypingIndicator**
+
   Custom UI component for the typing indicator.
   | Type      | Default |
   | :-------- | :-------- |
   | `component`    | [TypingIndicator](https://github.com/ermisnetwork/ermis-chat-react-sdk/blob/master/src/components/TypingIndicator/TypingIndicator.tsx) |      
 
 - **ModalGallery**
+
   Custom UI component for viewing message’s image attachments.
   | Type      | Default |
   | :-------- | :-------- |
   | `component`    | [ModalGallery](https://github.com/ermisnetwork/ermis-chat-react-sdk/blob/master/src/components/Gallery/ModalGallery.tsx) |            
 
 - **QuotedMessage**
+
   Custom UI component to override quoted message UI on a sent message.
   | Type      | Default |
   | :-------- | :-------- |
   | `component`    | [QuotedMessage](https://github.com/ermisnetwork/ermis-chat-react-sdk/blob/master/src/components/Message/QuotedMessage.tsx) |
 
 - **QuotedMessagePreview**
+
   Custom UI component to override the message input’s quoted message preview.
   | Type      | Default |
   | :-------- | :-------- |
@@ -571,36 +595,42 @@ For example, you can configure the number of messages retrieved in the first pag
 
 
 - **ReactionsList**
+
   Custom UI component to display the list of reactions on a message.
   | Type      | Default |
   | :-------- | :-------- |
   | `component`    | [ReactionsList](https://github.com/ermisnetwork/ermis-chat-react-sdk/blob/master/src/components/Reactions/ReactionsList.tsx) |
 
 - **SendButton**
+
   Custom UI component for send button.
   | Type      | Default |
   | :-------- | :-------- |
   | `component`    | [SendButton](https://github.com/ermisnetwork/ermis-chat-react-sdk/blob/master/src/components/MessageInput/SendButton.tsx) |    
 
 - **multipleUploads**
+
   Whether to allow multiple attachment uploads on a message.
   | Type      | Default |
   | :-------- | :-------- |
   | `boolean`   | `true` |  
 
 - **LoadingErrorIndicator**
+
   Custom UI component to be shown if the channel query fails.
   | Type      | Default |
   | :-------- | :-------- |
   | `component`    | [ChatDown](https://github.com/ermisnetwork/ermis-chat-react-sdk/blob/master/src/components/ChatDown/ChatDown.tsx) |  
 
 - **LoadingIndicator**
+
   Custom UI component to render while the `MessageList` is loading new messages.
   | Type      | Default |
   | :-------- | :-------- |
   | `component`    | [LoadingChannels](https://github.com/ermisnetwork/ermis-chat-react-sdk/blob/master/src/components/Loading/LoadingChannels.tsx) |  
 
 - **onMentionsClick**
+
   Custom action handler function to run on click of an @mention in a message.
   | Type      |
   | :-------- |
@@ -627,24 +657,28 @@ Use this component by placing it as a child of the Channel component. To overrid
 ##### 2.2. Props
 
 - **Avatar**
+
   A custom UI component to display the avatar image.
   | Type      | Default |
   | :-------- | :-------- |
   | `component`    | [Avatar](https://github.com/ermisnetwork/ermis-chat-react-sdk/blob/master/src/components/Avatar/Avatar.tsx) |  
 
 - **image**
+
   The displayed image URL for the header, defaults to the `channel` image if there is one.
   | Type      | Default |
   | :-------- | :-------- |
   | `string`   | the `channel` image | 
 
 - **MenuIcon**
+
   A custom UI component to display menu icon.
   | Type      | Default |
   | :-------- | :-------- |
   | `component`    | [MenuIcon](https://github.com/ermisnetwork/ermis-chat-react-sdk/blob/master/src/components/ChannelHeader/icons.tsx) |  
 
 - **title**
+
   A string to set the title manually, defaults to the `channel` name if there is one.
   | Type      | Default |
   | :-------- | :-------- |
@@ -662,60 +696,70 @@ const { sendMessage, editMessage } = useChannelActionContext();
 ##### 3.2. Values
 
 - **addNotification**
+
   Function to add a temporary notification to `MessageList`, and it will be removed after 5 seconds.
   | Type      |
   | :-------- |
   | `function` |
 
 - **dispatch**
+
   The dispatch function for the [ChannelStateReducer](https://github.com/ermisnetwork/ermis-chat-react-sdk/blob/master/src/components/Channel/channelState.ts).
   | Type      |
   | :-------- |
   | `ChannelStateReducerAction` |  
 
 - **updateMessage**
+
   The function to update a `message` on `Channel`, takes a `message` object.
   | Type      |
   | :-------- |
   | `function` | 
 
 - **sendMessage**
+
   The function to send a `message` on `Channel`. Takes a `message` object with the basic message information as the first argument, and custom data as the second argument.
   | Type      |
   | :-------- |
   | `function` | 
 
 - **removeMessage**
+
   The function to remove a `message` from `MessageList`, handled by the `Channel` component. Takes a `message` object.
   | Type      |
   | :-------- |
   | `function` |    
 
 - **setQuotedMessage**
+
   The function to send a `QuotedMessage` on a `Channel`, take a message object.
   | Type      |
   | :-------- |
   | `function` |
 
 - **loadMore**
+
   The function to load next page/batch of `messages` (used for pagination).
   | Type      |
   | :-------- |
   | `function` | 
 
 - **onMentionsClick**
+
   A custom action handler function triggered when an @mention is clicked. It receives a DOM click event object and an array of mentioned users as parameters.
   | Type      |
   | :-------- |
   | `function` |    
 
 - **jumpToLatestMessage**
+
  Used with `jumpToMessage` to restore the message list position to the most recent messages.
   | Type      |
   | :-------- |
   | `() => Promise<void>` | 
 
 - **jumpToMessage**
+
  When invoked, `jumpToMessage` navigates the message list to the message with the specified `messageId`. Below is an example of a button that, when clicked, searches for a specific message and jumps to it:
   ```javascript
   const JumpToMessage = () => {
@@ -758,54 +802,63 @@ const { channel } = useChannelStateContext();
 ##### 4.2. Values
 
 - **channel**
+
   The currently active `ErmisChat` `channel` instance to be loaded into the `Channel` component and referenced by its children.
   | Type      |
   | :-------- |
   | `object` | 
 
 - **hasMore**
+
   If the channel has more, older, messages to paginate through.
   | Type      |
   | :-------- |
   | `boolean` |
 
 - **hasMoreNewer**
+
   If the channel has more, newer, messages to paginate through.
   | Type      |
   | :-------- |
   | `boolean` |  
 
 - **members**
+
   Members of this `channel` (members are permanent, watchers are users who are online right now).
   | Type      |
   | :-------- |
   | `object[]` |  
 
 - **messages**
+
   Array of message objects.
   | Type      |
   | :-------- |
   | `object[]` |
 
 - **quotedMessage**
+
   An inline message reply to another message.
   | Type      |
   | :-------- |
   | `object` |  
 
 - **read**
+
   The read state for each `channel` member.
   | Type      |
   | :-------- |
   | `object` |  
 
 - **loading**
+
   Boolean for the `channel` loading state.
   | Type      |
   | :-------- |
   | `boolean` |
 
 - **loadingMore**
+
   Boolean for the `channel` loading more messages.
   | Type      |
   | :-------- |
@@ -841,120 +894,140 @@ const options = { message_limit: 10 }
 ##### 1.2. Props
 
 - **allowNewMessagesFromUnfilteredChannels**
+
   When the client receives `message.new` or `notification.added_to_channel` events, the corresponding channel is automatically moved to the top of the list. If the channel is not already in the list, it is fetched from `client.activeChannels` and added to the top. To disable this behavior, set the relevant prop to `false`, preventing channels not already in the list from being added or reordered.
   | Type      | Default |
   | :-------- | :-------- |
   | `boolean`    | `true` | 
 
 - **Avatar**
+
   Custom UI component to display the user’s avatar.
   | Type      | Default |
   | :-------- | :-------- |
   | `component`    | [Avatar](https://github.com/ermisnetwork/ermis-chat-react-sdk/blob/master/src/components/Avatar/Avatar.tsx) |
 
 - **filters**
+
   An object containing channel query `filters`, check our [query parameters docs](https://docs.ermis.network/JavaScript/doc#1-query-channels) for more information.
   | Type      |
   | :-------- |
   | `object`    |
 
 - **sort**
+
   An object containing channel query `sort`, check our [query parameters docs](https://docs.ermis.network/JavaScript/doc#1-query-channels) for more information.
   | Type      |
   | :-------- |
   | `object`    |   
 
 - **options**
+
   An object containing channel query `options`, check our [query parameters docs](https://docs.ermis.network/JavaScript/doc#1-query-channels) for more information.
   | Type      |
   | :-------- |
   | `object`    |      
 
 - **List**
+
   Custom UI component to display the container for the queried channels.
   | Type      | Default |
   | :-------- | :-------- |
   | `component`    | [ChannelListMessenger](https://github.com/ermisnetwork/ermis-chat-react-sdk/blob/master/src/components/ChannelList/ChannelListMessenger.tsx) |  
 
 - **Preview**
+
   Custom UI component to display the channel preview in the list.
   | Type      | Default |
   | :-------- | :-------- |
   | `component`    | [ChannelPreviewMessenger](https://github.com/ermisnetwork/ermis-chat-react-sdk/blob/master/src/components/ChannelPreview/ChannelPreviewMessenger.tsx) |     
 
 - **customActiveChannel**
+
   Set a channel (with this ID) to active and force it to move to the top of the list.
   | Type      |
   | :-------- |
   | `string`    |    
 
 - **EmptyStateIndicator**
+
   Custom UI component for rendering an empty list.
   | Type      | Default |
   | :-------- | :-------- |
   | `component`    | [EmptyStateIndicator](https://github.com/ermisnetwork/ermis-chat-react-sdk/blob/master/src/components/EmptyStateIndicator/EmptyStateIndicator.tsx) |  
 
 - **getLatestMessagePreview**
+
   Custom function that generates the message preview in ChannelPreview component.
   | Type      |
   | :-------- |
   | `(channel: `Channel`, t: `TranslationContextValue`['t'], userLanguage: `TranslationContextValue`['userLanguage']) => string | JSX.Element`    |
 
 - **LoadingErrorIndicator**
+
   Custom UI component to display the loading error indicator.
   | Type      | Default |
   | :-------- | :-------- |
   | `component`    | [ChatDown](https://github.com/ermisnetwork/ermis-chat-react-sdk/blob/master/src/components/ChatDown/ChatDown.tsx) |
 
 - **LoadingIndicator**
+
   Custom UI component to display the loading state.
   | Type      | Default |
   | :-------- | :-------- |
   | `component`    | [LoadingChannels](https://github.com/ermisnetwork/ermis-chat-react-sdk/blob/master/src/components/Loading/LoadingChannels.tsx) |   
 
 - **onAddedToChannel**
+
   Function to override the default behavior when a user is added to a channel.
   | Type      |
   | :-------- |
   | `function`   |
 
 - **onChannelDeleted**
+
   Function to override the default behavior when a channel is deleted.
   | Type      |
   | :-------- |
   | `function`    |
 
 - **onChannelTruncated**
+
   Function to override the default behavior when a channel is truncated.
   | Type      |
   | :-------- |
   | `function`    |
 
 - **onChannelUpdated**
+
   Function to override the default behavior when a channel is updated.
   | Type      |
   | :-------- |
   | `function`    |
 
 - **onMessageNew**
+
   Function to override the default behavior when a message is received on a channel not being watched.
   | Type      |
   | :-------- |
   | `function`    |
 
 - **onRemovedFromChannel**
+
   Function to override the default behavior when a user gets removed from a channel.
   | Type      |
   | :-------- |
   | `function`    | 
 
 - **Paginator**
+
   Custom UI component to handle channel pagination logic.
   | Type      | Default |
   | :-------- | :-------- |
   | `component`    | [LoadMorePaginator](https://github.com/ermisnetwork/ermis-chat-react-sdk/blob/master/src/components/LoadMore/LoadMorePaginator.tsx) |
 
 - **renderChannels**
+
   A function to override the default behavior of rendering channels. This function is called instead of directly rendering the Preview component.
   | Type      |
   | :-------- |
@@ -987,6 +1060,7 @@ export const CustomComponent = () => {
 ##### 2.2. Values
 
 - **channels**
+
 State representing the array of loaded channels. The channels query is executed by default only within the `ChannelList` component provided by the SDK.
   | Type      |
   | :-------- |
@@ -1039,9 +1113,10 @@ const customMessages = [
 </Chat>;
 ```
 
-##### 2.1. Props
+##### 1.2. Props
 
 - **closeReactionSelectorOnClick**
+
   If `true`, selecting a reaction from the `ReactionSelector` component will close the selector.
 
   | Type      | Default |
@@ -1049,6 +1124,7 @@ const customMessages = [
   | `boolean`    | `false` |
 
 - **customMessageActions**
+
   An object containing custom message actions as keys and their corresponding function handlers as values. Each custom action adds a button in the `MessageActionsBox`, with the key displayed as the button's text. Ensure the key is user-friendly and easily understood by the end user.
 
   ```javascript
@@ -1066,6 +1142,7 @@ const customMessages = [
   | `object`    |
 
 - **disableDateSeparator**
+
   If true, disables the injection of date separator UI components in the `Channel` `MessageList` component.
 
   | Type      | Default |
@@ -1073,6 +1150,7 @@ const customMessages = [
   | `boolean`   | `false` |  
 
 - **disableQuotedMessages**
+
   If true, disables the ability for users to quote messages.
 
   | Type      | Default |
@@ -1080,6 +1158,7 @@ const customMessages = [
   | `boolean`    | `false` |
 
 - **formatDate**
+
   Overrides the default date formatting logic, has access to the original date object.
 
   | Type      |
@@ -1087,6 +1166,7 @@ const customMessages = [
   | `(date: Date) => string`    |  
 
 - **getDeleteMessageErrorNotification**
+
   A function that generates the notification text to display when a delete message request fails. It takes the deleted message object as its argument.
 
   | Type      |
@@ -1094,6 +1174,7 @@ const customMessages = [
   | `(message: StreamMessage) => string`    |
 
 - **getFetchReactionsErrorNotification**
+
   A function that generates the notification text to display when loading message reactions fails. It takes the current message object as its argument.
 
   | Type      |
@@ -1101,48 +1182,56 @@ const customMessages = [
   | `(message: StreamMessage) => string`    |
 
 - **hasMore**
+
   Whether the list has more items to load.
   | Type      | Default |
   | :-------- | :-------- |
   | `boolean`    | `ChannelStateContextValue[‘hasMore’]` |
 
 - **loadingMore**
+
   Whether the list is currently loading more items.
   | Type      | Default |
   | :-------- | :-------- |
   | `boolean`    | `ChannelStateContextValue[‘loadingMore’]` | 
 
 - **maxTimeBetweenGroupedMessages**
+
   The maximum time in milliseconds allowed between messages for them to still be considered part of the same group.
   | Type      |
   | :-------- |
   | `number`    |      
 
 - **Message**
+
   Custom UI component to display an individual message.
   | Type      | Default |
   | :-------- | :-------- |
   | `component`    | [MessageSimple](https://github.com/ermisnetwork/ermis-chat-react-sdk/blob/master/src/components/Message/MessageSimple.tsx) |     
 
 - **messageActions**
+
   Array of allowed message actions (ex: ‘edit’, ‘delete’, quote). To disable all actions, provide an empty array.
   | Type      | Default |
   | :-------- | :-------- |
   | `array`    | [‘edit’, ‘delete’, ‘quote’, ‘react’] | 
 
 - **messageLimit**
+
   The limit to use when paginating new messages (the page size).
   | Type      | Default |
   | :-------- | :-------- |
   | `number`    | `100` |     
 
 - **messages**
+
   The messages to display in the list. Providing your own array will override the data stored in the context.  
   | Type      | Default |
   | :-------- | :-------- |
   | `array`   | `ChannelStateContextValue[‘messages’]` | 
 
 - **noGroupByUser**
+
   If true, turns off message UI grouping by user.
   | Type      | Default |
   | :-------- | :-------- |
@@ -1176,12 +1265,14 @@ export const CustomComponent = () => {
 
 ##### 2.2. Values
 - **listElement**
+
   The scroll container where messages and the typing indicator are rendered. You can use the listElement's scroll state to perform scroll-to-bottom operations.
   | Type      |
   | :-------- |
   | `HTMLDivElement`   |  
 
 - **scrollToBottom**
+
   Function that scrolls the `listElement` to the bottom.
 
   | Type      |
@@ -1201,6 +1292,7 @@ The `Message` component is used internally within the `MessageList` to render ea
 ##### 1.2. Props
 
 - **message**
+
   The `ErmisChat` message object, which provides necessary data to the underlying UI components.
 
   | Type      |
@@ -1208,6 +1300,7 @@ The `Message` component is used internally within the `MessageList` to render ea
   | `object`   |
 
 - **disableQuotedMessages**
+
   If true, disables the ability for users to quote messages.
 
   | Type      | Default |
@@ -1215,6 +1308,7 @@ The `Message` component is used internally within the `MessageList` to render ea
   | `boolean`    | `false` |
 
 - **formatDate**
+
   Overrides the default date formatting logic, has access to the original date object.
 
   | Type      |
@@ -1222,6 +1316,7 @@ The `Message` component is used internally within the `MessageList` to render ea
   | `(date: Date)` => `string`    |
 
 - **highlighted**
+
   Determines whether to highlight and focus the message upon loading. This is used internally when jumping to a specific message.
 
   | Type      |
@@ -1229,6 +1324,7 @@ The `Message` component is used internally within the `MessageList` to render ea
   | `boolean`    |
 
 - **Message**
+
   Custom UI component to display a message.
 
   | Type      | Default |
@@ -1236,12 +1332,14 @@ The `Message` component is used internally within the `MessageList` to render ea
   | `component`    | [MessageSimple](https://github.com/ermisnetwork/ermis-chat-react-sdk/blob/master/src/components/Message/MessageSimple.tsx) |   
 
 - **messageActions**
+
   Array of allowed message actions (ex: ‘edit’, ‘delete’, quote). To disable all actions, provide an empty array.
   | Type      | Default |
   | :-------- | :-------- |
   | `array`   | [‘edit’, ‘delete’, ‘quote’, ‘react’] |
 
 - **messageListRect**
+
   DOMRect object linked to the parent wrapper div around the `InfiniteScroll` component.
 
   | Type      |
@@ -1249,6 +1347,7 @@ The `Message` component is used internally within the `MessageList` to render ea
   | `DOMRect`    |
 
 - **readBy**
+
   An array of users that have read the current message.
 
   | Type      |
@@ -1269,6 +1368,7 @@ const { message } = useMessageContext();
 ##### 2.2. Values
 
 - **actionsEnabled**
+
   Enables actions like edit, delete, and flag on the message if set to true.
 
   | Type      | Default |
@@ -1276,6 +1376,7 @@ const { message } = useMessageContext();
   | `boolean`    | `true` |
 
 - **formatDate**
+
   Customizes the default date formatting logic, providing access to the original date object.
 
   | Type      |
@@ -1283,6 +1384,7 @@ const { message } = useMessageContext();
   | `(date: Date)` => `string`    |
 
 - **getMessageActions**
+
   A function that returns an array of actions permitted on a message for the currently connected user.
 
   | Type      |
@@ -1290,6 +1392,7 @@ const { message } = useMessageContext();
   | `()` => `MessageActionsArray`    |
 
 - **handleDelete**
+
   Function that deletes a message from the current channel.
 
   | Type      |
@@ -1297,6 +1400,7 @@ const { message } = useMessageContext();
   | `(event: React.BaseSyntheticEvent) => Promise<void>` | `void`    | 
 
 - **handleReaction**
+
  A function to add or remove a reaction on a message.
 
   | Type      |
@@ -1304,12 +1408,14 @@ const { message } = useMessageContext();
   | `(reactionType: string, event: React.BaseSyntheticEvent)` => `Promise<void>`    |  
 
 - **highlighted**
+
   Indicates whether to highlight and focus the message upon loading, typically used internally when jumping to a specific message.
   | Type      |
   | :-------- |
   | `boolean`    |
 
 - **isMyMessage**
+
   Function that returns whether or not a message belongs to the current user.
 
   | Type      |
@@ -1317,6 +1423,7 @@ const { message } = useMessageContext();
   | `()` => `boolean`    |
 
 - **message**
+
   The `ErmisChat` message object, which provides necessary data to the underlying UI components.
 
   | Type      |
@@ -1324,6 +1431,7 @@ const { message } = useMessageContext();
   | `object` |        
 
 - **messageListRect**
+
   DOMRect object linked to the parent `MessageList` component.
 
   | Type      |
@@ -1331,6 +1439,7 @@ const { message } = useMessageContext();
   | `DOMRect`    |    
 
 - **readBy**
+
   An array of users that have read the current message.
 
   | Type      |
@@ -1356,6 +1465,7 @@ The `MessageInput` component must be rendered as a child of the `Channel` compon
 
 ##### 1.2. Props
 - **disabled**
+
   If true, disables the text input.
 
   | Type      | Default |
@@ -1363,6 +1473,7 @@ The `MessageInput` component must be rendered as a child of the `Channel` compon
   | `boolean`    | `false` |
 
 - **disableMentions**
+
   If true, the suggestion list will not display and autocomplete @mentions.
 
   | Type      | Default |
@@ -1370,6 +1481,7 @@ The `MessageInput` component must be rendered as a child of the `Channel` compon
   | `boolean`    | `false` | 
 
 - **focus**
+
   If true, focuses the text input on component mount.
 
   | Type      | Default |
@@ -1377,6 +1489,7 @@ The `MessageInput` component must be rendered as a child of the `Channel` compon
   | `boolean`    | `false` |
 
 - **grow**
+
   If true, expands the text input vertically for new lines.
 
   | Type      | Default |
@@ -1384,6 +1497,7 @@ The `MessageInput` component must be rendered as a child of the `Channel` compon
   | `boolean`    | `true` |
 
 - **hideSendButton**
+
   Allows to hide MessageInput’s send button. Used by `MessageSimple` to hide the send button in `EditMessageForm`.
 
   | Type      | Default |
@@ -1391,12 +1505,14 @@ The `MessageInput` component must be rendered as a child of the `Channel` compon
   | `boolean`    | `false` |        
 
 - **Input**
+
   Custom UI component handling how the message input is rendered.
   | Type      | Default |
   | :-------- | :-------- |
   | `component`    | [MessageInputFlat](https://github.com/ermisnetwork/ermis-chat-react-sdk/blob/master/src/components/MessageInput/MessageInputFlat.tsx) |
 
 - **maxRows**
+
   Max number of rows the underlying `textarea` component is allowed to grow.
 
   | Type      | Default |
@@ -1404,6 +1520,7 @@ The `MessageInput` component must be rendered as a child of the `Channel` compon
   | `number`    | `10` |
 
 - **minRows**
+
   Min number of rows the underlying `textarea` will start with. The `grow` on `MessageInput` prop has to be enabled for `minRows` to take effect.
 
   | Type      | Default |
@@ -1411,6 +1528,7 @@ The `MessageInput` component must be rendered as a child of the `Channel` compon
   | `number`    | `1` |  
 
 - **mentionAllAppUsers**
+
   If true, the suggestion list will search all app users for an @mention, not just current channel members/watchers.
 
   | Type      | Default |
@@ -1418,6 +1536,7 @@ The `MessageInput` component must be rendered as a child of the `Channel` compon
   | `boolean`    | `false` |   
 
 - **noFiles**
+
   If true, disables file uploads for all attachments except for those with type ‘image’.
 
   | Type      | Default |
@@ -1438,6 +1557,7 @@ const { autocompleteTriggers, handleSubmit } = useMessageInputContext();
 ##### 2.2. Values
 
 - **attachments**
+
   An array of attachments added to the current message. The `localMetadata` attribute in each attachment is used internally to handle updates, removals, and upload status in the composer but is excluded when sending the message to the server. Attachments from URL enrichment are not included in this array and are stored in the `linkPreviews` map instead.
 
   | Type      |
@@ -1445,6 +1565,7 @@ const { autocompleteTriggers, handleSubmit } = useMessageInputContext();
   | `LocalAttachment[]`    |
 
 - **autocompleteTriggers**
+
  A map of the triggers allowed in the active channel.
 
   | Type      | Default |
@@ -1452,6 +1573,7 @@ const { autocompleteTriggers, handleSubmit } = useMessageInputContext();
   | object    | `@` - mentions |
 
 - **closeMentionsList**
+
   A function to manually close the list of suggested users for mentions.
 
   | Type      |
@@ -1459,6 +1581,7 @@ const { autocompleteTriggers, handleSubmit } = useMessageInputContext();
   | `()` => `void`   |   
 
 - **cooldownInterval**
+
  If slow mode is enabled, specifies the required waiting time between messages for each user.
 
   | Type      |
@@ -1466,6 +1589,7 @@ const { autocompleteTriggers, handleSubmit } = useMessageInputContext();
   | `number`    | 
 
 - **cooldownRemaining**
+
   If slow mode is enabled, the amount of time remaining before the connected user can send another message.
 
   | Type      |
@@ -1473,6 +1597,7 @@ const { autocompleteTriggers, handleSubmit } = useMessageInputContext();
   | `number`    | 
 
 - **setCooldownRemaining**
+
  A React state hook function used to set the `cooldownRemaining` value.
 
   | Type      |
@@ -1480,6 +1605,7 @@ const { autocompleteTriggers, handleSubmit } = useMessageInputContext();
   | `React.Dispatch<React.SetStateAction<number>>`    |    
 
 - **disabled**
+
   If true, disables the text input.
 
   | Type      | Default |
@@ -1487,6 +1613,7 @@ const { autocompleteTriggers, handleSubmit } = useMessageInputContext();
   | `boolean`    | `false` |
 
 - **disableMentions**
+
   If true, the suggestion list will not display and autocomplete @mentions.
 
   | Type      | Default |
@@ -1494,6 +1621,7 @@ const { autocompleteTriggers, handleSubmit } = useMessageInputContext();
   | `boolean`    | `false` |   
 
 - **focus**
+
   If true, focuses the text input on component mount.
 
   | Type      | Default |
@@ -1501,6 +1629,7 @@ const { autocompleteTriggers, handleSubmit } = useMessageInputContext();
   | `boolean`    | `false` |       
 
 - **grow**
+
   If true, expands the text input vertically for new lines.
 
   | Type      | Default |
@@ -1508,6 +1637,7 @@ const { autocompleteTriggers, handleSubmit } = useMessageInputContext();
   | `boolean`    | `true` |
 
 - **handleChange**
+
   Function that runs onChange to the underlying `textarea` component.
 
   | Type      |
@@ -1515,6 +1645,7 @@ const { autocompleteTriggers, handleSubmit } = useMessageInputContext();
   | `React.ChangeEventHandler<HTMLTextAreaElement>`    |
 
 - **handleEmojiKeyDown**
+
   Opens the `EmojiPicker` component on Enter or Spacebar key down.
 
   | Type      |
@@ -1522,6 +1653,7 @@ const { autocompleteTriggers, handleSubmit } = useMessageInputContext();
   | `React.KeyboardEventHandler<HTMLSpanElement>`    |
 
 - **handleSubmit**
+
   Function that runs onSubmit to the underlying `textarea` component.
 
   | Type      |
@@ -1529,6 +1661,7 @@ const { autocompleteTriggers, handleSubmit } = useMessageInputContext();
   | `(event: React.BaseSyntheticEvent, customMessageData?: Message) => void`    |    
 
 - **hideSendButton**
+
   Allows to hide MessageInput’s send button. Used by `MessageSimple` to hide the send button in `EditMessageForm`. Received from `MessageInputProps`.
 
   | Type      | Default |
@@ -1536,6 +1669,7 @@ const { autocompleteTriggers, handleSubmit } = useMessageInputContext();
   | `boolean`    | `false` | 
 
 - **insertText**
+
   Function to insert text into the value of the underlying `textarea` component.
 
   | Type      |
@@ -1543,6 +1677,7 @@ const { autocompleteTriggers, handleSubmit } = useMessageInputContext();
   | `(textToInsert: string)` => `void`    | 
 
 - **isUploadEnabled**
+
   If true, file uploads are enabled in the currently active channel.
 
   | Type      | Default |
@@ -1550,6 +1685,7 @@ const { autocompleteTriggers, handleSubmit } = useMessageInputContext();
   | `boolean`    | `true` |     
 
 - **maxRows**
+
   Max number of rows the underlying `textarea` component is allowed to grow.
 
   | Type      | Default |
@@ -1557,6 +1693,7 @@ const { autocompleteTriggers, handleSubmit } = useMessageInputContext();
   | `number`    | `10` | 
 
 - **mentionAllAppUsers**
+
   If true, the suggestion list will search all app users for an @mention, not just current channel members/watchers.
 
   | Type      | Default |
@@ -1564,6 +1701,7 @@ const { autocompleteTriggers, handleSubmit } = useMessageInputContext();
   | `boolean`    | `false` |
 
 - **mentioned_users**
+
   An array of users mentioned in the current message.
 
   | Type      |
@@ -1571,6 +1709,7 @@ const { autocompleteTriggers, handleSubmit } = useMessageInputContext();
   | `UserResponse[]`    |  
 
 - **minRows**
+
   Min number of rows the underlying `textarea` will start with. The `grow` on `MessageInput` prop has to be enabled for `minRows` to take effect.
 
   | Type      | Default |
@@ -1578,6 +1717,7 @@ const { autocompleteTriggers, handleSubmit } = useMessageInputContext();
   | `number`    | `1` |  
 
 - **noFiles**
+
   If true, disables file uploads for all attachments except for those with type ‘image’.
 
   | Type      | Default |
@@ -1585,6 +1725,7 @@ const { autocompleteTriggers, handleSubmit } = useMessageInputContext();
   | `boolean`    | `false` | 
 
 - **text**
+
   The current input value of the underlying `textarea` component.
 
   | Type      |
@@ -1592,6 +1733,7 @@ const { autocompleteTriggers, handleSubmit } = useMessageInputContext();
   | `string`    |  
 
 - **setText**
+
   Function that overrides and sets the text value of the underlying `textarea` component.
 
   | Type      |
@@ -1599,6 +1741,7 @@ const { autocompleteTriggers, handleSubmit } = useMessageInputContext();
   | `(text: string)` => `void`  |   
 
 - **showMentionsList**
+
   If true, show the list of potential users to mention above the text input.
 
   | Type      | Default |
