@@ -50,6 +50,12 @@
       ]
     },
     {
+      "group": "ReactJS",
+      "pages": [
+        "react/doc"
+      ]
+    },
+    {
       "group": "Ermis user",
       "pages": [
         "api-reference/ermis-user/auth-start",
