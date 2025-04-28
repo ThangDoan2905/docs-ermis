@@ -108,6 +108,8 @@ await chatClient.connectUser(
 
 ### Importing the SDK
 
+Importing the SDK to use the SDK in your application, import it as follows:
+
 ```javascript
 import { ErmisDirectCallNative } from 'ermis-rn-webrtc';
 
@@ -115,11 +117,15 @@ import { ErmisDirectCallNative } from 'ermis-rn-webrtc';
 const callClient = new ErmisDirectCallNative(chatClient, sessionId);
 ```
 
-**Note:**  
-- `sessionId` must be a unique UUID per user and device.
-- It helps maintain call states across reconnections.
+The `sessionId` parameter required when initializing the call client is a unique
+identifier that:
 
-Generate a `sessionId`:
+- Should be generated as a random UUID when the user first logs in
+- Must be stored and reused for subsequent sessions for the same user
+- Should be unique per device and user
+- Is used to maintain call state across reconnections
+
+Example of generating a sessionId:
 
 ```javascript
 import { v4 as uuidv4 } from 'uuid';
@@ -130,23 +136,33 @@ const SESSION_ID = uuidv4();
 
 ### Creating a Call
 
+You can create a call by using the `createCall` method:
+
 ```javascript
 await callClient.createCall(callType, cid);
 ```
-- `callType`: `'audio'` or `'video'`
+
+Initiates a new call.
+
+- `callType`: Either 'audio' or 'video'
 - `cid`: Channel ID for the call
 
 ---
 
 ### Accepting a Call
 
+To accept an incoming call, use the `acceptCall` method:
+
 ```javascript
 await callClient.acceptCall();
 ```
 
+
 ---
 
 ### Ending a Call
+
+To end an ongoing call, call the `endCall` method:
 
 ```javascript
 await callClient.endCall();
@@ -156,6 +172,8 @@ await callClient.endCall();
 
 ### Rejecting a Call
 
+To reject an ongoing call, call the `rejectCall` method:
+
 ```javascript
 await callClient.rejectCall();
 ```
@@ -163,6 +181,8 @@ await callClient.rejectCall();
 ---
 
 ### Upgrading a Call
+
+To upgrade an audio call to a video call, call the `upgradeCall` method:
 
 ```javascript
 await callClient.upgradeCall();
@@ -172,6 +192,8 @@ await callClient.upgradeCall();
 
 ### Toggle Mic
 
+Enables or disables the microphone, call the `toggleMic` method:
+
 ```javascript
 callClient.toggleMic(true);  // Enable microphone
 callClient.toggleMic(false); // Disable microphone
@@ -180,6 +202,8 @@ callClient.toggleMic(false); // Disable microphone
 ---
 
 ### Toggle Camera
+
+Enables or disables the camera, call the `toggleCamera` method:
 
 ```javascript
 callClient.toggleCamera(true);  // Enable camera
@@ -194,12 +218,12 @@ callClient.toggleCamera(false); // Disable camera
 
   ```javascript
   callClient.onCallEvent = data => {
-    console.log(data.type); // 'incoming' or 'outgoing'
+    console.log(data.type);     // 'incoming' or 'outgoing'
     console.log(data.callType); // 'audio' or 'video'
   };
   ```
 
-- **`onLocalStream`**: Local video stream ready.
+- **`onLocalStream`**: Triggered when the local video stream is ready.
 
   ```javascript
   callClient.onLocalStream = stream => {
@@ -207,15 +231,15 @@ callClient.toggleCamera(false); // Disable camera
   };
   ```
 
-- **`onRemoteStream`**: Remote video stream received.
+- **`onRemoteStream`**: Triggered when the remote video stream is received.
 
   ```javascript
   callClient.onRemoteStream = stream => {
-    // Display remote stream
+    // Handle local stream, e.g., display in <RTCView>
   };
   ```
 
-- **`onConnectionMessageChange`**: Connection status changes.
+- **`onConnectionMessageChange`**: Triggered when the connection status message changes.
 
   ```javascript
   callClient.onConnectionMessageChange = message => {
@@ -223,35 +247,35 @@ callClient.toggleCamera(false); // Disable camera
   };
   ```
 
-- **`onCallStatus`**: Call status update.
+- **`onCallStatus`**: Triggered when the call status changes.
 
   ```javascript
   callClient.onCallStatus = status => {
-    // Status could be: RINGING, CONNECTED, ENDED
+    // Handle call status updates (RINGING, CONNECTED, ENDED)
   };
   ```
 
-- **`onDataChannelMessage`**: Message through WebRTC data channel.
+- **`onDataChannelMessage`**: Triggered when a message is received through the WebRTC data channel.
 
   ```javascript
   callClient.onDataChannelMessage = data => {
-    // Handle real-time data message
+    // Handle data channel messages
   };
   ```
 
-- **`onUpgradeCall`**: When a call is upgraded from audio to video.
+- **`onUpgradeCall`**: Triggered when a call is upgraded from audio to video.
 
   ```javascript
   callClient.onUpgradeCall = upgraderInfo => {
-    // Handle upgrade event
+    // Handle call upgrade
   };
   ```
 
-- **`onError`**: When an error occurs.
+- **`onError`**: Triggered when an error occurs during the call.
 
   ```javascript
   callClient.onError = error => {
-    // Handle call errors
+    // Handle errors
   };
   ```
 
