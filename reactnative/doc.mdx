@@ -1,0 +1,288 @@
+---
+title: 'WebRTC SDK for React Native'
+---
+
+<span style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+  <img
+    src="https://img.shields.io/badge/platform-REACTNATIVE-orange.svg"
+    noZoom
+    alt="Platform"
+  />
+  <img
+    src="https://img.shields.io/badge/language-TYPESCRIPT-orange.svg"
+    noZoom
+    alt="Languages"
+  />
+  <img
+    src="https://img.shields.io/npm/v/ermis-rn-webrtc.svg?style=popout&colorB=red"
+    noZoom
+    alt="npm"
+    style={{ display: 'inline-block', cursor: 'pointer' }}
+    onClick={() =>
+      window.open('https://www.npmjs.com/package/ermis-rn-webrtc', '_blank')
+    }
+  />
+</span>
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Features](#features)
+- [Installation](#installation)
+- [Prerequisites](#prerequisites)
+- [Usage](#usage)
+- [Example Application](#example-application)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
+
+---
+
+## Overview
+
+The **ermis-rn-webrtc** SDK provides a robust solution for integrating real-time voice and video calling capabilities into your React Native applications.  
+Built on WebRTC technology, this SDK simplifies the process of managing calls, handling signaling, and managing media streams.
+
+> **Note:** This SDK is designed exclusively for **React Native** applications and cannot be used with regular web applications.
+
+---
+
+## Features
+
+- Create and manage voice and video calls
+- Handle incoming and outgoing call events
+- Manage audio and video streams easily
+- Support for data channels (real-time messaging)
+- Network health monitoring and connection stability
+- Call upgrade capability (audio ➔ video)
+
+---
+
+## Installation
+
+Install the SDK by running:
+
+```bash
+npm install ermis-rn-webrtc react-native-webrtc
+```
+
+or
+
+```bash
+yarn add ermis-rn-webrtc react-native-webrtc
+```
+
+---
+
+## Prerequisites
+
+Before using this call SDK:
+
+- Setup [ermis-chat-js-sdk](https://www.npmjs.com/package/ermis-chat-js-sdk).
+- Initialize and set up the chat SDK first, as the call SDK relies on the chat client for signaling.
+
+```javascript
+import { ErmisChat } from 'ermis-chat-js-sdk';
+
+// Initialize chat client
+const chatClient = ErmisChat.getInstance(API_KEY, PROJECT_ID, {
+  timeout: 6000,
+  baseURL: API_URL,
+});
+
+// Connect user to chat
+await chatClient.connectUser(
+  {
+    api_key: API_KEY,
+    id: USER_ID,
+    name: USER_ID,
+    image: '',
+  },
+  `Bearer ${YOUR_TOKEN}`
+);
+```
+
+---
+
+## Usage
+
+### Importing the SDK
+
+```javascript
+import { ErmisDirectCallNative } from 'ermis-rn-webrtc';
+
+// Initialize call client
+const callClient = new ErmisDirectCallNative(chatClient, sessionId);
+```
+
+**Note:**  
+- `sessionId` must be a unique UUID per user and device.
+- It helps maintain call states across reconnections.
+
+Generate a `sessionId`:
+
+```javascript
+import { v4 as uuidv4 } from 'uuid';
+const SESSION_ID = uuidv4();
+```
+
+---
+
+### Creating a Call
+
+```javascript
+await callClient.createCall(callType, cid);
+```
+- `callType`: `'audio'` or `'video'`
+- `cid`: Channel ID for the call
+
+---
+
+### Accepting a Call
+
+```javascript
+await callClient.acceptCall();
+```
+
+---
+
+### Ending a Call
+
+```javascript
+await callClient.endCall();
+```
+
+---
+
+### Rejecting a Call
+
+```javascript
+await callClient.rejectCall();
+```
+
+---
+
+### Upgrading a Call
+
+```javascript
+await callClient.upgradeCall();
+```
+
+---
+
+### Toggle Mic
+
+```javascript
+callClient.toggleMic(true);  // Enable microphone
+callClient.toggleMic(false); // Disable microphone
+```
+
+---
+
+### Toggle Camera
+
+```javascript
+callClient.toggleCamera(true);  // Enable camera
+callClient.toggleCamera(false); // Disable camera
+```
+
+---
+
+### Callback Functions
+
+- **`onCallEvent`**: Triggered when a call event occurs.
+
+  ```javascript
+  callClient.onCallEvent = data => {
+    console.log(data.type); // 'incoming' or 'outgoing'
+    console.log(data.callType); // 'audio' or 'video'
+  };
+  ```
+
+- **`onLocalStream`**: Local video stream ready.
+
+  ```javascript
+  callClient.onLocalStream = stream => {
+    // Display local stream (e.g., in <RTCView>)
+  };
+  ```
+
+- **`onRemoteStream`**: Remote video stream received.
+
+  ```javascript
+  callClient.onRemoteStream = stream => {
+    // Display remote stream
+  };
+  ```
+
+- **`onConnectionMessageChange`**: Connection status changes.
+
+  ```javascript
+  callClient.onConnectionMessageChange = message => {
+    // Handle messages like "Your network connection is unstable"
+  };
+  ```
+
+- **`onCallStatus`**: Call status update.
+
+  ```javascript
+  callClient.onCallStatus = status => {
+    // Status could be: RINGING, CONNECTED, ENDED
+  };
+  ```
+
+- **`onDataChannelMessage`**: Message through WebRTC data channel.
+
+  ```javascript
+  callClient.onDataChannelMessage = data => {
+    // Handle real-time data message
+  };
+  ```
+
+- **`onUpgradeCall`**: When a call is upgraded from audio to video.
+
+  ```javascript
+  callClient.onUpgradeCall = upgraderInfo => {
+    // Handle upgrade event
+  };
+  ```
+
+- **`onError`**: When an error occurs.
+
+  ```javascript
+  callClient.onError = error => {
+    // Handle call errors
+  };
+  ```
+
+---
+
+## Example Application
+
+An example application demonstrating the usage of the React Native Call SDK can
+be found in the `example` directory. To run the example application, navigate to
+the `example` folder and follow the instructions in the `README.md` file located
+there.
+
+---
+
+## Contributing
+
+We welcome contributions!  
+Feel free to **submit a pull request** or **open an issue** for improvements and bug fixes.
+
+---
+
+## License
+
+This project is licensed under the **MIT License**.  
+See the [LICENSE](LICENSE) file for full details.
+
+---
+
+## Contact
+
+For any inquiries or support requests, please reach out to the maintainers of this SDK.
+
+---
+
