@@ -21,7 +21,9 @@
       "url": "api-reference"
     }
   ],
-  "openapi": ["api-reference/openapi.json"],
+  "openapi": [
+    "api-reference/openapi.json"
+  ],
   "navigation": [
     {
       "group": "JavaScript",
@@ -64,6 +66,11 @@
     {
       "group": "Ermis user",
       "pages": [
+        "api-reference/ermis-user/register-with-email",
+        "api-reference/ermis-user/login-with-email-and-password",
+        "api-reference/ermis-user/forgot-password",
+        "api-reference/ermis-user/reset-password",
+        "api-reference/ermis-user/google-login",
         "api-reference/ermis-user/auth-start",
         "api-reference/ermis-user/auth",
         "api-reference/ermis-user/get-token",
@@ -74,8 +81,18 @@
         "api-reference/ermis-user/get-user-list",
         "api-reference/ermis-user/connect-sse",
         "api-reference/ermis-user/get-chains",
+        "api-reference/ermis-user/join-project",
         "api-reference/ermis-user/refresh-token",
-        "api-reference/ermis-user/get-token-external-auth"
+        "api-reference/ermis-user/get-token-external-auth",
+        "api-reference/ermis-user/join-channel",
+        "api-reference/ermis-user/get-delete-challenge",
+        "api-reference/ermis-user/get-otp",
+        "api-reference/ermis-user/login-by-otp",
+        "api-reference/ermis-user/get-delete-challenge-no-auth",
+        "api-reference/ermis-user/delete-user-no-auth",
+        "api-reference/ermis-user/get-delete-otp",
+        "api-reference/ermis-user/delete-user",
+        "api-reference/ermis-user/get-current-user"
       ]
     },
     {
@@ -92,16 +109,22 @@
         "api-reference/bellboy/send-message",
         "api-reference/bellboy/send-reaction",
         "api-reference/bellboy/delete-reaction",
+        "api-reference/bellboy/send-poll-choice",
+        "api-reference/bellboy/delete-poll-choice",
         "api-reference/bellboy/update-message",
         "api-reference/bellboy/delete-message",
-        "api-reference/bellboy/pin-unpin-message",
-        "api-reference/bellboy/block-unblock-channel",
+        "api-reference/bellboy/pin-|-unpin-message",
+        "api-reference/bellboy/block-|-unlock-channel",
         "api-reference/bellboy/delete-channel",
         "api-reference/bellboy/truncate-channel",
-        "api-reference/bellboy/search-public-channel-name",
+        "api-reference/bellboy/invite-accept-|-reject-|-join",
         "api-reference/bellboy/search-channel-messages",
+        "api-reference/bellboy/search-public-channel-name",
+        "api-reference/bellboy/delete-user",
         "api-reference/bellboy/query-channel-detail",
-        "api-reference/bellboy/overview-channels",
+        "api-reference/bellboy/overview-channels-count",
+        "api-reference/bellboy/overview-channels-chart",
+        "api-reference/bellboy/overview-attachments-chart",
         "api-reference/bellboy/get-channels",
         "api-reference/bellboy/get-contact"
       ]

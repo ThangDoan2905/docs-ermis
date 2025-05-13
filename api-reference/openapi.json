@@ -37,10 +37,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "example": {
-                  "email": "hoangbim@gmail.com",
-                  "password": "123456"
-                }
+                "example": "\n{\n    \"email\":\"hoang.ezhome1@gmail.com\",\n    \"password\":\"123456\",\n    \"apikey\":\"kUCqqbfEQxkZge7HHDFcIxfoHzqSZUam\"\n    // \"apikey\":\"sXhcPu0JneUbQ6TG2tXePK8MC2tBAHn9\"\n    // \"apikey\":\"0RajstZ8lvzvYykd1fi4YOnn9tR9jqtp\"\n}"
               }
             }
           }
@@ -56,8 +53,7 @@
               }
             }
           }
-        },
-        "security": []
+        }
       }
     },
     "/uss/v1/wallets/email_login": {
@@ -72,7 +68,7 @@
               "schema": {
                 "type": "object",
                 "example": {
-                  "email": "hoangbim1@gmail.com",
+                  "email": "hoang.ezhome1@gmail.com",
                   "password": "123456",
                   "apikey": "kUCqqbfEQxkZge7HHDFcIxfoHzqSZUam"
                 }
@@ -91,8 +87,73 @@
               }
             }
           }
+        }
+      }
+    },
+    "/uss/v1/wallets/forgot_password": {
+      "post": {
+        "tags": [
+          "Ermis user"
+        ],
+        "summary": "Forgot password",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "email": "hoang.ezhome@gmail.com",
+                  "apikey": "kUCqqbfEQxkZge7HHDFcIxfoHzqSZUam"
+                }
+              }
+            }
+          }
         },
-        "security": []
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/uss/v1/wallets/reset_password": {
+      "post": {
+        "tags": [
+          "Ermis user"
+        ],
+        "summary": "Reset password",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "token": "d22e060c-b826-47c4-b794-ab5065321517",
+                  "password": "111112"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/uss/v1/wallets/google_login": {
@@ -125,8 +186,7 @@
               }
             }
           }
-        },
-        "security": []
+        }
       }
     },
     "/uss/v1/wallets/auth/start": {
@@ -158,8 +218,7 @@
               }
             }
           }
-        },
-        "security": []
+        }
       }
     },
     "/uss/v1/wallets/auth": {
@@ -193,8 +252,7 @@
               }
             }
           }
-        },
-        "security": []
+        }
       }
     },
     "/uss/v1/get_token": {
@@ -203,7 +261,6 @@
           "Ermis user"
         ],
         "summary": "Get token",
-        "description": "To use this endpoint, you need to pass two parameters in the query. The first is the apikey provided by Ermis, and the second is the address (either a wallet address or a user ID, ensuring that this value is unique among users in your app).",
         "parameters": [
           {
             "name": "apikey",
@@ -214,12 +271,12 @@
             "example": "kUCqqbfEQxkZge7HHDFcIxfoHzqSZUam"
           },
           {
-            "name": "address",
+            "name": "client_id",
             "in": "query",
             "schema": {
               "type": "string"
             },
-            "example": "0xfd44c17aea0bbb4fd371cf21d569ec00a16b1172"
+            "example": "0xfd44c17aea0bbb4fd371cf21d569ec00a16b1179"
           }
         ],
         "responses": {
@@ -233,8 +290,7 @@
               }
             }
           }
-        },
-        "security": []
+        }
       }
     },
     "/uss/v1/users/batch": {
@@ -370,12 +426,17 @@
               "schema": {
                 "type": "object",
                 "example": {
-                  "name": "ho"
+                  "name": "+84941557755"
                 }
               }
             }
           }
         },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "name",
@@ -383,7 +444,7 @@
             "schema": {
               "type": "string"
             },
-            "example": "ho"
+            "example": " 84941557755"
           },
           {
             "name": "limit",
@@ -399,7 +460,7 @@
             "schema": {
               "type": "string"
             },
-            "example": "ae3bfaa5-2d8a-49af-aad1-3f1457337d93"
+            "example": "b44937e4-c0d4-4a73-847c-3730a923ce83"
           }
         ],
         "responses": {
@@ -422,6 +483,11 @@
           "Ermis user"
         ],
         "summary": "Get user list",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "project_id",
@@ -429,7 +495,7 @@
             "schema": {
               "type": "string"
             },
-            "example": "ae3bfaa5-2d8a-49af-aad1-3f1457337d93"
+            "example": "b44937e4-c0d4-4a73-847c-3730a923ce83"
           }
         ],
         "responses": {
@@ -451,7 +517,7 @@
         "tags": [
           "Ermis user"
         ],
-        "summary": "Connect SSE",
+        "summary": "Connect sse",
         "security": [
           {
             "bearerAuth": []
@@ -562,8 +628,7 @@
               }
             }
           }
-        },
-        "security": []
+        }
       }
     },
     "/uss/v1/get_token/external_auth": {
@@ -592,8 +657,7 @@
             "schema": {
               "type": "string"
             },
-            "example": "Hoangbim",
-            "description": "Optional"
+            "example": "Hoangbim"
           },
           {
             "name": "avatar",
@@ -601,8 +665,313 @@
             "schema": {
               "type": "string"
             },
-            "example": "https://hn.storage.weodata.vn/namwifi/ermis/staging/mEKxrifjxH5tggcMFN9RfsO2NooZIxBe",
-            "description": "Optional"
+            "example": "https://hn.storage.weodata.vn/namwifi/ermis/staging/mEKxrifjxH5tggcMFN9RfsO2NooZIxBe"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/uss/v1/token_gate/join_channel/{channel_type}": {
+      "post": {
+        "tags": [
+          "Ermis user"
+        ],
+        "summary": "Join channel",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": ""
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "channel_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ec964975-ae84-4a8e-91a1-222ca3aeeef8:GENERAL_CHANNEL"
+          },
+          {
+            "name": "connection_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "53a801c3-a313-4acf-96df-144aba68a98e"
+          },
+          {
+            "name": "action",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "join"
+          },
+          {
+            "name": "channel_type",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "example": "general"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/uss/v1/users/challenge": {
+      "get": {
+        "tags": [
+          "Ermis user"
+        ],
+        "summary": "Get delete challenge",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/uss/v1/wallets/get_otp": {
+      "post": {
+        "tags": [
+          "Ermis user"
+        ],
+        "summary": "Get OTP",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": "{\n    \"phone_nr\":\"84941557755\",\n    // Vi/En\n    \"language\":\"Vi\",\n    // Sms/Voice\n    \"method\":\"Sms\"\n}"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/uss/v1/wallets/otp_login": {
+      "post": {
+        "tags": [
+          "Ermis user"
+        ],
+        "summary": "Login by OTP",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "phone_nr": "+8491557755",
+                  "otp": "181351",
+                  "apikey": "kUCqqbfEQxkZge7HHDFcIxfoHzqSZUam"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/uss/v1/users/challenge-no-auth": {
+      "post": {
+        "tags": [
+          "Ermis user"
+        ],
+        "summary": "Get delete challenge no auth",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "address": "nem anddress vao day"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/uss/v1/users/delete-no-auth/{user_id}": {
+      "post": {
+        "tags": [
+          "Ermis user"
+        ],
+        "summary": "Delete user no auth",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "signature": "signature",
+                  "apikey": "apikey"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/uss/v1/users/get_delete_otp": {
+      "get": {
+        "tags": [
+          "Ermis user"
+        ],
+        "summary": "Get delete OTP",
+        "description": "Get OTP for confirm delete, OTP will send to phone by sms if login_type is Phone, send to email if login_type is Email",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/uss/v1/users/delete": {
+      "delete": {
+        "tags": [
+          "Ermis user"
+        ],
+        "summary": "Delete user",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/uss/v1/users/current_user": {
+      "get": {
+        "tags": [
+          "Ermis user"
+        ],
+        "summary": "Get current user",
+        "description": "enum login_type `{ Wallet, Phone, Google, Email }`",
+        "security": [
+          {
+            "bearerAuth": []
           }
         ],
         "responses": {
@@ -630,15 +999,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "example": {
-                  "cid": "{{cid}}",
-                  "connection_id": "ed2fbb18-64c0-482c-8c6e-0df7640dfc31",
-                  "action": "video",
-                  "signal": {
-                    "type": "offer",
-                    "sdp": "v=0\r\no=- 3994965880134948223 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0 1 2\r\na=extmap-allow-mixed\r\na=msid-semantic: WMS 65ed3b1c-2abe-4f81-b116-45ea6361b682\r\nm=audio 49926 UDP/TLS/RTP/SAVPF 111 63 9 0 8 13 110 126\r\nc=IN IP4 118.70.175.239\r\na=rtcp:9 IN IP4 0.0.0.0\r\na=candidate:1804640433 1 udp 2122260223 192.168.1.171 49926 typ host generation 0 network-id 1 network-cost 10\r\na=candidate:358564393 1 tcp 1518280447 192.168.1.171 9 typ host tcptype active generation 0 network-id 1 network-cost 10\r\na=candidate:3302637967 1 udp 1686052607 118.70.175.239 49926 typ srflx raddr 192.168.1.171 rport 49926 generation 0 network-id 1 network-cost 10\r\na=ice-ufrag:TSWZ\r\na=ice-pwd:3QuqVW+DL+4rTlPwJcbnmDxD\r\na=fingerprint:sha-256 89:CC:B7:F5:62:05:6C:99:57:DC:12:02:48:52:46:6A:00:85:A6:FC:13:6C:10:FF:8F:0B:45:9E:DB:44:4A:E8\r\na=setup:actpass\r\na=mid:0\r\na=extmap:1 urn:ietf:params:rtp-hdrext:ssrc-audio-level\r\na=extmap:2 http://www.webrtc.org/experiments/rtp-hdrext/abs-send-time\r\na=extmap:3 http://www.ietf.org/id/draft-holmer-rmcat-transport-wide-cc-extensions-01\r\na=extmap:4 urn:ietf:params:rtp-hdrext:sdes:mid\r\na=sendrecv\r\na=msid:65ed3b1c-2abe-4f81-b116-45ea6361b682 8b47d2f0-2ace-4533-99bf-59f60950a87b\r\na=rtcp-mux\r\na=rtpmap:111 opus/48000/2\r\na=rtcp-fb:111 transport-cc\r\na=fmtp:111 minptime=10;useinbandfec=1\r\na=rtpmap:63 red/48000/2\r\na=fmtp:63 111/111\r\na=rtpmap:9 G722/8000\r\na=rtpmap:0 PCMU/8000\r\na=rtpmap:8 PCMA/8000\r\na=rtpmap:13 CN/8000\r\na=rtpmap:110 telephone-event/48000\r\na=rtpmap:126 telephone-event/8000\r\na=ssrc:3442797756 cname:4VIPKC5/kCNHAfQh\r\na=ssrc:3442797756 msid:65ed3b1c-2abe-4f81-b116-45ea6361b682 8b47d2f0-2ace-4533-99bf-59f60950a87b\r\nm=video 64343 UDP/TLS/RTP/SAVPF 96 97 102 103 104 105 106 107 108 109 127 125 39 40 45 46 98 99 100 101 112 113 116 117 118\r\nc=IN IP4 118.70.175.239\r\na=rtcp:9 IN IP4 0.0.0.0\r\na=candidate:1804640433 1 udp 2122260223 192.168.1.171 64343 typ host generation 0 network-id 1 network-cost 10\r\na=candidate:358564393 1 tcp 1518280447 192.168.1.171 9 typ host tcptype active generation 0 network-id 1 network-cost 10\r\na=candidate:3302637967 1 udp 1686052607 118.70.175.239 64343 typ srflx raddr 192.168.1.171 rport 64343 generation 0 network-id 1 network-cost 10\r\na=ice-ufrag:TSWZ\r\na=ice-pwd:3QuqVW+DL+4rTlPwJcbnmDxD\r\na=fingerprint:sha-256 89:CC:B7:F5:62:05:6C:99:57:DC:12:02:48:52:46:6A:00:85:A6:FC:13:6C:10:FF:8F:0B:45:9E:DB:44:4A:E8\r\na=setup:actpass\r\na=mid:1\r\na=extmap:14 urn:ietf:params:rtp-hdrext:toffset\r\na=extmap:2 http://www.webrtc.org/experiments/rtp-hdrext/abs-send-time\r\na=extmap:13 urn:3gpp:video-orientation\r\na=extmap:3 http://www.ietf.org/id/draft-holmer-rmcat-transport-wide-cc-extensions-01\r\na=extmap:5 http://www.webrtc.org/experiments/rtp-hdrext/playout-delay\r\na=extmap:6 http://www.webrtc.org/experiments/rtp-hdrext/video-content-type\r\na=extmap:7 http://www.webrtc.org/experiments/rtp-hdrext/video-timing\r\na=extmap:8 http://www.webrtc.org/experiments/rtp-hdrext/color-space\r\na=extmap:4 urn:ietf:params:rtp-hdrext:sdes:mid\r\na=extmap:10 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id\r\na=extmap:11 urn:ietf:params:rtp-hdrext:sdes:repaired-rtp-stream-id\r\na=sendrecv\r\na=msid:65ed3b1c-2abe-4f81-b116-45ea6361b682 7dd1f6d1-c368-4036-9686-8b813ff5e66d\r\na=rtcp-mux\r\na=rtcp-rsize\r\na=rtpmap:96 VP8/90000\r\na=rtcp-fb:96 goog-remb\r\na=rtcp-fb:96 transport-cc\r\na=rtcp-fb:96 ccm fir\r\na=rtcp-fb:96 nack\r\na=rtcp-fb:96 nack pli\r\na=rtpmap:97 rtx/90000\r\na=fmtp:97 apt=96\r\na=rtpmap:102 H264/90000\r\na=rtcp-fb:102 goog-remb\r\na=rtcp-fb:102 transport-cc\r\na=rtcp-fb:102 ccm fir\r\na=rtcp-fb:102 nack\r\na=rtcp-fb:102 nack pli\r\na=fmtp:102 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=42001f\r\na=rtpmap:103 rtx/90000\r\na=fmtp:103 apt=102\r\na=rtpmap:104 H264/90000\r\na=rtcp-fb:104 goog-remb\r\na=rtcp-fb:104 transport-cc\r\na=rtcp-fb:104 ccm fir\r\na=rtcp-fb:104 nack\r\na=rtcp-fb:104 nack pli\r\na=fmtp:104 level-asymmetry-allowed=1;packetization-mode=0;profile-level-id=42001f\r\na=rtpmap:105 rtx/90000\r\na=fmtp:105 apt=104\r\na=rtpmap:106 H264/90000\r\na=rtcp-fb:106 goog-remb\r\na=rtcp-fb:106 transport-cc\r\na=rtcp-fb:106 ccm fir\r\na=rtcp-fb:106 nack\r\na=rtcp-fb:106 nack pli\r\na=fmtp:106 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=42e01f\r\na=rtpmap:107 rtx/90000\r\na=fmtp:107 apt=106\r\na=rtpmap:108 H264/90000\r\na=rtcp-fb:108 goog-remb\r\na=rtcp-fb:108 transport-cc\r\na=rtcp-fb:108 ccm fir\r\na=rtcp-fb:108 nack\r\na=rtcp-fb:108 nack pli\r\na=fmtp:108 level-asymmetry-allowed=1;packetization-mode=0;profile-level-id=42e01f\r\na=rtpmap:109 rtx/90000\r\na=fmtp:109 apt=108\r\na=rtpmap:127 H264/90000\r\na=rtcp-fb:127 goog-remb\r\na=rtcp-fb:127 transport-cc\r\na=rtcp-fb:127 ccm fir\r\na=rtcp-fb:127 nack\r\na=rtcp-fb:127 nack pli\r\na=fmtp:127 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=4d001f\r\na=rtpmap:125 rtx/90000\r\na=fmtp:125 apt=127\r\na=rtpmap:39 H264/90000\r\na=rtcp-fb:39 goog-remb\r\na=rtcp-fb:39 transport-cc\r\na=rtcp-fb:39 ccm fir\r\na=rtcp-fb:39 nack\r\na=rtcp-fb:39 nack pli\r\na=fmtp:39 level-asymmetry-allowed=1;packetization-mode=0;profile-level-id=4d001f\r\na=rtpmap:40 rtx/90000\r\na=fmtp:40 apt=39\r\na=rtpmap:45 AV1/90000\r\na=rtcp-fb:45 goog-remb\r\na=rtcp-fb:45 transport-cc\r\na=rtcp-fb:45 ccm fir\r\na=rtcp-fb:45 nack\r\na=rtcp-fb:45 nack pli\r\na=fmtp:45 level-idx=5;profile=0;tier=0\r\na=rtpmap:46 rtx/90000\r\na=fmtp:46 apt=45\r\na=rtpmap:98 VP9/90000\r\na=rtcp-fb:98 goog-remb\r\na=rtcp-fb:98 transport-cc\r\na=rtcp-fb:98 ccm fir\r\na=rtcp-fb:98 nack\r\na=rtcp-fb:98 nack pli\r\na=fmtp:98 profile-id=0\r\na=rtpmap:99 rtx/90000\r\na=fmtp:99 apt=98\r\na=rtpmap:100 VP9/90000\r\na=rtcp-fb:100 goog-remb\r\na=rtcp-fb:100 transport-cc\r\na=rtcp-fb:100 ccm fir\r\na=rtcp-fb:100 nack\r\na=rtcp-fb:100 nack pli\r\na=fmtp:100 profile-id=2\r\na=rtpmap:101 rtx/90000\r\na=fmtp:101 apt=100\r\na=rtpmap:112 H264/90000\r\na=rtcp-fb:112 goog-remb\r\na=rtcp-fb:112 transport-cc\r\na=rtcp-fb:112 ccm fir\r\na=rtcp-fb:112 nack\r\na=rtcp-fb:112 nack pli\r\na=fmtp:112 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=64001f\r\na=rtpmap:113 rtx/90000\r\na=fmtp:113 apt=112\r\na=rtpmap:116 red/90000\r\na=rtpmap:117 rtx/90000\r\na=fmtp:117 apt=116\r\na=rtpmap:118 ulpfec/90000\r\na=ssrc-group:FID 818394749 1078010932\r\na=ssrc:818394749 cname:4VIPKC5/kCNHAfQh\r\na=ssrc:818394749 msid:65ed3b1c-2abe-4f81-b116-45ea6361b682 7dd1f6d1-c368-4036-9686-8b813ff5e66d\r\na=ssrc:1078010932 cname:4VIPKC5/kCNHAfQh\r\na=ssrc:1078010932 msid:65ed3b1c-2abe-4f81-b116-45ea6361b682 7dd1f6d1-c368-4036-9686-8b813ff5e66d\r\nm=application 49540 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 118.70.175.239\r\na=candidate:1804640433 1 udp 2122260223 192.168.1.171 49540 typ host generation 0 network-id 1 network-cost 10\r\na=candidate:358564393 1 tcp 1518280447 192.168.1.171 9 typ host tcptype active generation 0 network-id 1 network-cost 10\r\na=candidate:3302637967 1 udp 1686052607 118.70.175.239 49540 typ srflx raddr 192.168.1.171 rport 49540 generation 0 network-id 1 network-cost 10\r\na=ice-ufrag:TSWZ\r\na=ice-pwd:3QuqVW+DL+4rTlPwJcbnmDxD\r\na=fingerprint:sha-256 89:CC:B7:F5:62:05:6C:99:57:DC:12:02:48:52:46:6A:00:85:A6:FC:13:6C:10:FF:8F:0B:45:9E:DB:44:4A:E8\r\na=setup:actpass\r\na=mid:2\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n"
-                  }
-                }
+                "example": "{\n    \"cid\": \"{{cid}}\",\n    \"action\": \"create-call\",\n    \"is_video\": true,\n    \"session_id\": \"998312bc-654e-4eea-a996-b2478eb996dd\", // uuid\n    \"signal\": {\n        \"type\": \"offer\",\n        \"sdp\": \"v=0\\r\\no=- 3994965880134948223 2 IN IP4 127.0.0.1\\r\\ns=-\\r\\nt=0 0\\r\\na=group:BUNDLE 0 1 2\\r\\na=extmap-allow-mixed\\r\\na=msid-semantic: WMS 65ed3b1c-2abe-4f81-b116-45ea6361b682\\r\\nm=audio 49926 UDP/TLS/RTP/SAVPF 111 63 9 0 8 13 110 126\\r\\nc=IN IP4 118.70.175.239\\r\\na=rtcp:9 IN IP4 0.0.0.0\\r\\na=candidate:1804640433 1 udp 2122260223 192.168.1.171 49926 typ host generation 0 network-id 1 network-cost 10\\r\\na=candidate:358564393 1 tcp 1518280447 192.168.1.171 9 typ host tcptype active generation 0 network-id 1 network-cost 10\\r\\na=candidate:3302637967 1 udp 1686052607 118.70.175.239 49926 typ srflx raddr 192.168.1.171 rport 49926 generation 0 network-id 1 network-cost 10\\r\\na=ice-ufrag:TSWZ\\r\\na=ice-pwd:3QuqVW+DL+4rTlPwJcbnmDxD\\r\\na=fingerprint:sha-256 89:CC:B7:F5:62:05:6C:99:57:DC:12:02:48:52:46:6A:00:85:A6:FC:13:6C:10:FF:8F:0B:45:9E:DB:44:4A:E8\\r\\na=setup:actpass\\r\\na=mid:0\\r\\na=extmap:1 urn:ietf:params:rtp-hdrext:ssrc-audio-level\\r\\na=extmap:2 http://www.webrtc.org/experiments/rtp-hdrext/abs-send-time\\r\\na=extmap:3 http://www.ietf.org/id/draft-holmer-rmcat-transport-wide-cc-extensions-01\\r\\na=extmap:4 urn:ietf:params:rtp-hdrext:sdes:mid\\r\\na=sendrecv\\r\\na=msid:65ed3b1c-2abe-4f81-b116-45ea6361b682 8b47d2f0-2ace-4533-99bf-59f60950a87b\\r\\na=rtcp-mux\\r\\na=rtpmap:111 opus/48000/2\\r\\na=rtcp-fb:111 transport-cc\\r\\na=fmtp:111 minptime=10;useinbandfec=1\\r\\na=rtpmap:63 red/48000/2\\r\\na=fmtp:63 111/111\\r\\na=rtpmap:9 G722/8000\\r\\na=rtpmap:0 PCMU/8000\\r\\na=rtpmap:8 PCMA/8000\\r\\na=rtpmap:13 CN/8000\\r\\na=rtpmap:110 telephone-event/48000\\r\\na=rtpmap:126 telephone-event/8000\\r\\na=ssrc:3442797756 cname:4VIPKC5/kCNHAfQh\\r\\na=ssrc:3442797756 msid:65ed3b1c-2abe-4f81-b116-45ea6361b682 8b47d2f0-2ace-4533-99bf-59f60950a87b\\r\\nm=video 64343 UDP/TLS/RTP/SAVPF 96 97 102 103 104 105 106 107 108 109 127 125 39 40 45 46 98 99 100 101 112 113 116 117 118\\r\\nc=IN IP4 118.70.175.239\\r\\na=rtcp:9 IN IP4 0.0.0.0\\r\\na=candidate:1804640433 1 udp 2122260223 192.168.1.171 64343 typ host generation 0 network-id 1 network-cost 10\\r\\na=candidate:358564393 1 tcp 1518280447 192.168.1.171 9 typ host tcptype active generation 0 network-id 1 network-cost 10\\r\\na=candidate:3302637967 1 udp 1686052607 118.70.175.239 64343 typ srflx raddr 192.168.1.171 rport 64343 generation 0 network-id 1 network-cost 10\\r\\na=ice-ufrag:TSWZ\\r\\na=ice-pwd:3QuqVW+DL+4rTlPwJcbnmDxD\\r\\na=fingerprint:sha-256 89:CC:B7:F5:62:05:6C:99:57:DC:12:02:48:52:46:6A:00:85:A6:FC:13:6C:10:FF:8F:0B:45:9E:DB:44:4A:E8\\r\\na=setup:actpass\\r\\na=mid:1\\r\\na=extmap:14 urn:ietf:params:rtp-hdrext:toffset\\r\\na=extmap:2 http://www.webrtc.org/experiments/rtp-hdrext/abs-send-time\\r\\na=extmap:13 urn:3gpp:video-orientation\\r\\na=extmap:3 http://www.ietf.org/id/draft-holmer-rmcat-transport-wide-cc-extensions-01\\r\\na=extmap:5 http://www.webrtc.org/experiments/rtp-hdrext/playout-delay\\r\\na=extmap:6 http://www.webrtc.org/experiments/rtp-hdrext/video-content-type\\r\\na=extmap:7 http://www.webrtc.org/experiments/rtp-hdrext/video-timing\\r\\na=extmap:8 http://www.webrtc.org/experiments/rtp-hdrext/color-space\\r\\na=extmap:4 urn:ietf:params:rtp-hdrext:sdes:mid\\r\\na=extmap:10 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id\\r\\na=extmap:11 urn:ietf:params:rtp-hdrext:sdes:repaired-rtp-stream-id\\r\\na=sendrecv\\r\\na=msid:65ed3b1c-2abe-4f81-b116-45ea6361b682 7dd1f6d1-c368-4036-9686-8b813ff5e66d\\r\\na=rtcp-mux\\r\\na=rtcp-rsize\\r\\na=rtpmap:96 VP8/90000\\r\\na=rtcp-fb:96 goog-remb\\r\\na=rtcp-fb:96 transport-cc\\r\\na=rtcp-fb:96 ccm fir\\r\\na=rtcp-fb:96 nack\\r\\na=rtcp-fb:96 nack pli\\r\\na=rtpmap:97 rtx/90000\\r\\na=fmtp:97 apt=96\\r\\na=rtpmap:102 H264/90000\\r\\na=rtcp-fb:102 goog-remb\\r\\na=rtcp-fb:102 transport-cc\\r\\na=rtcp-fb:102 ccm fir\\r\\na=rtcp-fb:102 nack\\r\\na=rtcp-fb:102 nack pli\\r\\na=fmtp:102 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=42001f\\r\\na=rtpmap:103 rtx/90000\\r\\na=fmtp:103 apt=102\\r\\na=rtpmap:104 H264/90000\\r\\na=rtcp-fb:104 goog-remb\\r\\na=rtcp-fb:104 transport-cc\\r\\na=rtcp-fb:104 ccm fir\\r\\na=rtcp-fb:104 nack\\r\\na=rtcp-fb:104 nack pli\\r\\na=fmtp:104 level-asymmetry-allowed=1;packetization-mode=0;profile-level-id=42001f\\r\\na=rtpmap:105 rtx/90000\\r\\na=fmtp:105 apt=104\\r\\na=rtpmap:106 H264/90000\\r\\na=rtcp-fb:106 goog-remb\\r\\na=rtcp-fb:106 transport-cc\\r\\na=rtcp-fb:106 ccm fir\\r\\na=rtcp-fb:106 nack\\r\\na=rtcp-fb:106 nack pli\\r\\na=fmtp:106 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=42e01f\\r\\na=rtpmap:107 rtx/90000\\r\\na=fmtp:107 apt=106\\r\\na=rtpmap:108 H264/90000\\r\\na=rtcp-fb:108 goog-remb\\r\\na=rtcp-fb:108 transport-cc\\r\\na=rtcp-fb:108 ccm fir\\r\\na=rtcp-fb:108 nack\\r\\na=rtcp-fb:108 nack pli\\r\\na=fmtp:108 level-asymmetry-allowed=1;packetization-mode=0;profile-level-id=42e01f\\r\\na=rtpmap:109 rtx/90000\\r\\na=fmtp:109 apt=108\\r\\na=rtpmap:127 H264/90000\\r\\na=rtcp-fb:127 goog-remb\\r\\na=rtcp-fb:127 transport-cc\\r\\na=rtcp-fb:127 ccm fir\\r\\na=rtcp-fb:127 nack\\r\\na=rtcp-fb:127 nack pli\\r\\na=fmtp:127 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=4d001f\\r\\na=rtpmap:125 rtx/90000\\r\\na=fmtp:125 apt=127\\r\\na=rtpmap:39 H264/90000\\r\\na=rtcp-fb:39 goog-remb\\r\\na=rtcp-fb:39 transport-cc\\r\\na=rtcp-fb:39 ccm fir\\r\\na=rtcp-fb:39 nack\\r\\na=rtcp-fb:39 nack pli\\r\\na=fmtp:39 level-asymmetry-allowed=1;packetization-mode=0;profile-level-id=4d001f\\r\\na=rtpmap:40 rtx/90000\\r\\na=fmtp:40 apt=39\\r\\na=rtpmap:45 AV1/90000\\r\\na=rtcp-fb:45 goog-remb\\r\\na=rtcp-fb:45 transport-cc\\r\\na=rtcp-fb:45 ccm fir\\r\\na=rtcp-fb:45 nack\\r\\na=rtcp-fb:45 nack pli\\r\\na=fmtp:45 level-idx=5;profile=0;tier=0\\r\\na=rtpmap:46 rtx/90000\\r\\na=fmtp:46 apt=45\\r\\na=rtpmap:98 VP9/90000\\r\\na=rtcp-fb:98 goog-remb\\r\\na=rtcp-fb:98 transport-cc\\r\\na=rtcp-fb:98 ccm fir\\r\\na=rtcp-fb:98 nack\\r\\na=rtcp-fb:98 nack pli\\r\\na=fmtp:98 profile-id=0\\r\\na=rtpmap:99 rtx/90000\\r\\na=fmtp:99 apt=98\\r\\na=rtpmap:100 VP9/90000\\r\\na=rtcp-fb:100 goog-remb\\r\\na=rtcp-fb:100 transport-cc\\r\\na=rtcp-fb:100 ccm fir\\r\\na=rtcp-fb:100 nack\\r\\na=rtcp-fb:100 nack pli\\r\\na=fmtp:100 profile-id=2\\r\\na=rtpmap:101 rtx/90000\\r\\na=fmtp:101 apt=100\\r\\na=rtpmap:112 H264/90000\\r\\na=rtcp-fb:112 goog-remb\\r\\na=rtcp-fb:112 transport-cc\\r\\na=rtcp-fb:112 ccm fir\\r\\na=rtcp-fb:112 nack\\r\\na=rtcp-fb:112 nack pli\\r\\na=fmtp:112 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=64001f\\r\\na=rtpmap:113 rtx/90000\\r\\na=fmtp:113 apt=112\\r\\na=rtpmap:116 red/90000\\r\\na=rtpmap:117 rtx/90000\\r\\na=fmtp:117 apt=116\\r\\na=rtpmap:118 ulpfec/90000\\r\\na=ssrc-group:FID 818394749 1078010932\\r\\na=ssrc:818394749 cname:4VIPKC5/kCNHAfQh\\r\\na=ssrc:818394749 msid:65ed3b1c-2abe-4f81-b116-45ea6361b682 7dd1f6d1-c368-4036-9686-8b813ff5e66d\\r\\na=ssrc:1078010932 cname:4VIPKC5/kCNHAfQh\\r\\na=ssrc:1078010932 msid:65ed3b1c-2abe-4f81-b116-45ea6361b682 7dd1f6d1-c368-4036-9686-8b813ff5e66d\\r\\nm=application 49540 UDP/DTLS/SCTP webrtc-datachannel\\r\\nc=IN IP4 118.70.175.239\\r\\na=candidate:1804640433 1 udp 2122260223 192.168.1.171 49540 typ host generation 0 network-id 1 network-cost 10\\r\\na=candidate:358564393 1 tcp 1518280447 192.168.1.171 9 typ host tcptype active generation 0 network-id 1 network-cost 10\\r\\na=candidate:3302637967 1 udp 1686052607 118.70.175.239 49540 typ srflx raddr 192.168.1.171 rport 49540 generation 0 network-id 1 network-cost 10\\r\\na=ice-ufrag:TSWZ\\r\\na=ice-pwd:3QuqVW+DL+4rTlPwJcbnmDxD\\r\\na=fingerprint:sha-256 89:CC:B7:F5:62:05:6C:99:57:DC:12:02:48:52:46:6A:00:85:A6:FC:13:6C:10:FF:8F:0B:45:9E:DB:44:4A:E8\\r\\na=setup:actpass\\r\\na=mid:2\\r\\na=sctp-port:5000\\r\\na=max-message-size:262144\\r\\n\"\n    }\n}"
               }
             }
           }
@@ -860,7 +1221,14 @@
         ],
         "summary": "Get Attachment",
         "requestBody": {
-          "content": {}
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": "{\n    \"attachment_types\": [\"image\", \"linkPreview\"] // image, video, file, voiceRecording, linkPreview\n}"
+              }
+            }
+          }
         },
         "security": [
           {
@@ -1136,10 +1504,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "example": {
-                  "id": "fr_5Kduo7k_nv4tXSDdmgU:APA91bHNYs7m0w8CUTyxUdkUQXiUfSGB1OtViR3tp5CHgAMSPGl2O5VzSsMrIhgXlHrNHGlDlyctPtcZssvaP4Vxs58wGjmJ757Ct_36-z9atC7UnOnzgFFLpu8eonxMpTUHNhFy9Vsz",
-                  "push_provider": "firebase"
-                }
+                "example": "{\n    \"id\": \"fr_5Kduo7k_nv4tXSDdmgU:APA91bHNYs7m0w8CUTyxUdkUQXiUfSGB1OtViR3tp5CHgAMSPGl2O5VzSsMrIhgXlHrNHGlDlyctPtcZssvaP4Vxs58wGjmJ757Ct_36-z9atC7UnOnzgFFLpu8eonxMpTUHNhFy9Vsz\", // config fcm token cho android ios\n    \"device_token\": \"239C3AC509F7AFF3BAD5FDD5D3D782E11864E46A7AA349360223CBCBD2F366C9\" // config voip cho iOS\n}"
               }
             }
           }
@@ -1709,7 +2074,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "example": "{\n    \"message\": {\n        \"id\": \"{{$guid}}\",\n        // \"attachments\": [],\n        // \"mentioned_all\": true,\n        // \"mentioned_users\": [\"0x75c4ff25f1d81803675f687d52a4906855d61ad8\"],\n        // \"parent_id\": \"3d8688e3-1724-4c5b-80d5-84164cd08bcc\",\n        // \"pinned\": false,\n        // \"quoted_message_id\": \"3d8688e3-1724-4c5b-80d5-84164cd08bcc\",\n        \"text\": \"{{$randomWords}}\"\n    }\n}"
+                "example": "{\n    \"message\": {\n        \"id\": \"{{$guid}}\",\n        // \"attachments\": [\n        //     {\n        //         \"type\": \"image\",\n        //         \"title\": \"zuko.png\",\n        //         \"file_size\": 38210,\n        //         \"mime_type\": \"image/png\",\n        //         \"image_url\": \"https://hn.storage.weodata.vn/belochat/bellboy/test/team:b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room/5523c124-3b3d-44e2-9461-99d98aab21f1\"\n        //     }\n        // ],\n        // \"mentioned_all\": true,\n        // \"mentioned_users\": [\"0x75c4ff25f1d81803675f687d52a4906855d61ad8\"],\n        // \"parent_id\": \"3d8688e3-1724-4c5b-80d5-84164cd08bcc\",\n        // \"pinned\": false,\n        // \"quoted_message_id\": \"3d8688e3-1724-4c5b-80d5-84164cd08bcc\",\n        // \"forward_cid\": \"team:b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room\",\n        // \"poll_type\": \"single\", // single | multiple \n        \"text\": \"{{$randomWords}}\"\n    }\n}"
               }
             }
           }
@@ -1887,7 +2252,7 @@
               "type": "string"
             },
             "required": true,
-            "example": "5f975214-21fb-45ad-b786-9796a2750c3e"
+            "example": "c2f9a61c-6f61-4d58-a78a-df1a3da39b49"
           },
           {
             "name": "reaction_type",
@@ -2069,6 +2434,332 @@
             },
             "required": true,
             "example": "haha"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "Server": {
+                "schema": {
+                  "type": "number",
+                  "example": "nginx/1.18.0 (Ubuntu)"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Thu, 21 Nov 2024 08:11:08 GMT"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json"
+                }
+              },
+              "Transfer-Encoding": {
+                "schema": {
+                  "type": "string",
+                  "example": "chunked"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "access-control-expose-headers": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "vary": {
+                "schema": {
+                  "type": "string",
+                  "example": "accept-encoding"
+                }
+              },
+              "access-control-allow-origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "content-encoding": {
+                "schema": {
+                  "type": "string",
+                  "example": "br"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "message": {
+                    "id": "e1fb3b18-6f10-4413-95aa-c94c3ffa6019",
+                    "text": "Syrian Grocery projection supply-chains",
+                    "type": "regular",
+                    "cid": "team:b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room",
+                    "user": {
+                      "id": "0x360a45f70de193090a1b13da8393a02f9119aecd"
+                    },
+                    "created_at": "2024-11-21T08:10:55.200991571Z",
+                    "reaction_counts": {}
+                  },
+                  "reaction": {
+                    "message_id": "e1fb3b18-6f10-4413-95aa-c94c3ffa6019",
+                    "user_id": "0x360a45f70de193090a1b13da8393a02f9119aecd",
+                    "user": {
+                      "id": "0x360a45f70de193090a1b13da8393a02f9119aecd"
+                    },
+                    "type": "haha",
+                    "created_at": "2024-11-21T08:11:03.112068157Z",
+                    "updated_at": "2024-11-21T08:11:03.112068157Z"
+                  },
+                  "duration": "19ms"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/messages/{type}/{channel_id}/{message_id}/poll/{poll_choice}": {
+      "post": {
+        "tags": [
+          "Bellboy"
+        ],
+        "summary": "Send Poll Choice",
+        "requestBody": {
+          "content": {}
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Content-Encoding",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "example": "zstd"
+          },
+          {
+            "name": "type",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "example": "{{channel_type}}"
+          },
+          {
+            "name": "channel_id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "example": "{{channel_id}}"
+          },
+          {
+            "name": "message_id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "example": "c2f9a61c-6f61-4d58-a78a-df1a3da39b49"
+          },
+          {
+            "name": "poll_choice",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "example": "Option C"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "Server": {
+                "schema": {
+                  "type": "number",
+                  "example": "nginx/1.18.0 (Ubuntu)"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Thu, 21 Nov 2024 08:06:46 GMT"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json"
+                }
+              },
+              "Transfer-Encoding": {
+                "schema": {
+                  "type": "string",
+                  "example": "chunked"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "access-control-expose-headers": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "vary": {
+                "schema": {
+                  "type": "string",
+                  "example": "accept-encoding"
+                }
+              },
+              "access-control-allow-origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "content-encoding": {
+                "schema": {
+                  "type": "string",
+                  "example": "br"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "message": {
+                    "id": "5f975214-21fb-45ad-b786-9796a2750c3e",
+                    "text": "Man copy",
+                    "type": "regular",
+                    "cid": "team:b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room",
+                    "user": {
+                      "id": "0x360a45f70de193090a1b13da8393a02f9119aecd"
+                    },
+                    "created_at": "2024-11-21T08:05:18.860731054Z",
+                    "attachments": [
+                      {
+                        "type": "file",
+                        "title": "MoonMath.pdf",
+                        "file_size": 2428405,
+                        "mime_type": "application/pdf",
+                        "asset_url": "https://hn.storage.weodata.vn/belochat/bellboy/test/team:b44937e4-c0d4-4a73-847c-3730a923ce83:vinh-thang-room/d19a800d-df1d-4ad3-9033-54dab61033d1"
+                      }
+                    ],
+                    "latest_reactions": [
+                      {
+                        "message_id": "5f975214-21fb-45ad-b786-9796a2750c3e",
+                        "user_id": "0x360a45f70de193090a1b13da8393a02f9119aecd",
+                        "user": {
+                          "id": "0x360a45f70de193090a1b13da8393a02f9119aecd"
+                        },
+                        "type": "haha",
+                        "created_at": "2024-11-21T08:06:45.980093310Z",
+                        "updated_at": "2024-11-21T08:06:45.980093310Z"
+                      }
+                    ],
+                    "reaction_counts": {
+                      "haha": 1
+                    }
+                  },
+                  "reaction": {
+                    "message_id": "5f975214-21fb-45ad-b786-9796a2750c3e",
+                    "user_id": "0x360a45f70de193090a1b13da8393a02f9119aecd",
+                    "user": {
+                      "id": "0x360a45f70de193090a1b13da8393a02f9119aecd"
+                    },
+                    "type": "haha",
+                    "created_at": "2024-11-21T08:06:45.980093310Z",
+                    "updated_at": "2024-11-21T08:06:45.980093310Z"
+                  },
+                  "duration": "19ms"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Bellboy"
+        ],
+        "summary": "Delete Poll Choice",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Content-Encoding",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "example": "zstd"
+          },
+          {
+            "name": "type",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "example": "{{channel_type}}"
+          },
+          {
+            "name": "channel_id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "example": "{{channel_id}}"
+          },
+          {
+            "name": "message_id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "example": "c2f9a61c-6f61-4d58-a78a-df1a3da39b49"
+          },
+          {
+            "name": "poll_choice",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "example": "Option C"
           }
         ],
         "responses": {
@@ -2504,16 +3195,7 @@
         ],
         "summary": "Pin | Unpin Message",
         "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "example": {
-                  "text": "wtf message"
-                }
-              }
-            }
-          }
+          "content": {}
         },
         "security": [
           {
@@ -2554,7 +3236,7 @@
               "type": "string"
             },
             "required": true,
-            "example": "c904b517-9fdb-4d28-a89b-220f48d1f8dc"
+            "example": "f2599df8-879a-49c2-b64f-ee8874c2e12d"
           },
           {
             "name": "action",
@@ -3512,7 +4194,7 @@
     "/user/delete": {
       "delete": {
         "tags": [
-          "default"
+          "Bellboy"
         ],
         "summary": "Delete User",
         "security": [
@@ -3608,7 +4290,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "example": "{\n    \"data\": {// Use when create channel\n        \"name\": \"Vinh-Thang-Room\",\n        // \"image\": \"\",\n        // \"description\":\"Something\",\n        // \"public\": false, // true hoặc false\n        \"members\": [\n            \"0x360a45f70de193090a1b13da8393a02f9119aecd\",\n            \"0x360a45f70de193090a1b13da8393a02f9119aecd\",\n            \"0x75c4ff25f1d81803675f687d52a4906855d61ad8\"\n        ]\n    },\n    \"project_id\": \"{{project_id}}\",\n    \"messages\": {\n        // \"id_lt\": \"6e4aa399-37fa-43eb-a994-9517266af148\",\n        // \"id_gt\": \"6e4aa399-37fa-43eb-a994-9517266af148\",\n        // \"id_around\": \"6e4aa399-37fa-43eb-a994-9517266af148\",\n        \"limit\": 25    \n    }\n}"
+                "example": "{\n    \"data\": {// Use when create channel\n        \"name\": \"Vinh-Thang-Room\",\n        // \"image\": \"\",\n        // \"description\":\"Something\",\n        // \"public\": false, // true hoặc false\n        // \"gate\": false, // true hoặc false\n        \"members\": [\n            \"0x360a45f70de193090a1b13da8393a02f9119aecd\",\n            \"0x75c4ff25f1d81803675f687d52a4906855d61ad8\"\n        ]\n    },\n    \"project_id\": \"{{project_id}}\",\n    \"messages\": {\n        // \"id_lt\": \"6e4aa399-37fa-43eb-a994-9517266af148\",\n        // \"id_gt\": \"6e4aa399-37fa-43eb-a994-9517266af148\",\n        // \"id_around\": \"6e4aa399-37fa-43eb-a994-9517266af148\",\n        \"limit\": 25    \n    }\n}"
               }
             }
           }
@@ -3873,14 +4555,224 @@
         }
       }
     },
-    "/channels/overview": {
+    "/channels/overview/count": {
       "post": {
         "tags": [
           "Bellboy"
         ],
-        "summary": "Overview Channels",
+        "summary": "Overview Channels Count",
         "requestBody": {
           "content": {}
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Content-Encoding",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "example": "zstd"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "Server": {
+                "schema": {
+                  "type": "number",
+                  "example": "nginx/1.18.0 (Ubuntu)"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Thu, 21 Nov 2024 08:07:27 GMT"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json"
+                }
+              },
+              "Transfer-Encoding": {
+                "schema": {
+                  "type": "string",
+                  "example": "chunked"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "access-control-expose-headers": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "vary": {
+                "schema": {
+                  "type": "string",
+                  "example": "accept-encoding"
+                }
+              },
+              "access-control-allow-origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "content-encoding": {
+                "schema": {
+                  "type": "string",
+                  "example": "br"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "channels_count": 161,
+                  "duration": "2ms"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/channels/overview/chart": {
+      "post": {
+        "tags": [
+          "Bellboy"
+        ],
+        "summary": "Overview Channels Chart",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": "{\n    // \"start\": \"2024-12-24T06:29:29.425841Z\", //không điền sẽ mặc định là lúc tạo project\n    // \"end\": \"2024-12-24T07:04:05.072612Z\" //không điền sẽ mặc định là hiện tại\n}"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Content-Encoding",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "example": "zstd"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "Server": {
+                "schema": {
+                  "type": "number",
+                  "example": "nginx/1.18.0 (Ubuntu)"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Thu, 21 Nov 2024 08:07:27 GMT"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json"
+                }
+              },
+              "Transfer-Encoding": {
+                "schema": {
+                  "type": "string",
+                  "example": "chunked"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "access-control-expose-headers": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "vary": {
+                "schema": {
+                  "type": "string",
+                  "example": "accept-encoding"
+                }
+              },
+              "access-control-allow-origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "content-encoding": {
+                "schema": {
+                  "type": "string",
+                  "example": "br"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "channels_count": 161,
+                  "duration": "2ms"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/channels/overview/attachment": {
+      "post": {
+        "tags": [
+          "Bellboy"
+        ],
+        "summary": "Overview Attachments Chart",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": "{\n    // \"start\": \"2024-12-24T06:29:29.425841Z\", //không điền sẽ mặc định là lúc tạo project\n    // \"end\": \"2024-12-24T07:04:05.072612Z\" //không điền sẽ mặc định là hiện tại\n}"
+              }
+            }
+          }
         },
         "security": [
           {
