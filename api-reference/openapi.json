@@ -37,7 +37,27 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "example": "\n{\n    \"email\":\"hoang.ezhome1@gmail.com\",\n    \"password\":\"123456\",\n    \"apikey\":\"kUCqqbfEQxkZge7HHDFcIxfoHzqSZUam\"\n    // \"apikey\":\"sXhcPu0JneUbQ6TG2tXePK8MC2tBAHn9\"\n    // \"apikey\":\"0RajstZ8lvzvYykd1fi4YOnn9tR9jqtp\"\n}"
+                "example": {
+                  "email": "hoang.ezhome1@gmail.com",
+                  "password": "123456",
+                  "apikey": "kUCqqbfEQxkZge7HHDFcIxfoHzqSZUam"
+                },
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "apikey": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "email",
+                  "password",
+                  "apikey"
+                ]
               }
             }
           }
@@ -71,7 +91,23 @@
                   "email": "hoang.ezhome1@gmail.com",
                   "password": "123456",
                   "apikey": "kUCqqbfEQxkZge7HHDFcIxfoHzqSZUam"
-                }
+                },
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "apikey": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "email",
+                  "password",
+                  "apikey"
+                ]
               }
             }
           }
@@ -104,7 +140,19 @@
                 "example": {
                   "email": "hoang.ezhome@gmail.com",
                   "apikey": "kUCqqbfEQxkZge7HHDFcIxfoHzqSZUam"
-                }
+                },
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "apikey": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "email",
+                  "apikey"
+                ]
               }
             }
           }
@@ -137,7 +185,19 @@
                 "example": {
                   "token": "d22e060c-b826-47c4-b794-ab5065321517",
                   "password": "111112"
-                }
+                },
+                "properties": {
+                  "token": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "token",
+                  "password"
+                ]
               }
             }
           }
@@ -170,7 +230,19 @@
                 "example": {
                   "token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjI4YTQyMWNhZmJlM2RkODg5MjcxZGY5MDBmNGJiZjE2ZGI1YzI0ZDQiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIxODkwODUxMjU3ODMtYzAzODEyM2hiZXVtNDJzNnRzdmQyMjJrcW1vaXRlMTMuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiIxODkwODUxMjU3ODMtYzAzODEyM2hiZXVtNDJzNnRzdmQyMjJrcW1vaXRlMTMuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMTc3MTc1OTc4MjQ3NTg2NzA5OTkiLCJlbWFpbCI6Im52aG9hbmd3cnVAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5iZiI6MTcyNzk0NjEzNiwibmFtZSI6Ik5ndXnhu4VuIEhvw6BuZyIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NMcXpRZTk2WUVhcnNlZTFOTWVrOHRvVFhjOWFMYVo1THBvTWxQVU5NeXNoWV9qNUF5MD1zOTYtYyIsImdpdmVuX25hbWUiOiJOZ3V54buFbiIsImZhbWlseV9uYW1lIjoiSG_DoG5nIiwiaWF0IjoxNzI3OTQ2NDM2LCJleHAiOjE3Mjc5NTAwMzYsImp0aSI6ImJkZWI2ZTI1MTMzYWExMTUxMTQzOWUwNjY4NjYxY2E5NTU2MzZmNDUifQ.ZeRmo5MdHxNhqfRvBRogzrVLo6xxj2acbY45g89sZUuoJ9zdqsBIMfq33kP_G7W-JMY4pk7aY84xvb5B94IztEF2Pp_WYVMqy-PJnxsMPg-_2wa6tO-7M4BKOO1qKUfT4Uf0BjKlMu2ypqyxOMUF0Xlv5lnTPu1Jvwmkgq40SMYUeqOUQNQ-Ji8iZJLFhdAwkJFacdZp2-irqPLnhcF-gtuBs7t5W0LhoNSV8WhSLnb3dExmXjFYz0lR1Epx8ycBrDt7tybbTZ3TgP-X8OtaYtDcpishmmPq_qjRhqPawUy9jM2jzrXs7hvsdH-t7nWtPIbY2FBU3RrFElFsVDouNw",
                   "apikey": "kUCqqbfEQxkZge7HHDFcIxfoHzqSZUam"
-                }
+                },
+                "properties": {
+                  "token": {
+                    "type": "string"
+                  },
+                  "apikey": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "token",
+                  "apikey"
+                ]
               }
             }
           }
@@ -202,7 +274,15 @@
                 "type": "object",
                 "example": {
                   "address": "0x61197c6800f990454903290736aFe5D4fc7a2DD1"
-                }
+                },
+                "properties": {
+                  "address": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "address"
+                ]
               }
             }
           }
@@ -236,7 +316,23 @@
                   "address": "0x61197c6800f990454903290736aFe5D4fc7a2DD1",
                   "signature": "0xb23c456c9fbc23241ffc9e5052d156052b7c55b211822da32e6562e2ae1600647113ebac12fc78e8dfb4468b4f58f3d7aa9cc4eed9b92b1d083d5e8569f3ea401c",
                   "nonce": "7hjN8N4MgGVgnqHUMlUn"
-                }
+                },
+                "properties": {
+                  "address": {
+                    "type": "string"
+                  },
+                  "signature": {
+                    "type": "string"
+                  },
+                  "nonce": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "address",
+                  "signature",
+                  "nonce"
+                ]
               }
             }
           }
@@ -308,7 +404,15 @@
                   "users": [
                     "0x1e16149b8f6af2d238ecb6d8e51d9554c1ecfaac1"
                   ]
-                }
+                },
+                "properties": {
+                  "users": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "users"
+                ]
               }
             }
           }
@@ -355,7 +459,15 @@
                 "type": "object",
                 "example": {
                   "name": "hoangbim"
-                }
+                },
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name"
+                ]
               }
             }
           }
@@ -427,7 +539,15 @@
                 "type": "object",
                 "example": {
                   "name": "+84941557755"
-                }
+                },
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name"
+                ]
               }
             }
           }
@@ -575,7 +695,15 @@
                 "type": "object",
                 "example": {
                   "project_id": "ec964975-ae84-4a8e-91a1-222ca3aeeef8"
-                }
+                },
+                "properties": {
+                  "project_id": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "project_id"
+                ]
               }
             }
           }
@@ -612,7 +740,15 @@
                 "type": "object",
                 "example": {
                   "refresh_token": "f0ihDEpQSFDyITK8xz3bDRjK"
-                }
+                },
+                "properties": {
+                  "refresh_token": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "refresh_token"
+                ]
               }
             }
           }
@@ -692,8 +828,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "example": ""
+                "type": "object"
               }
             }
           }
@@ -788,7 +923,27 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "example": "{\n    \"phone_nr\":\"84941557755\",\n    // Vi/En\n    \"language\":\"Vi\",\n    // Sms/Voice\n    \"method\":\"Sms\"\n}"
+                "example": {
+                  "phone_nr": "84941557755",
+                  "language": "Vi",
+                  "method": "Sms"
+                },
+                "properties": {
+                  "phone_nr": {
+                    "type": "string"
+                  },
+                  "language": {
+                    "type": "string"
+                  },
+                  "method": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "phone_nr",
+                  "language",
+                  "method"
+                ]
               }
             }
           }
@@ -822,7 +977,23 @@
                   "phone_nr": "+8491557755",
                   "otp": "181351",
                   "apikey": "kUCqqbfEQxkZge7HHDFcIxfoHzqSZUam"
-                }
+                },
+                "properties": {
+                  "phone_nr": {
+                    "type": "string"
+                  },
+                  "otp": {
+                    "type": "string"
+                  },
+                  "apikey": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "phone_nr",
+                  "otp",
+                  "apikey"
+                ]
               }
             }
           }
@@ -854,7 +1025,15 @@
                 "type": "object",
                 "example": {
                   "address": "nem anddress vao day"
-                }
+                },
+                "properties": {
+                  "address": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "address"
+                ]
               }
             }
           }
@@ -887,7 +1066,19 @@
                 "example": {
                   "signature": "signature",
                   "apikey": "apikey"
-                }
+                },
+                "properties": {
+                  "signature": {
+                    "type": "string"
+                  },
+                  "apikey": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "signature",
+                  "apikey"
+                ]
               }
             }
           }
