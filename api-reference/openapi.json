@@ -463,6 +463,9 @@
                 "properties": {
                   "name": {
                     "type": "string"
+                  },
+                  "about_me": {
+                    "type": "string"
                   }
                 },
                 "required": [
