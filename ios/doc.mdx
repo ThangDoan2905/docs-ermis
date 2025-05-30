@@ -38,30 +38,28 @@ title: 'Chat SDK for iOS'
 
 ## Introduction
 
-The ErmisChat SDK for iOS allows you to integrate real-time chat into your client app with minimal effort.
+The `ErmisChat` SDK for iOS allows you to integrate real-time chat into your client app with minimal effort.
 
 ## Requirements
 
-The minimum requirements for ErmisChat SDK for iOS are:
+The minimum requirements for `ErmisChat` SDK for iOS are:
 
-- iOS 14 or higher
+- iOS 15 or higher
 - Swift 5.0 or higher
 
 ## Getting started
 
-This section shows you the prerequisites you needed to use the ErmisChat SDK for iOS. If you have any comments or questions regarding bugs and feature requests, please reach out to us.
-
-## Step-by-Step Guide:
+This section shows you the prerequisites you needed to use the `ErmisChat` SDK for iOS. If you have any comments or questions regarding bugs and feature requests, please reach out to us.
 
 ### Step 1: Generate API key and ProjectID
 
-Before installing ErmisChat SDK, you need to generate an **API key** and **ProjectID** on the [Ermis Dashboard](https://ermis.network). This **API key** and **ProjectID** will be required when initializing the Chat SDK.
+Before installing `ErmisChat` SDK, you need to generate an **API key** and **ProjectID** on the [Ermis Dashboard](https://ermis.network). This **API key** and **ProjectID** will be required when initializing the Chat SDK.
 
 > **Note**: Ermis Dashboard will be available soon. Please contact our support team to create a client account and receive your API key. Contact support: [tony@ermis.network](mailto:tony@ermis.network)
 
 ### Step 2: Install the Chat SDK
 
-You can add the ErmisChat SDK to your project IOS using Swift Package Manager.
+You can add the `ErmisChat` SDK to your project IOS using Swift Package Manager.
 
 **Swift Package Manager Instructions**
 
@@ -87,72 +85,115 @@ let client = ErmisClient(config: config,
 
 ### Step 4: Integrate Login via Wallet
 
-To support Login via Wallet, ErmisChat needs to communicate with various Wallet applications. In this example, we use [Web3Modal](https://github.com/WalletConnect/web3modal) of `WalletConnect` to faciliate communication with wallet applications.
+To support Login via Wallet, `ErmisChat` needs to communicate with various Wallet applications. `ErmisChat` SDK contain `ErmisWalletAuth` for this purpose.
 
-#### 4.1 Create a Challenge
+#### 4.1. Setup ErmisWalletAuthClient
 
-First [install and setup](https://docs.walletconnect.com/appkit/ios/core/installation) `Web3Modal` library.
+- Add the following to your app's `info.plist` file.
 
-After install and setup Web3Modal, connect your app to a wallet application.
-
-```swift
-Web3Modal.selectChain(from: self)
+```xml
+<key>CFBundleURLTypes</key>
+<array>
+	<dict>
+		<key>CFBundleTypeRole</key>
+		<string>Editor</string>
+		<key>CFBundleURLName</key>
+		<string>w3mdapp</string>
+		<key>CFBundleURLSchemes</key>
+		<array>
+			<string>w3mdapp</string>
+		</array>
+	</dict>
+</array>
 ```
 
-Web3Modal will show list of chain for user. After user select a chain, the list of wallet will show for user to choose and connect. After users connect their wallet, the `sessionSettlePublisher` will publish an event. After this event emit, Call `startAuth` to create a challenge message.
+- Add the following to your app's `info.plist` file.
+
+```xml
+<key>LSApplicationQueriesSchemes</key>
+<array>
+	<string>cbwallet</string>
+	<string>metamask</string>
+	<string>trust</string>
+	<string>safe</string>
+	<string>rainbow</string>
+	<string>uniswap</string>
+	<string>zerion</string>
+	<string>imtokenv2</string>
+	<string>spot</string>
+	<string>omni</string>
+	<string>dfw</string>
+	<string>tpoutside</string>
+	<string>robinhood-wallet</string>
+	<string>frontier</string>
+	<string>blockchain-wallet</string>
+	<string>safepalwallet</string>
+	<string>bitkeep</string>
+	<string>oneinch</string>
+	<string>exodus</string>
+	<string>bnc</string>
+	<string>ledgerlive</string>
+	<string>mewwallet</string>
+	<string>awallet</string>
+	<string>keyring</string>
+	<string>lobstr</string>
+	<string>ontoprovider</string>
+	<string>mathwallet</string>
+	<string>unstoppabledomains</string>
+	<string>obvious</string>
+	<string>fireblocks-wc</string>
+	<string>ambire</string>
+	<string>internetmoney</string>
+	<string>walletnow</string>
+	<string>bitcoincom</string>
+	<string>coin98</string>
+	<string>arculuswc</string>
+	<string>cryptobrowser</string>
+	<string>chainapp</string>
+	<string>huddln</string>
+	<string>verso</string>
+	<string>haha</string>
+	<string>modularwallet</string>
+	<string>coinomi</string>
+</array>
+```
+
+- Create a new `ErmisWalletAuthClient` instance:
 
 ```swift
-Web3Modal.instance.sessionSettlePublisher.receive(on: DispatchQueue.main).sink { [weak self] session in
-    let address = Web3Modal.instance.getAddress()
-    guard !address.isEmpty else {
+let client = ErmisClient(....)
+    walletAuthClient = ErmisWalletAuthClient(with: client,
+                                            appName: "Test App Name",
+                                            description: "Test app description",
+                                            url: "https://ermis.network",
+                                            icons: ["https://ermis.network/images/photo_Layer_1.png"])
+
+```
+**Note:** `appName`, `description`, `url`, `icons` are information of your application. These will be shown in wallet application when connecting.
+
+- Handle deeplink in `SceneDelegate` as shown below:
+
+```swift
+func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+    guard let url = URLContexts.first?.url else {
         return
     }
-    let response = try await client.startAuth(with: address)
-    let challengeMessage = response.challenge
-    // Save nonce. It will need in step 4.3.
-    self?.currentNonce = challengeMessage.nonce
+    if url.scheme == "w3mdapp" {
+        chat.walletAuthClient.handleDeeplink(url)
+    }
 }
 ```
 
-#### 4.2 Sign wallet
+#### 4.2. Authentication with wallet
 
-After receiving the challenge message, you need to sign it with the wallet to obtain the signature. To do this, send `eth_signTypedData` request with the wallet address and challenge message as parameters.
-
+Authentication wallet contain many steps, but the SDK will handle almost for you. All you need are call `start` function to start authentication with wallet.
 ```swift
-let request = W3MJSONRPC.eth_signTypedData(
-    address: address,
-    message: challengeMessage
-)
-
-try await Web3Modal.instance.request(request)
+Task {
+    await walletAuthClient.start(from: viewController)
+}
 ```
-> **Note**: This will send a sign message to user's wallet. To automatic switch to user wallet app, call `Web3Modal.instance.launchCurrentWallet`.
-
-#### 4.3 Get authentication information
-
-After user sign this message, the `sessionResponsePublisher` will emit an response. Use `signature` from response to call `walletAuthenticate` function.
-This will return `AuthenticationPayload`. It contains `token`, and `refreshToken` which require to connect user.
-
-```swift
- Web3Modal.instance.sessionResponsePublisher.receive(on: DispatchQueue.main).sink { [weak self] response in 
-    switch response.result {
-    case .response(let value):
-        let signature = value.value as? String ?? 
-        ((value.value as? JSONString)?.decode() as? String ) // If sign in with CoinBase
-        ?? ""
-        let walletSignResponse = await client.walletAuthenticate(with: signature,
-                                                                 address: address,
-                                                                 nonce: self.currentNonce ?? "") 
-        // Init token from rawValue
-        let token = try? Token(rawValue: walletSigninResponse.token)
-        let refreshToken = walletSigninResponse.refreshToken
-    case .error(let error):
-    // Handle error 
-    } 
- }
-```
-
->**Note**: Web3Modal currently doesn't support `eth_signTypedData`, so we need to add it to `Web3Modal` SDK.
+and wait the result from callback:
+`onLoginComplete: ((Result<(AuthenticationPayload, String), Error>) -> Void)?`
 
 ### Step 5: Connect User in SDK
 
@@ -262,11 +303,6 @@ channelController.synchronize { [weak self] error in
 To send a message, use the `createNewMessage` function from the `channelController`:
 ```swift
 channelController.createNewMessage(text: "New message")
-
-// Call synchronize to create message on backend
-channelController.synchronize { [weak self] error in
-    ...
-}
 ```
 
 <br />
@@ -285,7 +321,6 @@ channelController.synchronize { [weak self] error in
 ```swift
 class ChannelController {
     public func fetchUsers(with ids: [String],
-                           projectId: String,
                            completion: @escaping (Result<[ChatUser], Error>) -> Void) {}
 }
 ```
@@ -344,7 +379,7 @@ To loadmore using `loadMoreUsers` function:
 func loadMoreUsers(
         limit: Int = 25,
         completion: ((Error?) -> Void)? = nil
-    )
+)
 ```
 
  **Parameters:**
@@ -770,17 +805,55 @@ Call this API to retrieve all attachments, then filter them locally to obtain th
 
 ```swift
 func getAttachments(in cid: ChannelId,
+                    attachmentTypes: [ChannelAttachmentType],
                     completion: @escaping (Result<ChannelAttachmentListPayload, Error>) -> Void)
 ```
 
 **Parameters:**
 
-|  **Name**  |                         **Type**                         | **Required** | **Description**                                                                                                                                   |
-|:----------:|:--------------------------------------------------------:|:------------:|---------------------------------------------------------------------------------------------------------------------------------------------------|
-|     cid    |                        `ChannelId`                       |     true     | Channel Id of the channel                                                                                                                         |
-| completion | `(Result<ChannelAttachmentListPayload, Error >) -> Void` |     false    | Called when the API call is finished. Called with Error if the remote update fails. Called with ChannelAttachmentListPayload if api call success. |
+|     **Name**    |                        **Type**                       | **Required** | **Description**                                                                                                                                  |
+|:---------------:|:-----------------------------------------------------:|:------------:|--------------------------------------------------------------------------------------------------------------------------------------------------|
+|       cid       |                      `ChannelId`                      |     true     | The channel identifier of the channel.                                                                                                           |
+| attachmentTypes |               `[ChannelAttachmentType]`               |     true     | The list of attachment type to get. Available `ChannelAttachmentType` values are: `image`,`video`,`file`,`linkPreview` and `voiceRecoding`.      |
+|    completion   | `(Result<[ChannelAttachmentPayload], Error>) -> Void` |     false    | Called when the API call is finished. Called with Error if the remote update fails. Called with`[ChannelAttachmentPayload]` if api call success. |
+
+**6.7. Mute/Unmute channel**
+
+This feature allows users to mute/unmute a channel. If the channel is muted, you will not reveive any notification from this channel.
+
+```swift
+func muteChannel(_ muteType: ChannelMuteType, 
+                 completion: ((Error?) -> Void)? = nil)
+```
+
+**Parameters:**
+
+|  **Name**  |       **Type**       | **Required** | **Description**                                                                                               |
+|:----------:|:--------------------:|:------------:|---------------------------------------------------------------------------------------------------------------|
+|  muteType  |   `ChannelMuteType`  |     true     | An instance of `ChannelMuteType` enum. Available values are: `muted`, `mutedForDuration(Int)` and `unMuted`.  |
+| completion | `((Error?) -> Void)` |     false    | Called when the API call is finished. Called with Error if the remote update fails.                           |
 
 <br />
+
+#### 8. Typing Indicators
+Typing indicators feature lets users see who is currently typing in the channel
+```swift
+class ChannelController {
+    // Start typing
+    public func sendStartTypingEvent(completion: ((Error?) -> Void)? = nil)
+    // Stop typing
+    public func sendStopTypingEvent(completion: ((Error?) -> Void)? = nil)  
+}                              
+```
+
+**Parameters:**
+
+|  **Name**  |        **Type**       | **Required** | **Description**                                                      |
+|:----------:|:---------------------:|:------------:|----------------------------------------------------------------------|
+|    type    | `MessageReactionType` |     true     | The reaction type.                                                   |
+| completion |   `(Error?) -> Void`  |     false    | Called when the API call is finished. Called with `Error` if failed. |
+
+To track users currently typing in a channel, use `typingUsersPublisher` in the `ChannelController`
 
 ### Message management
 
@@ -981,25 +1054,20 @@ public func deleteReaction(
 |    type    | `MessageReactionType` |     true     | The reaction type.                                                   |
 | completion |   `(Error?) -> Void`  |     false    | Called when the API call is finished. Called with `Error` if failed. |
 
-#### 8. Typing Indicators
-Typing indicators feature lets users see who is currently typing in the channel
+#### 8. Pin/Unpin a message.
+
+The Pin feature allows users to pin/unpin a message to a channel. You can get the pinned message list from `pinnedMessages` variable in `Channel`.
+
 ```swift
-class ChannelController {
-    // Start typing
-    public func sendStartTypingEvent(completion: ((Error?) -> Void)? = nil)
-    // Stop typing
-    public func sendStopTypingEvent(completion: ((Error?) -> Void)? = nil)  
-}                              
+func pin(completion: ((Error?) -> Void)? = nil)
+func unpin(completion: ((Error?) -> Void)? = nil)
 ```
 
 **Parameters:**
 
-|  **Name**  |        **Type**       | **Required** | **Description**                                                      |
-|:----------:|:---------------------:|:------------:|----------------------------------------------------------------------|
-|    type    | `MessageReactionType` |     true     | The reaction type.                                                   |
-| completion |   `(Error?) -> Void`  |     false    | Called when the API call is finished. Called with `Error` if failed. |
-
-To track users currently typing in a channel, use `typingUsersPublisher` in the `ChannelController`
+|  **Name**  |       **Type**       | **Required** | **Description**                                                      |
+|:----------:|:--------------------:|:------------:|----------------------------------------------------------------------|
+| completion | `((Error?) -> Void)` |     false    | Called when the API call is finished. Called with `Error` if failed. |
 
 #### 9. System messages
 
@@ -1025,6 +1093,26 @@ Below you can find the complete list of system message that are returned by mess
 | UpdateFilterWords               | `16 user_id`             | Member X has update channel filter words           |
 | MemberJoined                    | `17 user_id`             | Member X has been joined to this channel           |
 | OwnerPromoted                   | `18 old_id new_id`       | Member X has promoted Member Y to Owner            |
+| MessagePinned                   | `19 user_id message_id`  | Member X has pinned a message                      |
+| MessageUnpinned                 | `20 user_id message_id`  | Member X has unpinned a message                    |
+
+#### 10. Signal messages
+
+Below you can find the complete list of signal message that are returned by messages from channel by `ErmisCall` SDK. You can define from syntax message by description.
+
+|        **Name**       |         **Syntax**         | **Description**                                                                                          |
+|:---------------------:|:--------------------------:|----------------------------------------------------------------------------------------------------------|
+| AudioCallStarted      | `1 user_id`                | The audio call was made by a user whose id is: `user_id`.                                                |
+| AudioCallMissed       | `2 user_id`                | The user did not answer the audio call made by user with id: `user_id`.                                  |
+| AudioCallEnded        | `3 starter ender duration` | The audio call was made by `starter`, ended by `ender`, and took place in `duration` seconds.            |
+| VideoCallStarted      | `4 user_id`                | The video call was made by a user whose id is: `user_id`.                                                |
+| VideoCallMissed       | `5 user_id`                | The user did not answer the video call made by user with id: `user_id`.                                  |
+| VideoCallEnded        | `6 starter ender duration` | The video call was made by `starter`, ended by `ender`, and took place in `duration` seconds.            |
+| AudioCallRejected     | `7 user_id`                | The user rejected the audio call made by user with id: `user_id`.                                        |
+| VideoCallCallRejected | `8 user_id`                | The user rejected the video call made by user with id: `user_id`.                                        |
+| AudioCallBusy         | `9 user_id`                | The audio call was made by a user whose id is: `user_id` could not created because the receiver is busy. |
+| VideoCallBusy         | `VideoCallBusy`            | The video call was made by a user whose id is: `user_id` could not created because the receiver is busy. |
+
 
 ### Events
 
@@ -1095,6 +1183,9 @@ Below you can find the complete list of errors that are returned by the API toge
 | AlreadyBlocked               | 400              | Bad Request           | 15         | User already block channel, cannot block aymore.             |
 | AlreadyUnbocked              | 400              | Bad Request           | 16         | User already unblock channel, cannot unblock aymore.         |
 | MessageContainUnallowedWords | 400              | Bad Request           | 17         | User sended message contain unallowed words.                 |
+| CallInProgress               | 400              | Bad Request           | 18         | Video call or audio call is in progress.                     |
+| CallNotInProgress            | 400              | Bad Request           | 19         | Video call or audio call is not in progress.                 |
+| OtherCallInProgress          | 400              | Bad Reuqest           | 20         | Other video call or audio call is in progress.               |
 
 
 #### 2. Websocket codes

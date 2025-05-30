@@ -62,6 +62,7 @@
             }
           }
         },
+        "security": [],
         "responses": {
           "200": {
             "description": "Successful response",
@@ -112,6 +113,7 @@
             }
           }
         },
+        "security": [],
         "responses": {
           "200": {
             "description": "Successful response",
@@ -157,6 +159,7 @@
             }
           }
         },
+        "security": [],
         "responses": {
           "200": {
             "description": "Successful response",
@@ -202,6 +205,7 @@
             }
           }
         },
+        "security": [],
         "responses": {
           "200": {
             "description": "Successful response",
@@ -467,10 +471,7 @@
                   "about_me": {
                     "type": "string"
                   }
-                },
-                "required": [
-                  "name"
-                ]
+                }
               }
             }
           }
