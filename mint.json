@@ -64,6 +64,12 @@
       ]
     },
     {
+      "group": " Interactive Live Streaming SDK",
+      "pages": [
+        "LiveStreaming/doc"
+      ]
+    },
+    {
       "group": "Ermis user",
       "pages": [
         "api-reference/ermis-user/register-with-email",
