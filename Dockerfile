@@ -4,9 +4,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN npm install -g npm@10.5.0
-
-RUN npm install -g mintlify 
+RUN npm install -g mintlify@4.0.510
 
 EXPOSE 3334
 
